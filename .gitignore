@@ -1,0 +1,23 @@
+*.suo
+*.sdf
+*.VC.opendb
+*.VC.db
+*.vcxproj.user
+*.vcxproj.filters
+**/x64/Debug/
+**/x64/Release/
+data/output
+data/output_fp
+data_generator/build/vs2015/Debug
+data_generator/build/vs2015/Release
+data_generator/build/vs2015/x64/Release
+test_driver/build/vs2015/Debug
+test_driver/build/vs2015/x64/Debug
+test_driver/build/vs2015/x64/Release
+data_generator/build/vs2015/x64/Debug
+build/vs2015/x64/Debug/
+build/vs2015/x64/Release
+thirdpartylib/jsoncpp-1.7.7/build/vs2015/x64/Release/
+thirdpartylib/gason_master20161107/build/vs2015/x64
+build/vs2015/test_driver.sln
+report - Copy
