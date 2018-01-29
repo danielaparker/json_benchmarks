@@ -8,5 +8,5 @@ The purpose of these benchmarks is to measure how [jsoncons](https://github.com/
 
 ## Parsing comparisons
 
-Results for [JSONTestSuite](https://github.com/nst/JSONTestSuite) and [JSON_checker](http://www.json.org/JSON_checker/) tests may be found [here](docs/index.html)
+Results for [JSONTestSuite](https://github.com/nst/JSONTestSuite) and [JSON_checker](http://www.json.org/JSON_checker/) tests may be found [here]( https://danielaparker.github.io/json_benchmarks/)
 
