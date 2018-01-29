@@ -282,7 +282,7 @@ int main()
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_failed,"Result undefined, parsing failed","#050f07"});
     result_code_infos.push_back(result_code_info{result_code::process_stopped,"Process stopped","#e00053"});
 
-    std::ofstream fs("report/index.html");
+    std::ofstream fs("docs/index.html");
     json_parsing_report_generator generator("Parser Comparisons", result_code_infos, library_tests::get_library_info(),fs);
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
