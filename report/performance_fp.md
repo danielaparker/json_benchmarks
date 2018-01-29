@@ -4,7 +4,7 @@
 
 Input filename|Size (MB)|Content
 ---|---|---
-data/output/persons_fp.json|595.4|Text,integers
+data/output/persons_fp.json|595.4|Text,doubles
 
 Environment|Windows, Intel
 ---|---

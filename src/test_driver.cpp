@@ -96,7 +96,7 @@ void benchmarks_fp()
         os << std::endl;
         os << "Input filename|Size (MB)|Content" << std::endl;
         os << "---|---|---" << std::endl;
-        os << filename << "|" << (file_size/1000000.0) << "|" << "Text,integers" << std::endl;
+        os << filename << "|" << (file_size/1000000.0) << "|" << "Text,doubles" << std::endl;
         os << std::endl;
         os << "Environment"
            << "|" << "Windows, Intel" << std::endl;
@@ -273,7 +273,7 @@ int main()
 {
     //benchmarks();
     benchmarks_fp();
-/*
+
     std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
@@ -287,6 +287,6 @@ int main()
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
     generator.generate();
-*/
+
 }
 
