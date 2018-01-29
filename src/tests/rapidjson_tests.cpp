@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <cassert>
+#include <vector>
 #include <boost/filesystem.hpp>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
@@ -37,8 +38,9 @@ measurements measure_rapidjson(const char *input_filename,
         {
             auto start = high_resolution_clock::now();
             FILE* fp = fopen(input_filename, "rb"); // non-Windows use "r"
-            char readBuffer[65536];
-            FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+            std::vector<char> readBuffer; 
+            readBuffer.resize(65536);
+            FileReadStream is(fp, readBuffer.data(), readBuffer.size());
             d.ParseStream(is);
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -56,8 +58,9 @@ measurements measure_rapidjson(const char *input_filename,
                 FILE* fp = fopen(output_filename, "wb"); // non-Windows use "w"
                 assert(fp != nullptr);
 
-                char writeBuffer[65536];
-                FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+                std::vector<char> writeBuffer;
+                writeBuffer.resize(65536);
+                FileWriteStream os(fp, &writeBuffer[0], writeBuffer.size());
 
                 Writer<FileWriteStream> writer(os);
                 auto start = high_resolution_clock::now();

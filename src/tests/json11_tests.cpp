@@ -61,9 +61,7 @@ measurements measure_json11(const char *input_filename,
 
             std::string s;
             val.dump(s);
-            //char writeBuffer[65536];
-            std::ofstream os; //(output_filename/*,std::ofstream::binary*/);
-            //os.rdbuf()->pubsetbuf(writeBuffer, sizeof(writeBuffer));
+            std::ofstream os;
             os.open(output_filename, std::ios_base::out | std::ios_base::binary);
             os << s;
 

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <vector>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/filereadstream.h"
@@ -16,8 +17,9 @@ int main(int argc, char *argv[])
     {
         Document doc;
         FILE* fp = fopen(argv[1], "rb"); // non-Windows use "r"
-        char readBuffer[65536];
-        FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+        std::vector<char> readBuffer;
+        readBuffer.resize(65536);
+        FileReadStream is(fp, readBuffer.data(), readBuffer.size());
         ParseResult ok = doc.ParseStream(is);
         if (!ok)
         {

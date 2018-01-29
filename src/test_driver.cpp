@@ -82,7 +82,7 @@ void benchmarks_fp()
         library_tests tests;
 
         const char *filename = "data/output/persons_fp.json";
-        make_big_file(filename, 50000, 0, 5000, 0);
+        make_big_file(filename, 50000, 0, 2500, 0);
 
         size_t file_size;
         {

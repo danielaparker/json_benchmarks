@@ -45,9 +45,7 @@ measurements measure_nlohmann(const char *input_filename,
             }
             end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
             {
-                char writeBuffer[65536];
-                std::ofstream os; //(output_filename/*,std::ofstream::binary*/);
-                os.rdbuf()->pubsetbuf(writeBuffer, sizeof(writeBuffer));
+                std::ofstream os; 
                 os.open(output_filename, std::ios_base::out | std::ios_base::binary);
                 auto start = high_resolution_clock::now();
                 os << root;

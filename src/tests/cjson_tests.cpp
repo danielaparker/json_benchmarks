@@ -67,7 +67,7 @@ measurements measure_cjson(const char *input_filename,
             //    perror(output_filename);
             //    exit(EXIT_FAILURE);
             //}
-            char* s = cJSON_Print(root);
+            char* s = cJSON_PrintUnformatted(root);
             std::ofstream os; //(output_filename/*,std::ofstream::binary*/);
                               //os.rdbuf()->pubsetbuf(writeBuffer, sizeof(writeBuffer));
             os.open(output_filename, std::ios_base::out | std::ios_base::binary);

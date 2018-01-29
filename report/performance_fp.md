@@ -4,7 +4,7 @@
 
 Input filename|Size (MB)|Content
 ---|---|---
-data/input/persons_fp.json|1207.9|Text,integers
+data/output/persons_fp.json|595.4|Text,integers
 
 Environment|Windows, Intel
 ---|---
@@ -15,17 +15,22 @@ Compiler|Visual Studio 2015
 Library|Version
 ---|---
 [jsoncons](https://github.com/danielaparker/jsoncons)|master20180126
-[nlohmann](https://github.com/nlohmann/json)|2.0.7
-[cJSON](https://github.com/DaveGamble/cJSON)|master 20180125
+[nlohmann](https://github.com/nlohmann/json)|3.0.1
+[cJSON](https://github.com/DaveGamble/cJSON)|1.7.1
+[json11](https://github.com/dropbox/json11)|master 20161125
+[rapidjson](https://github.com/miloyip/rapidjson)|1.1.0
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|1.7.7
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented))|4.08
+[gason](https://github.com/vivkin/gason)|master 20161107
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|36.323|49.891|1701|
-[nlohmann](https://github.com/nlohmann/json)|49.952|30.858|186|
-[cjson](https://github.com/DaveGamble/cJSON)|69.822|105.128|11238|
-[json11](https://github.com/dropbox/json11)|68.701|68.608|9625|
-[rapidjson](https://github.com/miloyip/rapidjson)|29.322|13.698|3807|
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|148.824|117.22|12542|
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|623.045|126.12|6280|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|14.727|88.317|3314|No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|16.505|24.256|309|
+[nlohmann](https://github.com/nlohmann/json)|26.152|30.162|0|
+[cjson](https://github.com/DaveGamble/cJSON)|30.806|43.142|5641|
+[json11](https://github.com/dropbox/json11)|29.638|31.187|5155|
+[rapidjson](https://github.com/miloyip/rapidjson)|14.567|5.202|1683|
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|60.838|47.272|5331|
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|345.284|62.109|3464|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|5.631|41.655|1472|No serialization function, using sample pretty-print code
 
