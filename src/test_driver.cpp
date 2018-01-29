@@ -271,9 +271,9 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 
 int main()
 {
-    benchmarks();
+    //benchmarks();
     benchmarks_fp();
-
+/*
     std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
@@ -287,6 +287,6 @@ int main()
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
     generator.generate();
-
+*/
 }
 

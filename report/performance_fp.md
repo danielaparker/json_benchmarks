@@ -25,12 +25,12 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|16.505|24.256|309|
-[nlohmann](https://github.com/nlohmann/json)|26.152|30.162|0|
-[cjson](https://github.com/DaveGamble/cJSON)|30.806|43.142|5641|
-[json11](https://github.com/dropbox/json11)|29.638|31.187|5155|
-[rapidjson](https://github.com/miloyip/rapidjson)|14.567|5.202|1683|
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|60.838|47.272|5331|
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|345.284|62.109|3464|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|5.631|41.655|1472|No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|15.104|24.657|1060|
+[nlohmann](https://github.com/nlohmann/json)|19.04|30.691|1571|
+[cjson](https://github.com/DaveGamble/cJSON)|15.498|44.98|5897|
+[json11](https://github.com/dropbox/json11)|18.099|31.774|5356|
+[rapidjson](https://github.com/miloyip/rapidjson)|4.164|5.46|1651|
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|45.279|47.751|5468|
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|228.342|61.796|2113|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|2.837|41.39|1750|No serialization function, using sample pretty-print code
 
