@@ -20,7 +20,7 @@ Library|Version
 [json11](https://github.com/dropbox/json11)|master 20161125
 [rapidjson](https://github.com/miloyip/rapidjson)|1.1.0
 [jsoncpp](https://github.com/open-source-parsers/jsoncpp)|1.7.7
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented))|4.08
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|4.08
 [gason](https://github.com/vivkin/gason)|master 20161107
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks

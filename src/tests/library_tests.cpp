@@ -39,7 +39,7 @@ namespace json_benchmarks {
         info.push_back(library_info{"json11","https://github.com/dropbox/json11","master 20161125", ""});
         info.push_back(library_info{"rapidjson","https://github.com/miloyip/rapidjson","1.1.0", ""});
         info.push_back(library_info{"jsoncpp","https://github.com/open-source-parsers/jsoncpp","1.7.7", ""});
-        info.push_back(library_info{"json_spirit","http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)","4.08", ""});
+        info.push_back(library_info{"json_spirit","http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented","4.08", ""});
         info.push_back(library_info{"gason","https://github.com/vivkin/gason","master 20161107", ""});
 
         return info;
