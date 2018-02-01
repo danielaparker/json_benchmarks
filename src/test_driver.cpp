@@ -9,6 +9,101 @@
 
 using namespace json_benchmarks;
 
+void benchmarks_small_file()
+{
+    try
+    {
+        library_tests tests;
+
+        const char *filename = "data/input/small_file/small_file.json";
+
+        size_t file_size;
+        {
+            std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+            file_size = in.tellg(); 
+        }
+        std::string input;
+        input.resize(file_size);
+        std::string output;
+        {
+            std::ifstream in(filename, std::ifstream::binary);
+            in.read(&input[0], file_size);
+        }
+        std::cout << input << std::endl;
+        output.reserve(input.size()*2);
+
+        std::ofstream os("report/performance_small_file.md");
+        os << std::endl;
+        os << "## Read and Write Time Comparison" << std::endl << std::endl;
+        os << std::endl;
+        os << "Input filename|Size (bytes)|Content" << std::endl;
+        os << "---|---|---" << std::endl;
+        os << filename << "|" << file_size << "|" << "Text,integers" << std::endl;
+        os << std::endl;
+        os << "Environment"
+           << "|" << "Windows, Intel" << std::endl;
+        os << "---|---" << std::endl;
+        os << "Computer"
+           << "|" << "Dell Mobile Precision 2015, Intel Xeon E3-1535M v5, 32GB memory, 1TB SSD" << std::endl;
+        os << "Operating system"
+           << "|" << "Windows 2010" << std::endl;
+        os << "Compiler"
+           << "|" << "Visual Studio 2015" << std::endl;
+
+        os << std::endl;
+
+        os << "Library|Version" << std::endl;
+        os << "---|---" << std::endl;
+        auto info = tests.get_library_info();
+        for (const auto& val : info)
+        {
+            os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
+        }
+        os << std::endl;
+
+        os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks" << std::endl;
+        os << "---|---|---|---|---" << std::endl;
+
+        std::vector<measurements> v;
+
+        size_t number_times = 50000;
+        for (size_t i = 0; i < number_times; ++i)
+        {
+            auto measurement_results = tests.measure(input,output);
+            for (size_t j = 0; j < measurement_results.size(); ++j)
+            {
+                const auto& results = measurement_results[j];
+                if (i == 0)
+                {
+                    v.push_back(results);
+                }
+                else
+                {
+                    v[j].time_to_read += results.time_to_read;
+                    v[j].time_to_write += results.time_to_write;
+                    v[j].memory_used += results.memory_used;
+                }
+            }
+            output.clear();
+        }
+        for (size_t i = 0; i < v.size(); ++i)
+        {
+            const auto& results = v[i];
+            os << results.library_name
+               << "|" << results.time_to_read/(number_times)
+               << "|" << results.time_to_write/(number_times)
+               << "|" << results.memory_used/number_times
+               << "|" << results.remarks
+               << std::endl; 
+        }
+        os << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+}
+
 void benchmarks()
 {
     try
@@ -271,10 +366,11 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 
 int main()
 {
-    //benchmarks();
-    benchmarks_fp();
+    benchmarks();
+    //benchmarks_fp();
+    //benchmarks_small_file();
 
-    std::vector<result_code_info> result_code_infos;
+    /*std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
@@ -286,7 +382,7 @@ int main()
     json_parsing_report_generator generator("Parser Comparisons", result_code_infos, library_tests::get_library_info(),fs);
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
-    generator.generate();
+    generator.generate();*/
 
 }
 

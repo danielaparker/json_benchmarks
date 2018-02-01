@@ -250,11 +250,13 @@ public:
         class double_data : public base_data
         {
             uint8_t precision_;
+            uint8_t decimal_places_;
             double val_;
         public:
-            double_data(double val, uint8_t precision)
+            double_data(double val, uint8_t precision, uint8_t decimal_places)
                 : base_data(json_type_tag::double_t), 
                   precision_(precision), 
+                  decimal_places_(decimal_places), 
                   val_(val)
             {
             }
@@ -262,6 +264,7 @@ public:
             double_data(const double_data& val)
                 : base_data(json_type_tag::double_t),
                   precision_(val.precision_), 
+                  decimal_places_(val.decimal_places_), 
                   val_(val.val_)
             {
             }
@@ -272,6 +275,11 @@ public:
             }
 
             uint8_t precision() const
+            {
+                return precision_;
+            }
+
+            uint8_t decimal_places() const
             {
                 return precision_;
             }
@@ -711,11 +719,11 @@ public:
         }
         variant(double val)
         {
-            new(reinterpret_cast<void*>(&data_))double_data(val,std::numeric_limits<double>::digits10);
+            new(reinterpret_cast<void*>(&data_))double_data(val,0,0);
         }
-        variant(double val, uint8_t precision)
+        variant(double val, uint8_t precision, uint8_t decimal_places)
         {
-            new(reinterpret_cast<void*>(&data_))double_data(val,precision);
+            new(reinterpret_cast<void*>(&data_))double_data(val, precision, decimal_places);
         }
         variant(const char_type* s, size_t length)
         {
@@ -2728,8 +2736,8 @@ public:
 
     static basic_json parse(const string_view_type& s, parse_error_handler& err_handler)
     {
-        json_decoder<basic_json> handler;
-        basic_json_parser<char_type> parser(handler,err_handler);
+        json_decoder<basic_json> decoder;
+        basic_json_parser<char_type> parser(decoder,err_handler);
 
         auto result = unicons::skip_bom(s.begin(), s.end());
         if (result.ec != unicons::encoding_errc())
@@ -2741,11 +2749,11 @@ public:
         parser.parse();
         parser.end_parse();
         parser.check_done();
-        if (!handler.is_valid())
+        if (!decoder.is_valid())
         {
             JSONCONS_THROW_EXCEPTION(std::runtime_error,"Failed to parse json string");
         }
-        return handler.get_result();
+        return decoder.get_result();
     }
 
     static basic_json make_array()
@@ -2908,7 +2916,12 @@ public:
     }
 
     basic_json(double val, uint8_t precision)
-        : var_(val,precision)
+        : var_(val, precision, 0)
+    {
+    }
+
+    basic_json(double val, uint8_t precision, uint8_t decimal_places)
+        : var_(val, precision, decimal_places)
     {
     }
 
@@ -3035,26 +3048,16 @@ public:
     template <class SAllocator>
     void dump(std::basic_string<char_type,char_traits_type,SAllocator>& s) const
     {
-        std::basic_ostringstream<char_type,char_traits_type,SAllocator> os;
-        os.imbue(std::locale::classic());
-        {
-            basic_json_serializer<char_type> serializer(os);
-            dump(serializer);
-        }
-        s = os.str();
+        basic_json_serializer<char_type,string_writer<char_type>> serializer(s);
+        dump(serializer);
     }
 
     template <class SAllocator>
     void dump(std::basic_string<char_type,char_traits_type,SAllocator>& s,
               const basic_serialization_options<char_type>& options) const
     {
-        std::basic_ostringstream<char_type,char_traits_type,SAllocator> os;
-        os.imbue(std::locale::classic());
-        {
-            basic_json_serializer<char_type> serializer(os,options);
-            dump(serializer);
-        }
-        s = os.str();
+        basic_json_serializer<char_type,string_writer<char_type>> serializer(s, options);
+        dump(serializer);
     }
 
 #if !defined(JSONCONS_NO_DEPRECATED)
@@ -3075,7 +3078,7 @@ public:
             handler.byte_string_value(var_.byte_string_data_cast()->data(), var_.byte_string_data_cast()->length());
             break;
         case json_type_tag::double_t:
-            handler.double_value(var_.double_data_cast()->value(), var_.double_data_cast()->precision());
+            handler.double_value(var_.double_data_cast()->value(), var_.double_data_cast()->precision(), var_.double_data_cast()->decimal_places());
             break;
         case json_type_tag::integer_t:
             handler.integer_value(var_.integer_data_cast()->value());
@@ -3154,26 +3157,18 @@ public:
     string_type to_string(const char_allocator_type& allocator=char_allocator_type()) const JSONCONS_NOEXCEPT
     {
         string_type s(allocator);
-        std::basic_ostringstream<char_type,char_traits_type,char_allocator_type> os(s);
-        os.imbue(std::locale::classic());
-        {
-            basic_json_serializer<char_type> serializer(os);
-            dump_fragment(serializer);
-        }
-        return os.str();
+        basic_json_serializer<char_type,string_writer<char_type>> serializer(s);
+        dump_fragment(serializer);
+        return s;
     }
 
     string_type to_string(const basic_serialization_options<char_type>& options,
                           const char_allocator_type& allocator=char_allocator_type()) const
     {
         string_type s(allocator);
-        std::basic_ostringstream<char_type> os(s);
-        os.imbue(std::locale::classic());
-        {
-            basic_json_serializer<char_type> serializer(os, options);
-            dump_fragment(serializer);
-        }
-        return os.str();
+        basic_json_serializer<char_type,string_writer<char_type>> serializer(s,options);
+        dump_fragment(serializer);
+        return s;
     }
 
 #if !defined(JSONCONS_NO_DEPRECATED)
@@ -3517,12 +3512,23 @@ public:
         }
     }
 
-    size_t double_precision() const
+    size_t precision() const
     {
         switch (var_.type_id())
         {
         case json_type_tag::double_t:
             return var_.double_data_cast()->precision();
+        default:
+            JSONCONS_THROW_EXCEPTION(std::runtime_error,"Not a double");
+        }
+    }
+
+    size_t decimal_places() const
+    {
+        switch (var_.type_id())
+        {
+        case json_type_tag::double_t:
+            return var_.double_data_cast()->decimal_places();
         default:
             JSONCONS_THROW_EXCEPTION(std::runtime_error,"Not a double");
         }
@@ -3619,6 +3625,18 @@ public:
     }
 
 #if !defined(JSONCONS_NO_DEPRECATED)
+
+    size_t double_precision() const
+    {
+        switch (var_.type_id())
+        {
+        case json_type_tag::double_t:
+            return var_.double_data_cast()->precision();
+        default:
+            JSONCONS_THROW_EXCEPTION(std::runtime_error,"Not a double");
+        }
+    }
+
     const char_type* as_cstring() const
     {
         switch (var_.type_id())
@@ -4343,12 +4361,12 @@ public:
 
     static basic_json from_floating_point(double val)
     {
-        return basic_json(variant(val, std::numeric_limits<double>::digits10));
+        return basic_json(variant(val, 0, 0));
     }
 
     static basic_json from_floating_point(double val, allocator_type)
     {
-        return basic_json(variant(val,std::numeric_limits<double>::digits10));
+        return basic_json(variant(val,0));
     }
 
     static basic_json from_bool(bool val)

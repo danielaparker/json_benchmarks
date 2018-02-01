@@ -37,7 +37,8 @@ public:
         PROCESS_MEMORY_COUNTERS_EX pmc;
         pmc.cb = sizeof(pmc); 
         GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
-        return pmc.PrivateUsage;    
+        //return pmc.PrivateUsage;    
+        return pmc.WorkingSetSize;    
     }
 };
 

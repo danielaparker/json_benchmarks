@@ -16,15 +16,17 @@
 
 namespace jsoncons {
 
-template<class CharT> 
-void print_integer(int64_t value, buffered_output<CharT>& os)
+template<class Writer> 
+void print_integer(int64_t value, Writer& os)
 {
-    CharT buf[255];
+    typedef typename Writer::char_type char_type;
+
+    char_type buf[255];
     uint64_t u = (value < 0) ? static_cast<uint64_t>(-value) : static_cast<uint64_t>(value);
-    CharT* p = buf;
+    char_type* p = buf;
     do
     {
-        *p++ = static_cast<CharT>(48 + u%10);
+        *p++ = static_cast<char_type>(48 + u%10);
     }
     while (u /= 10);
     if (value < 0)
@@ -37,14 +39,16 @@ void print_integer(int64_t value, buffered_output<CharT>& os)
     }
 }
 
-template<class CharT>
-void print_uinteger(uint64_t value, buffered_output<CharT>& os)
+template<class Writer>
+void print_uinteger(uint64_t value, Writer& os)
 {
-    CharT buf[255];
-    CharT* p = buf;
+    typedef typename Writer::char_type char_type;
+
+    char_type buf[255];
+    char_type* p = buf;
     do
     {
-        *p++ = static_cast<CharT>(48 + value % 10);
+        *p++ = static_cast<char_type>(48 + value % 10);
     } while (value /= 10);
     while (--p >= buf)
     {
@@ -122,12 +126,17 @@ public:
 
     void double_value(double value) 
     {
-        do_double_value(value, std::numeric_limits<double>::digits10);
+        do_double_value(value, 0, 0);
     }
 
     void double_value(double value, uint8_t precision) 
     {
-        do_double_value(value, precision);
+        do_double_value(value, precision, 0);
+    }
+
+    void double_value(double value, uint8_t precision, uint8_t decimal_places) 
+    {
+        do_double_value(value, precision, decimal_places);
     }
 
     void bool_value(bool value) 
@@ -192,9 +201,9 @@ public:
         do_uinteger_value(value);
     }
 
-    void value(double value, uint8_t precision = 0)
+    void value(double value, uint8_t precision = 0, uint8_t decimal_places = 0)
     {
-        do_double_value(value, precision);
+        do_double_value(value, precision, decimal_places);
     }
 
     void value(bool value) 
@@ -230,7 +239,7 @@ private:
 
     virtual void do_byte_string_value(const uint8_t* data, size_t length) = 0;
 
-    virtual void do_double_value(double value, uint8_t precision) = 0;
+    virtual void do_double_value(double value, uint8_t precision, uint8_t decimal_places) = 0;
 
     virtual void do_integer_value(int64_t value) = 0;
 
@@ -286,7 +295,7 @@ private:
     {
     }
 
-    void do_double_value(double, uint8_t) override
+    void do_double_value(double, uint8_t, uint8_t) override
     {
     }
 

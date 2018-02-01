@@ -20,6 +20,52 @@ namespace json_benchmarks {
 
 const std::string library_name = "[cjson](https://github.com/DaveGamble/cJSON)";
 
+measurements measure_cjson(const std::string& input, std::string& output)
+{
+    size_t start_memory_used;
+    size_t end_memory_used;
+    size_t time_to_read;
+    size_t time_to_write;
+
+    {
+        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+
+        cJSON* root = nullptr;
+        {
+            try
+            {
+                auto start = high_resolution_clock::now();
+                char *endptr;
+                root = cJSON_Parse(input.c_str());
+                auto end = high_resolution_clock::now();
+                time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                exit(1);
+            }
+        }
+        end_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+        {
+            auto start = high_resolution_clock::now();
+            output = cJSON_PrintUnformatted(root);
+            auto end = high_resolution_clock::now();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        cJSON_Delete(root);
+    }
+    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    
+    measurements results;
+    results.library_name = library_name;
+    results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
+    results.time_to_read = time_to_read;
+    results.time_to_write = time_to_write;
+    results.remarks = "";
+    return results;
+}
+
 measurements measure_cjson(const char *input_filename,
                            const char* output_filename)
 {
@@ -75,7 +121,7 @@ measurements measure_cjson(const char *input_filename,
             auto end = high_resolution_clock::now();
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
-        free(root);
+        cJSON_Delete(root);
     }
     size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
     
@@ -109,6 +155,7 @@ std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>&
                     test_suite_result{result_code::expected_success_parsing_failed}
                 );
             }
+            cJSON_Delete(j);
         }
         else if (file.type == expected_result::expect_failure)
         {
@@ -125,6 +172,7 @@ std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>&
                     test_suite_result{result_code::expected_result}
                 );
             }
+
         }
         else if (file.type == expected_result::result_undefined)
         {
@@ -141,6 +189,7 @@ std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>&
                     test_suite_result{result_code::result_undefined_parsing_failed}
                 );
             }
+            cJSON_Delete(j);
         }
     }
 

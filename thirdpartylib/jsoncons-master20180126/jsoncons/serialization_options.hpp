@@ -15,8 +15,12 @@
 #include <cstdlib>
 #include <limits>
 #include <cwchar>
+#if !defined(JSONCONS_NO_TO_CHARS)
+#include <charconv>
+#endif
 #include <jsoncons/json_exception.hpp>
 #include <jsoncons/jsoncons_utilities.hpp>
+#include <jsoncons/detail/type_traits_helper.hpp>
 
 namespace jsoncons {
 
@@ -24,16 +28,20 @@ namespace jsoncons {
 enum class block_options {next_line,same_line};
 #endif
 
-template <class CharT>
-class buffered_output;
-
 enum class line_split_kind{same_line,new_line,multi_line};
+
+#if !defined(JSONCONS_NO_TO_CHARS)
+using chars_format = std::chars_format;
+#else
+enum class chars_format {fixed,scientific,hex,general=fixed|scientific};
+#endif
 
 template <class CharT>
 class basic_serialization_options
 {
     int indent_;
     uint8_t precision_;
+    uint8_t decimal_places_;
     bool replace_nan_;
     bool replace_pos_inf_;
     bool replace_neg_inf_;
@@ -47,6 +55,8 @@ class basic_serialization_options
     line_split_kind object_array_split_lines_;
     line_split_kind array_array_split_lines_;
     line_split_kind array_object_split_lines_;
+
+    chars_format floating_point_format_;
 public:
     static const size_t default_indent = 4;
 
@@ -133,48 +143,48 @@ public:
         return indent_;
     }
 
+    basic_serialization_options<CharT>& indent(int value)
+    {
+        indent_ = value;
+        return *this;
+    }
+
+    chars_format floating_point_format() const
+    {
+        return floating_point_format_;
+    }
+
+    basic_serialization_options<CharT>& floating_point_format(chars_format value)
+    {
+        floating_point_format_ = value;
+        return *this;
+    }
+
     uint8_t precision() const
     {
         return precision_;
     }
 
+    basic_serialization_options<CharT>& precision(uint8_t value)
+    {
+        precision_ = value;
+        return *this;
+    }
+
+    uint8_t decimal_places() const
+    {
+        return decimal_places_;
+    }
+
+    basic_serialization_options<CharT>& decimal_places(uint8_t value)
+    {
+        decimal_places_ = value;
+        return *this;
+    }
+
     bool escape_all_non_ascii() const
     {
         return escape_all_non_ascii_;
-    }
-
-    bool escape_solidus() const
-    {
-        return escape_solidus_;
-    }
-
-    bool replace_nan() const {return replace_nan_;}
-
-    bool replace_pos_inf() const {return replace_pos_inf_;}
-
-    bool replace_neg_inf() const {return replace_neg_inf_;}
-
-    std::basic_string<CharT> nan_replacement() const
-    {
-        return nan_replacement_;
-    }
-
-    std::basic_string<CharT> pos_inf_replacement() const
-    {
-        return pos_inf_replacement_;
-    }
-
-    std::basic_string<CharT> neg_inf_replacement() const
-    {
-        return neg_inf_replacement_;
-    }
-
-//  Modifiers
-
-    basic_serialization_options<CharT>& precision(uint8_t prec)
-    {
-        precision_ = prec;
-        return *this;
     }
 
     basic_serialization_options<CharT>& escape_all_non_ascii(bool value)
@@ -183,17 +193,28 @@ public:
         return *this;
     }
 
+    bool escape_solidus() const
+    {
+        return escape_solidus_;
+    }
+
     basic_serialization_options<CharT>& escape_solidus(bool value)
     {
         escape_solidus_ = value;
         return *this;
     }
 
+    bool replace_nan() const {return replace_nan_;}
+
     basic_serialization_options<CharT>& replace_nan(bool replace)
     {
         replace_nan_ = replace;
         return *this;
     }
+
+    bool replace_pos_inf() const {return replace_pos_inf_;}
+
+    bool replace_neg_inf() const {return replace_neg_inf_;}
 
     basic_serialization_options<CharT>& replace_inf(bool replace)
     {
@@ -214,15 +235,14 @@ public:
         return *this;
     }
 
+    std::basic_string<CharT> nan_replacement() const
+    {
+        return nan_replacement_;
+    }
+
     basic_serialization_options<CharT>& nan_replacement(const std::basic_string<CharT>& replacement)
     {
         nan_replacement_ = replacement;
-        return *this;
-    }
-
-    basic_serialization_options<CharT>& pos_inf_replacement(const std::basic_string<CharT>& replacement)
-    {
-        pos_inf_replacement_ = replacement;
         return *this;
     }
 
@@ -232,114 +252,22 @@ public:
         return *this;
     }
 
-    basic_serialization_options<CharT>& indent(int value)
+    std::basic_string<CharT> pos_inf_replacement() const
     {
-        indent_ = value;
+        return pos_inf_replacement_;
+    }
+
+    basic_serialization_options<CharT>& pos_inf_replacement(const std::basic_string<CharT>& replacement)
+    {
+        pos_inf_replacement_ = replacement;
         return *this;
     }
-};
 
-template<class CharT>
-void escape_string(const CharT* s,
-                   size_t length,
-                   const basic_serialization_options<CharT>& options,
-                   buffered_output<CharT>& os)
-{
-    const CharT* begin = s;
-    const CharT* end = s + length;
-    for (const CharT* it = begin; it != end; ++it)
+    std::basic_string<CharT> neg_inf_replacement() const
     {
-        CharT c = *it;
-        switch (c)
-        {
-        case '\\':
-            os.put('\\'); 
-            os.put('\\');
-            break;
-        case '"':
-            os.put('\\'); 
-            os.put('\"');
-            break;
-        case '\b':
-            os.put('\\'); 
-            os.put('b');
-            break;
-        case '\f':
-            os.put('\\');
-            os.put('f');
-            break;
-        case '\n':
-            os.put('\\');
-            os.put('n');
-            break;
-        case '\r':
-            os.put('\\');
-            os.put('r');
-            break;
-        case '\t':
-            os.put('\\');
-            os.put('t');
-            break;
-        default:
-            if (options.escape_solidus() && c == '/')
-            {
-                os.put('\\');
-                os.put('/');
-            }
-            else if (is_control_character(c) || options.escape_all_non_ascii())
-            {
-                // convert utf8 to codepoint
-                unicons::sequence_generator<const CharT*> g(it,end,unicons::conv_flags::strict);
-                if (g.done() || g.status() != unicons::conv_errc())
-                {
-                    JSONCONS_THROW_EXCEPTION(std::runtime_error,"Invalid codepoint");
-                }
-                uint32_t cp = g.get().codepoint();
-                it += (g.get().length() - 1);
-                if (is_non_ascii_codepoint(cp) || is_control_character(c))
-                {
-                    if (cp > 0xFFFF)
-                    {
-                        cp -= 0x10000;
-                        uint32_t first = (cp >> 10) + 0xD800;
-                        uint32_t second = ((cp & 0x03FF) + 0xDC00);
-
-                        os.put('\\');
-                        os.put('u');
-                        os.put(to_hex_character(first >> 12 & 0x000F));
-                        os.put(to_hex_character(first >> 8  & 0x000F));
-                        os.put(to_hex_character(first >> 4  & 0x000F));
-                        os.put(to_hex_character(first     & 0x000F));
-                        os.put('\\');
-                        os.put('u');
-                        os.put(to_hex_character(second >> 12 & 0x000F));
-                        os.put(to_hex_character(second >> 8  & 0x000F));
-                        os.put(to_hex_character(second >> 4  & 0x000F));
-                        os.put(to_hex_character(second     & 0x000F));
-                    }
-                    else
-                    {
-                        os.put('\\');
-                        os.put('u');
-                        os.put(to_hex_character(cp >> 12 & 0x000F));
-                        os.put(to_hex_character(cp >> 8  & 0x000F));
-                        os.put(to_hex_character(cp >> 4  & 0x000F));
-                        os.put(to_hex_character(cp     & 0x000F));
-                    }
-                }
-                else
-                {
-                    os.put(c);
-                }
-            }
-            else
-            {
-                os.put(c);
-            }
-            break;
-        }
+        return neg_inf_replacement_;
     }
-}
+};
 
 typedef basic_serialization_options<char> serialization_options;
 typedef basic_serialization_options<wchar_t> wserialization_options;

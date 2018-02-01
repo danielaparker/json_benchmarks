@@ -18,8 +18,51 @@ namespace json_benchmarks {
 
 const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
 
-measurements measure_jsoncons(const char *input_filename,
-                                const char* output_filename)
+measurements measure_jsoncons(const std::string& input, std::string& output)
+{
+    size_t start_memory_used;
+    size_t end_memory_used;
+    size_t time_to_read;
+    size_t time_to_write;
+
+    {
+        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        {
+            jsoncons::json root;
+            {
+                auto start = high_resolution_clock::now();
+                try
+                {
+                    root = jsoncons::json::parse(input);
+                    auto end = high_resolution_clock::now();
+                    time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                }
+                catch (const std::exception& e)
+                {
+                    std::cout << e.what() << std::endl;
+                    exit(1);
+                }
+            }
+            end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+            {
+                auto start = high_resolution_clock::now();
+                root.dump(output);
+                auto end = high_resolution_clock::now();
+                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+            }
+        }
+    }
+    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    
+    measurements results;
+    results.library_name = library_name;
+    results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
+    results.time_to_read = time_to_read;
+    results.time_to_write = time_to_write;
+    return results;
+}
+
+measurements measure_jsoncons(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;

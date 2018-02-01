@@ -6,6 +6,7 @@
 namespace json_benchmarks {
 
     measurements measure_jsoncons(const char *input_filename, const char *output_filename);
+    measurements measure_jsoncons(const std::string& input, std::string& output);
     std::vector<test_suite_result> JsonTestSuite_jsoncons(std::vector<test_suite_file>& pathnames);
 
     measurements measure_rapidjson(const char *input_filename, const char *output_filename);
@@ -15,6 +16,7 @@ namespace json_benchmarks {
     std::vector<test_suite_result> JsonTestSuite_nlohmann(std::vector<test_suite_file>& pathnames);
 
     measurements measure_cjson(const char *input_filename, const char *output_filename);
+    measurements measure_cjson(const std::string& input, std::string& output);
     std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>& pathnames);
 
     measurements measure_jsoncpp(const char *input_filename, const char *output_filename);
@@ -43,6 +45,30 @@ namespace json_benchmarks {
         info.push_back(library_info{"gason","https://github.com/vivkin/gason","master 20161107", ""});
 
         return info;
+    }
+
+    std::vector<measurements> library_tests::measure(const std::string& input, std::string& output)
+    {
+        std::vector<measurements> tests;
+
+        tests.push_back(measure_jsoncons(input, output));
+        tests.push_back(measure_cjson(input, output));
+/*
+        tests.push_back(measure_nlohmann(input_filename, 
+                                         (base / "persons-nlohmann.json").string().c_str()));
+
+
+        tests.push_back(measure_json11(input_filename, (base / "persons-json11.json").string().c_str()));
+
+        tests.push_back(measure_rapidjson(input_filename, (base / "persons-rapidjson.json").string().c_str()));
+
+        tests.push_back(measure_jsoncpp(input_filename, (base / "persons-jsoncpp.json").string().c_str()));
+
+        tests.push_back(measure_json_spirit(input_filename, (base / "persons-json_spirit.json").string().c_str()));
+
+        tests.push_back(measure_gason(input_filename, (base / "persons-gason.json").string().c_str()));
+*/
+        return tests;
     }
 
     std::vector<measurements> library_tests::measure(const char *input_filename, const char* output_dir)
