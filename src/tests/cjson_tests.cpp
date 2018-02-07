@@ -28,7 +28,7 @@ measurements measure_cjson(const std::string& input, std::string& output)
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
 
         cJSON* root = nullptr;
         {
@@ -46,7 +46,7 @@ measurements measure_cjson(const std::string& input, std::string& output)
                 exit(1);
             }
         }
-        end_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used = memory_measurer::get_process_memory();
         {
             auto start = high_resolution_clock::now();
             output = cJSON_PrintUnformatted(root);
@@ -55,7 +55,7 @@ measurements measure_cjson(const std::string& input, std::string& output)
         }
         cJSON_Delete(root);
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -75,7 +75,7 @@ measurements measure_cjson(const char *input_filename,
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
 
         cJSON* root = nullptr;
         std::string buffer;
@@ -105,7 +105,7 @@ measurements measure_cjson(const char *input_filename,
                 exit(1);
             }
         }
-        end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used =  memory_measurer::get_process_memory();
         {
             auto start = high_resolution_clock::now();
             //FILE *fp = fopen(output_filename, "w");
@@ -123,7 +123,7 @@ measurements measure_cjson(const char *input_filename,
         }
         cJSON_Delete(root);
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;

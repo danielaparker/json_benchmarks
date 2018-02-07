@@ -23,15 +23,61 @@ namespace json_benchmarks {
 
 const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
 
-measurements measure_rapidjson(const char *input_filename,
-                                 const char* output_filename)
+measurements measure_rapidjson(const std::string& input, std::string& output)
 {
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
     size_t time_to_read = 0;
     size_t time_to_write = 0;
 
-    start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+    start_memory_used =  memory_measurer::get_process_memory();
+    {
+        Document d;
+        try
+        {
+            auto start = high_resolution_clock::now();
+            d.Parse(input.c_str());
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            exit(1);
+        }
+        end_memory_used =  memory_measurer::get_process_memory();
+        {
+            try
+            {
+                rapidjson::StringBuffer buffer;
+                rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+                d.Accept(writer);
+                output = buffer.GetString();
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << e.what() << std::endl;
+            }
+        }
+    }
+    size_t final_memory_used = memory_measurer::get_process_memory();
+    
+    measurements results;
+    results.library_name = library_name;
+    results.memory_used = (end_memory_used - start_memory_used);
+    results.time_to_read = time_to_read;
+    results.time_to_write = time_to_write;
+    return results;
+}
+
+measurements measure_rapidjson(const char *input_filename, const char* output_filename)
+{
+    size_t start_memory_used = 0;
+    size_t end_memory_used = 0;
+    size_t time_to_read = 0;
+    size_t time_to_write = 0;
+
+    start_memory_used =  memory_measurer::get_process_memory();
     {
         Document d;
         try
@@ -51,7 +97,7 @@ measurements measure_rapidjson(const char *input_filename,
             std::cout << e.what() << std::endl;
             exit(1);
         }
-        end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used =  memory_measurer::get_process_memory();
         {
             try
             {
@@ -75,7 +121,7 @@ measurements measure_rapidjson(const char *input_filename,
             }
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;

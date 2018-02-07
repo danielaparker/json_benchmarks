@@ -25,7 +25,7 @@ measurements measure_nlohmann(const char *input_filename,
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
         {
             nlohmann::json root;
             {
@@ -43,7 +43,7 @@ measurements measure_nlohmann(const char *input_filename,
                     exit(1);
                 }
             }
-            end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+            end_memory_used =  memory_measurer::get_process_memory();
             {
                 std::ofstream os; 
                 os.open(output_filename, std::ios_base::out | std::ios_base::binary);
@@ -54,7 +54,7 @@ measurements measure_nlohmann(const char *input_filename,
             }
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;

@@ -28,7 +28,7 @@ measurements measure_json_spirit(const char *input_filename,
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
 
         Value root;
         {
@@ -48,7 +48,7 @@ measurements measure_json_spirit(const char *input_filename,
                 }
             }
         }
-        end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used =  memory_measurer::get_process_memory();
         {
             std::ofstream os;
             os.open(output_filename, std::ios_base::out | std::ios_base::binary);
@@ -58,7 +58,7 @@ measurements measure_json_spirit(const char *input_filename,
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
 
     measurements results;
     results.library_name = library_name;

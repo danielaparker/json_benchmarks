@@ -21,8 +21,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[gason](https://github.com/vivkin/gason)";
 
-measurements measure_gason(const char *input_filename,
-                             const char* output_filename)
+measurements measure_gason(const char *input_filename,const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -30,7 +29,7 @@ measurements measure_gason(const char *input_filename,
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
 
         JsonValue root;
         JsonAllocator allocator;
@@ -61,14 +60,9 @@ measurements measure_gason(const char *input_filename,
                 exit(1);
             }
         }
-        end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used =  memory_measurer::get_process_memory();
         {
             auto start = high_resolution_clock::now();
-            //FILE *fp = fopen(output_filename, "w");
-            //if (!fp) {
-            //    perror(output_filename);
-            //    exit(EXIT_FAILURE);
-            //}
             freopen(output_filename, "w", stdout);
             dumpValue(root);
             fclose(stdout);
@@ -77,7 +71,7 @@ measurements measure_gason(const char *input_filename,
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;

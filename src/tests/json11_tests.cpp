@@ -28,7 +28,7 @@ measurements measure_json11(const char *input_filename,
     std::string buffer;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
 
         Json val;
         {
@@ -55,7 +55,7 @@ measurements measure_json11(const char *input_filename,
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
-        end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        end_memory_used =  memory_measurer::get_process_memory();
         {
             auto start = high_resolution_clock::now();
 
@@ -69,7 +69,7 @@ measurements measure_json11(const char *input_filename,
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;

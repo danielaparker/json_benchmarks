@@ -26,7 +26,7 @@ measurements measure_jsoncons(const std::string& input, std::string& output)
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
         {
             jsoncons::json root;
             {
@@ -43,7 +43,7 @@ measurements measure_jsoncons(const std::string& input, std::string& output)
                     exit(1);
                 }
             }
-            end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+            end_memory_used =  memory_measurer::get_process_memory();
             {
                 auto start = high_resolution_clock::now();
                 root.dump(output);
@@ -52,7 +52,7 @@ measurements measure_jsoncons(const std::string& input, std::string& output)
             }
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -70,7 +70,7 @@ measurements measure_jsoncons(const char *input_filename, const char* output_fil
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+        start_memory_used =  memory_measurer::get_process_memory();
         {
             jsoncons::json root;
             {
@@ -88,7 +88,7 @@ measurements measure_jsoncons(const char *input_filename, const char* output_fil
                     exit(1);
                 }
             }
-            end_memory_used =  memory_measurer::virtual_memory_currently_used_by_current_process();
+            end_memory_used =  memory_measurer::get_process_memory();
             {
                 std::ofstream os;
                 os.open(output_filename, std::ios_base::out | std::ios_base::binary);
@@ -99,7 +99,7 @@ measurements measure_jsoncons(const char *input_filename, const char* output_fil
             }
         }
     }
-    size_t final_memory_used = memory_measurer::virtual_memory_currently_used_by_current_process();
+    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
