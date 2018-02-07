@@ -28,6 +28,7 @@
 #include <jsoncons/json_reader.hpp>
 #include <jsoncons/json_type_traits.hpp>
 #include <jsoncons/json_error_category.hpp>
+#include <jsoncons/detail/heap_only_string.hpp>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -159,44 +160,44 @@ public:
 
     struct variant
     {
-        struct base_data
+        struct data_base
         {
             json_type_tag type_id_;
 
-            base_data(json_type_tag id)
+            data_base(json_type_tag id)
                 : type_id_(id)
             {}
         };
 
-        class null_data : public base_data
+        class null_data : public data_base
         {
         public:
             null_data()
-                : base_data(json_type_tag::null_t)
+                : data_base(json_type_tag::null_t)
             {
             }
         };
 
-        class empty_object_data : public base_data
+        class empty_object_data : public data_base
         {
         public:
             empty_object_data()
-                : base_data(json_type_tag::empty_object_t)
+                : data_base(json_type_tag::empty_object_t)
             {
             }
         };
 
-        class bool_data : public base_data
+        class bool_data : public data_base
         {
             bool val_;
         public:
             bool_data(bool val)
-                : base_data(json_type_tag::bool_t),val_(val)
+                : data_base(json_type_tag::bool_t),val_(val)
             {
             }
 
             bool_data(const bool_data& val)
-                : base_data(json_type_tag::bool_t),val_(val.val_)
+                : data_base(json_type_tag::bool_t),val_(val.val_)
             {
             }
 
@@ -207,17 +208,17 @@ public:
 
         };
 
-        class integer_data : public base_data
+        class integer_data : public data_base
         {
             int64_t val_;
         public:
             integer_data(int64_t val)
-                : base_data(json_type_tag::integer_t),val_(val)
+                : data_base(json_type_tag::integer_t),val_(val)
             {
             }
 
             integer_data(const integer_data& val)
-                : base_data(json_type_tag::integer_t),val_(val.val_)
+                : data_base(json_type_tag::integer_t),val_(val.val_)
             {
             }
 
@@ -227,17 +228,17 @@ public:
             }
         };
 
-        class uinteger_data : public base_data
+        class uinteger_data : public data_base
         {
             uint64_t val_;
         public:
             uinteger_data(uint64_t val)
-                : base_data(json_type_tag::uinteger_t),val_(val)
+                : data_base(json_type_tag::uinteger_t),val_(val)
             {
             }
 
             uinteger_data(const uinteger_data& val)
-                : base_data(json_type_tag::uinteger_t),val_(val.val_)
+                : data_base(json_type_tag::uinteger_t),val_(val.val_)
             {
             }
 
@@ -247,22 +248,29 @@ public:
             }
         };
 
-        class double_data : public base_data
+        class double_data : public data_base
         {
             uint8_t precision_;
             uint8_t decimal_places_;
             double val_;
         public:
-            double_data(double val, uint8_t precision, uint8_t decimal_places)
-                : base_data(json_type_tag::double_t), 
-                  precision_(precision), 
-                  decimal_places_(decimal_places), 
+            double_data(double val)
+                : data_base(json_type_tag::double_t), 
+                  precision_(0), 
+                  decimal_places_(0), 
+                  val_(val)
+            {
+            }
+            double_data(double val, const number_format& fmt)
+                : data_base(json_type_tag::double_t), 
+                  precision_(fmt.precision()), 
+                  decimal_places_(fmt.decimal_places()), 
                   val_(val)
             {
             }
 
             double_data(const double_data& val)
-                : base_data(json_type_tag::double_t),
+                : data_base(json_type_tag::double_t),
                   precision_(val.precision_), 
                   decimal_places_(val.decimal_places_), 
                   val_(val.val_)
@@ -285,7 +293,7 @@ public:
             }
         };
 
-        class small_string_data : public base_data
+        class small_string_data : public data_base
         {
             static const size_t capacity = 14/sizeof(char_type);
             uint8_t length_;
@@ -294,7 +302,7 @@ public:
             static const size_t max_length = (14 / sizeof(char_type)) - 1;
 
             small_string_data(const char_type* p, uint8_t length)
-                : base_data(json_type_tag::small_string_t), length_(length)
+                : data_base(json_type_tag::small_string_t), length_(length)
             {
                 JSONCONS_ASSERT(length <= max_length);
                 std::memcpy(data_,p,length*sizeof(char_type));
@@ -302,7 +310,7 @@ public:
             }
 
             small_string_data(const small_string_data& val)
-                : base_data(json_type_tag::small_string_t), length_(val.length_)
+                : data_base(json_type_tag::small_string_t), length_(val.length_)
             {
                 std::memcpy(data_,val.data_,val.length_*sizeof(char_type));
                 data_[length_] = 0;
@@ -325,60 +333,41 @@ public:
         };
 
         // string_data
-        class string_data : public base_data
+        class string_data : public data_base
         {
-            typedef typename std::allocator_traits<Allocator>:: template rebind_alloc<string_storage_type> string_holder_allocator_type;
-            typedef typename std::allocator_traits<string_holder_allocator_type>::pointer pointer;
+            typedef typename detail::heap_only_string_factory<char_type, Allocator>::string_pointer pointer;
 
             pointer ptr_;
-
-            template <typename... Args>
-            void create(string_holder_allocator_type allocator, Args&& ... args)
-            {
-                typename std::allocator_traits<Allocator>:: template rebind_alloc<string_storage_type> alloc(allocator);
-                ptr_ = alloc.allocate(1);
-                try
-                {
-                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<string_storage_type>::construct(alloc, to_plain_pointer(ptr_), std::forward<Args>(args)...);
-                }
-                catch (...)
-                {
-                    alloc.deallocate(ptr_,1);
-                    throw;
-                }
-            }
         public:
             string_data(const string_data& val)
-                : base_data(json_type_tag::string_t)
+                : data_base(json_type_tag::string_t)
             {
-                create(val.ptr_->get_allocator(), *(val.ptr_));
+                ptr_ = detail::heap_only_string_factory<char_type,Allocator>::create(val.data(),val.length(),val.get_allocator());
             }
 
             string_data(string_data&& val)
-                : base_data(json_type_tag::string_t), ptr_(nullptr)
+                : data_base(json_type_tag::string_t), ptr_(nullptr)
             {
                 std::swap(val.ptr_,ptr_);
             }
 
             string_data(const string_data& val, const Allocator& a)
-                : base_data(json_type_tag::string_t)
+                : data_base(json_type_tag::string_t)
             {
-                create(string_holder_allocator_type(a), *(val.ptr_), a);
+                ptr_ = detail::heap_only_string_factory<char_type,Allocator>::create(val.data(),val.length(),a);
             }
 
             string_data(const char_type* data, size_t length, const Allocator& a)
-                : base_data(json_type_tag::string_t)
+                : data_base(json_type_tag::string_t)
             {
-                create(string_holder_allocator_type(a), data, length, a);
+                ptr_ = detail::heap_only_string_factory<char_type,Allocator>::create(data,length,a);
             }
 
             ~string_data()
             {
                 if (ptr_ != nullptr)
                 {
-                    typename std::allocator_traits<string_holder_allocator_type>:: template rebind_alloc<string_storage_type> alloc(ptr_->get_allocator());
-                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<string_storage_type>::destroy(alloc, to_plain_pointer(ptr_));
-                    alloc.deallocate(ptr_,1);
+                    detail::heap_only_string_factory<char_type,Allocator>::destroy(ptr_);
                 }
             }
 
@@ -409,7 +398,7 @@ public:
         };
 
         // byte_string_data
-        class byte_string_data: public base_data
+        class byte_string_data: public data_base
         {
             typedef typename std::allocator_traits<Allocator>:: template rebind_alloc<byte_string_storage_type> string_holder_allocator_type;
             typedef typename std::allocator_traits<string_holder_allocator_type>::pointer pointer;
@@ -423,7 +412,7 @@ public:
                 ptr_ = alloc.allocate(1);
                 try
                 {
-                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<byte_string_storage_type>::construct(alloc, to_plain_pointer(ptr_), std::forward<Args>(args)...);
+                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<byte_string_storage_type>::construct(alloc, detail::to_plain_pointer(ptr_), std::forward<Args>(args)...);
                 }
                 catch (...)
                 {
@@ -433,25 +422,25 @@ public:
             }
         public:
             byte_string_data(const byte_string_data& val)
-                : base_data(json_type_tag::byte_string_t)
+                : data_base(json_type_tag::byte_string_t)
             {
                 create(val.ptr_->get_allocator(), *(val.ptr_));
             }
 
             byte_string_data(byte_string_data&& val)
-                : base_data(json_type_tag::byte_string_t), ptr_(nullptr)
+                : data_base(json_type_tag::byte_string_t), ptr_(nullptr)
             {
                 std::swap(val.ptr_,ptr_);
             }
 
             byte_string_data(const byte_string_data& val, const Allocator& a)
-                : base_data(json_type_tag::byte_string_t)
+                : data_base(json_type_tag::byte_string_t)
             {
                 create(string_holder_allocator_type(a), *(val.ptr_), a);
             }
 
             byte_string_data(const uint8_t* data, size_t length, const Allocator& a)
-                : base_data(json_type_tag::byte_string_t)
+                : data_base(json_type_tag::byte_string_t)
             {
                 create(string_holder_allocator_type(a), data, data+length, a);
             }
@@ -461,7 +450,7 @@ public:
                 if (ptr_ != nullptr)
                 {
                     typename std::allocator_traits<string_holder_allocator_type>:: template rebind_alloc<byte_string_storage_type> alloc(ptr_->get_allocator());
-                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<byte_string_storage_type>::destroy(alloc, to_plain_pointer(ptr_));
+                    std::allocator_traits<string_holder_allocator_type>:: template rebind_traits<byte_string_storage_type>::destroy(alloc, detail::to_plain_pointer(ptr_));
                     alloc.deallocate(ptr_,1);
                 }
             }
@@ -488,7 +477,7 @@ public:
         };
 
         // array_data
-        class array_data : public base_data
+        class array_data : public data_base
         {
             typedef typename std::allocator_traits<array_allocator>::pointer pointer;
             pointer ptr_;
@@ -500,7 +489,7 @@ public:
                 ptr_ = alloc.allocate(1);
                 try
                 {
-                    std::allocator_traits<array_allocator>:: template rebind_traits<array>::construct(alloc, to_plain_pointer(ptr_), std::forward<Args>(args)...);
+                    std::allocator_traits<array_allocator>:: template rebind_traits<array>::construct(alloc, detail::to_plain_pointer(ptr_), std::forward<Args>(args)...);
                 }
                 catch (...)
                 {
@@ -510,31 +499,31 @@ public:
             }
         public:
             array_data(const array& val)
-                : base_data(json_type_tag::array_t)
+                : data_base(json_type_tag::array_t)
             {
                 create(val.get_allocator(), val);
             }
 
             array_data(const array& val, const Allocator& a)
-                : base_data(json_type_tag::array_t)
+                : data_base(json_type_tag::array_t)
             {
                 create(array_allocator(a), val, a);
             }
 
             array_data(const array_data& val)
-                : base_data(json_type_tag::array_t)
+                : data_base(json_type_tag::array_t)
             {
                 create(val.ptr_->get_allocator(), *(val.ptr_));
             }
 
             array_data(array_data&& val)
-                : base_data(json_type_tag::array_t), ptr_(nullptr)
+                : data_base(json_type_tag::array_t), ptr_(nullptr)
             {
                 std::swap(val.ptr_, ptr_);
             }
 
             array_data(const array_data& val, const Allocator& a)
-                : base_data(json_type_tag::array_t)
+                : data_base(json_type_tag::array_t)
             {
                 create(array_allocator(a), *(val.ptr_), a);
             }
@@ -543,7 +532,7 @@ public:
                 if (ptr_ != nullptr)
                 {
                     typename std::allocator_traits<array_allocator>:: template rebind_alloc<array> alloc(ptr_->get_allocator());
-                    std::allocator_traits<array_allocator>:: template rebind_traits<array>::destroy(alloc, to_plain_pointer(ptr_));
+                    std::allocator_traits<array_allocator>:: template rebind_traits<array>::destroy(alloc, detail::to_plain_pointer(ptr_));
                     alloc.deallocate(ptr_,1);
                 }
             }
@@ -570,7 +559,7 @@ public:
         };
 
         // object_data
-        class object_data : public base_data
+        class object_data : public data_base
         {
             typedef typename std::allocator_traits<object_allocator>::pointer pointer;
             pointer ptr_;
@@ -582,7 +571,7 @@ public:
                 ptr_ = alloc.allocate(1);
                 try
                 {
-                    std::allocator_traits<object_allocator>:: template rebind_traits<object>::construct(alloc, to_plain_pointer(ptr_), std::forward<Args>(args)...);
+                    std::allocator_traits<object_allocator>:: template rebind_traits<object>::construct(alloc, detail::to_plain_pointer(ptr_), std::forward<Args>(args)...);
                 }
                 catch (...)
                 {
@@ -592,37 +581,37 @@ public:
             }
         public:
             explicit object_data(const Allocator& a)
-                : base_data(json_type_tag::object_t)
+                : data_base(json_type_tag::object_t)
             {
                 create(a,a);
             }
 
             explicit object_data(const object& val)
-                : base_data(json_type_tag::object_t)
+                : data_base(json_type_tag::object_t)
             {
                 create(val.get_allocator(), val);
             }
 
             explicit object_data(const object& val, const Allocator& a)
-                : base_data(json_type_tag::object_t)
+                : data_base(json_type_tag::object_t)
             {
                 create(object_allocator(a), val, a);
             }
 
             explicit object_data(const object_data& val)
-                : base_data(json_type_tag::object_t)
+                : data_base(json_type_tag::object_t)
             {
                 create(val.ptr_->get_allocator(), *(val.ptr_));
             }
 
             explicit object_data(object_data&& val)
-                : base_data(json_type_tag::object_t), ptr_(nullptr)
+                : data_base(json_type_tag::object_t), ptr_(nullptr)
             {
                 std::swap(val.ptr_,ptr_);
             }
 
             explicit object_data(const object_data& val, const Allocator& a)
-                : base_data(json_type_tag::object_t)
+                : data_base(json_type_tag::object_t)
             {
                 create(object_allocator(a), *(val.ptr_), a);
             }
@@ -632,7 +621,7 @@ public:
                 if (ptr_ != nullptr)
                 {
                     typename std::allocator_traits<Allocator>:: template rebind_alloc<object> alloc(ptr_->get_allocator());
-                    std::allocator_traits<Allocator>:: template rebind_traits<object>::destroy(alloc, to_plain_pointer(ptr_));
+                    std::allocator_traits<Allocator>:: template rebind_traits<object>::destroy(alloc, detail::to_plain_pointer(ptr_));
                     alloc.deallocate(ptr_,1);
                 }
             }
@@ -719,11 +708,11 @@ public:
         }
         variant(double val)
         {
-            new(reinterpret_cast<void*>(&data_))double_data(val,0,0);
+            new(reinterpret_cast<void*>(&data_))double_data(val);
         }
-        variant(double val, uint8_t precision, uint8_t decimal_places)
+        variant(double val, const number_format& fmt)
         {
-            new(reinterpret_cast<void*>(&data_))double_data(val, precision, decimal_places);
+            new(reinterpret_cast<void*>(&data_))double_data(val, fmt);
         }
         variant(const char_type* s, size_t length)
         {
@@ -887,7 +876,7 @@ public:
 
         json_type_tag type_id() const
         {
-            return reinterpret_cast<const base_data*>(&data_)->type_id_;
+            return reinterpret_cast<const data_base*>(&data_)->type_id_;
         }
 
         const null_data* null_data_cast() const
@@ -2920,8 +2909,8 @@ public:
     {
     }
 
-    basic_json(double val, uint8_t precision, uint8_t decimal_places)
-        : var_(val, precision, decimal_places)
+    basic_json(double val, const number_format& fmt)
+        : var_(val, fmt)
     {
     }
 
@@ -2963,7 +2952,10 @@ public:
 
     basic_json& operator=(const basic_json& rhs)
     {
-        var_ = rhs.var_;
+        if (this != &rhs)
+        {
+            var_ = rhs.var_;
+        }
         return *this;
     }
 
@@ -3048,7 +3040,7 @@ public:
     template <class SAllocator>
     void dump(std::basic_string<char_type,char_traits_type,SAllocator>& s) const
     {
-        basic_json_serializer<char_type,string_writer<char_type>> serializer(s);
+        basic_json_serializer<char_type,detail::string_writer<char_type>> serializer(s);
         dump(serializer);
     }
 
@@ -3056,7 +3048,7 @@ public:
     void dump(std::basic_string<char_type,char_traits_type,SAllocator>& s,
               const basic_serialization_options<char_type>& options) const
     {
-        basic_json_serializer<char_type,string_writer<char_type>> serializer(s, options);
+        basic_json_serializer<char_type,detail::string_writer<char_type>> serializer(s, options);
         dump(serializer);
     }
 
@@ -3078,7 +3070,7 @@ public:
             handler.byte_string_value(var_.byte_string_data_cast()->data(), var_.byte_string_data_cast()->length());
             break;
         case json_type_tag::double_t:
-            handler.double_value(var_.double_data_cast()->value(), var_.double_data_cast()->precision(), var_.double_data_cast()->decimal_places());
+            handler.double_value(var_.double_data_cast()->value(), number_format(var_.double_data_cast()->precision(), var_.double_data_cast()->decimal_places()));
             break;
         case json_type_tag::integer_t:
             handler.integer_value(var_.integer_data_cast()->value());
@@ -3157,7 +3149,7 @@ public:
     string_type to_string(const char_allocator_type& allocator=char_allocator_type()) const JSONCONS_NOEXCEPT
     {
         string_type s(allocator);
-        basic_json_serializer<char_type,string_writer<char_type>> serializer(s);
+        basic_json_serializer<char_type,detail::string_writer<char_type>> serializer(s);
         dump_fragment(serializer);
         return s;
     }
@@ -3166,7 +3158,7 @@ public:
                           const char_allocator_type& allocator=char_allocator_type()) const
     {
         string_type s(allocator);
-        basic_json_serializer<char_type,string_writer<char_type>> serializer(s,options);
+        basic_json_serializer<char_type,detail::string_writer<char_type>> serializer(s,options);
         dump_fragment(serializer);
         return s;
     }
@@ -4361,12 +4353,12 @@ public:
 
     static basic_json from_floating_point(double val)
     {
-        return basic_json(variant(val, 0, 0));
+        return basic_json(variant(val));
     }
 
     static basic_json from_floating_point(double val, allocator_type)
     {
-        return basic_json(variant(val,0));
+        return basic_json(variant(val));
     }
 
     static basic_json from_bool(bool val)

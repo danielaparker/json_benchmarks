@@ -20,11 +20,12 @@
 #include <jsoncons/jsoncons_utilities.hpp>
 #include <jsoncons/serialization_options.hpp>
 #include <jsoncons/json_output_handler.hpp>
-#include <jsoncons/detail/type_traits_helper.hpp>
+#include <jsoncons/detail/writers.hpp>
+#include <jsoncons/detail/number_printers.hpp>
 
 namespace jsoncons {
 
-template<class CharT,class Writer=ostream_buffered_writer<CharT>>
+template<class CharT,class Writer=detail::ostream_buffered_writer<CharT>>
 class basic_json_serializer : public basic_json_output_handler<CharT>
 {
 public:
@@ -86,7 +87,7 @@ private:
     std::vector<stack_item> stack_;
     int indent_;
     bool indenting_;
-    print_double fp_;
+    detail::print_double fp_;
     Writer writer_;
 
     // Noncopyable and nonmoveable
@@ -432,7 +433,7 @@ private:
         do_string_value(s);
     }
 
-    void do_double_value(double value, uint8_t precision, uint8_t decimal_places) override
+    void do_double_value(double value, const number_format& fmt) override
     {
         if (!stack_.empty() && !stack_.back().is_object())
         {
@@ -453,7 +454,7 @@ private:
         }
         else
         {
-            fp_(value,precision, writer_);
+            fp_(value, fmt.precision(), writer_);
         }
 
         end_value();
@@ -465,7 +466,7 @@ private:
         {
             begin_scalar_value();
         }
-        print_integer(value, writer_);
+        detail::print_integer(value, writer_);
         end_value();
     }
 
@@ -475,7 +476,7 @@ private:
         {
             begin_scalar_value();
         }
-        print_uinteger(value, writer_);
+        detail::print_uinteger(value, writer_);
         end_value();
     }
 
@@ -577,8 +578,8 @@ private:
     }
 };
 
-typedef basic_json_serializer<char,ostream_buffered_writer<char>> json_serializer;
-typedef basic_json_serializer<wchar_t, ostream_buffered_writer<wchar_t>> wjson_serializer;
+typedef basic_json_serializer<char,detail::ostream_buffered_writer<char>> json_serializer;
+typedef basic_json_serializer<wchar_t, detail::ostream_buffered_writer<wchar_t>> wjson_serializer;
 
 }
 #endif

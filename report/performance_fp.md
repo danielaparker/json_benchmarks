@@ -14,9 +14,9 @@ Compiler|Visual Studio 2015
 
 Library|Version
 ---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|master20180126
-[nlohmann](https://github.com/nlohmann/json)|3.0.1
+[jsoncons](https://github.com/danielaparker/jsoncons)|master20180206
 [cJSON](https://github.com/DaveGamble/cJSON)|1.7.1
+[nlohmann](https://github.com/nlohmann/json)|3.0.1
 [json11](https://github.com/dropbox/json11)|master 20161125
 [rapidjson](https://github.com/miloyip/rapidjson)|1.1.0
 [jsoncpp](https://github.com/open-source-parsers/jsoncpp)|1.7.7
@@ -25,12 +25,12 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|15.631|24.693|1056|
-[nlohmann](https://github.com/nlohmann/json)|19.172|31.059|1236|
-[cjson](https://github.com/DaveGamble/cJSON)|15.539|45.32|5713|
-[json11](https://github.com/dropbox/json11)|18.34|32.205|4812|
-[rapidjson](https://github.com/miloyip/rapidjson)|3.281|5.284|1099|
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|43.431|48.246|6164|
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|213.737|62.868|2703|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|2.484|42.004|1634|No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|15.011|25.643|1057|
+[cjson](https://github.com/DaveGamble/cJSON)|16.961|46.993|5713|
+[nlohmann](https://github.com/nlohmann/json)|21.253|31.605|1230|
+[json11](https://github.com/dropbox/json11)|18.813|33.992|4807|
+[rapidjson](https://github.com/miloyip/rapidjson)|3.729|5.694|1092|
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|46.899|50.288|6163|
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|227.238|65.434|2591|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|2.605|42.327|1634|No serialization function, using sample pretty-print code
 

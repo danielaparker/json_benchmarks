@@ -33,7 +33,7 @@ measurements measure_jsoncons(const std::string& input, std::string& output)
                 auto start = high_resolution_clock::now();
                 try
                 {
-                    root = jsoncons::json::parse(input);
+                    root = jsoncons::json::parse(input.data(),input.length());
                     auto end = high_resolution_clock::now();
                     time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 }

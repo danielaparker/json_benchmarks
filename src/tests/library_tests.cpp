@@ -35,14 +35,14 @@ namespace json_benchmarks {
     {
         std::vector<library_info> info;
 
-        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","master20180126", "With strict_parse_error_handler, uses wjson if utf16" });
-        info.push_back(library_info{"nlohmann","https://github.com/nlohmann/json","3.0.1", ""});
+        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","master20180206", "With strict_parse_error_handler, uses wjson if utf16" });
         info.push_back(library_info{"cJSON","https://github.com/DaveGamble/cJSON","1.7.1", ""});
+        info.push_back(library_info{"nlohmann","https://github.com/nlohmann/json","3.0.1", ""});
         info.push_back(library_info{"json11","https://github.com/dropbox/json11","master 20161125", ""});
-        info.push_back(library_info{"rapidjson","https://github.com/miloyip/rapidjson","1.1.0", ""});
-        info.push_back(library_info{"jsoncpp","https://github.com/open-source-parsers/jsoncpp","1.7.7", ""});
+        info.push_back(library_info{"rapidjson","https://github.com/miloyip/rapidjson","1.1.0", "Uses custom (non standard lib) floating point conversion"});
+        info.push_back(library_info{"jsoncpp","https://github.com/open-source-parsers/jsoncpp","1.7.7", "Uses map for both arrays and objects"});
         info.push_back(library_info{"json_spirit","http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented","4.08", ""});
-        info.push_back(library_info{"gason","https://github.com/vivkin/gason","master 20161107", ""});
+        info.push_back(library_info{"gason","https://github.com/vivkin/gason","master 20161107", "Uses naive floating point conversion, fast but inaccurate"});
 
         return info;
     }
@@ -53,7 +53,7 @@ namespace json_benchmarks {
 
         tests.push_back(measure_jsoncons(input, output));
         tests.push_back(measure_cjson(input, output));
-/*
+        /*
         tests.push_back(measure_nlohmann(input_filename, 
                                          (base / "persons-nlohmann.json").string().c_str()));
 
@@ -67,7 +67,7 @@ namespace json_benchmarks {
         tests.push_back(measure_json_spirit(input_filename, (base / "persons-json_spirit.json").string().c_str()));
 
         tests.push_back(measure_gason(input_filename, (base / "persons-gason.json").string().c_str()));
-*/
+        */
         return tests;
     }
 
@@ -80,11 +80,12 @@ namespace json_benchmarks {
         tests.push_back(measure_jsoncons(input_filename, 
                                          (base / "persons-jsoncons.json").string().c_str()));
 
+        tests.push_back(measure_cjson(input_filename, 
+                                      (base / "persons-cjson.json").string().c_str()));
+
         tests.push_back(measure_nlohmann(input_filename, 
                                          (base / "persons-nlohmann.json").string().c_str()));
 
-        tests.push_back(measure_cjson(input_filename, 
-                                      (base / "persons-cjson.json").string().c_str()));
 
         tests.push_back(measure_json11(input_filename, (base / "persons-json11.json").string().c_str()));
 
@@ -105,9 +106,9 @@ namespace json_benchmarks {
 
         results.push_back(JsonTestSuite_jsoncons(pathnames));
 
-        results.push_back(JsonTestSuite_nlohmann(pathnames));
-
         results.push_back(JsonTestSuite_cjson(pathnames));
+
+        results.push_back(JsonTestSuite_nlohmann(pathnames));
 
         results.push_back(JsonTestSuite_json11(pathnames));
  

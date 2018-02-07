@@ -16,46 +16,6 @@
 
 namespace jsoncons {
 
-template<class Writer> 
-void print_integer(int64_t value, Writer& os)
-{
-    typedef typename Writer::char_type char_type;
-
-    char_type buf[255];
-    uint64_t u = (value < 0) ? static_cast<uint64_t>(-value) : static_cast<uint64_t>(value);
-    char_type* p = buf;
-    do
-    {
-        *p++ = static_cast<char_type>(48 + u%10);
-    }
-    while (u /= 10);
-    if (value < 0)
-    {
-        os.put('-');
-    }
-    while (--p >= buf)
-    {
-        os.put(*p);
-    }
-}
-
-template<class Writer>
-void print_uinteger(uint64_t value, Writer& os)
-{
-    typedef typename Writer::char_type char_type;
-
-    char_type buf[255];
-    char_type* p = buf;
-    do
-    {
-        *p++ = static_cast<char_type>(48 + value % 10);
-    } while (value /= 10);
-    while (--p >= buf)
-    {
-        os.put(*p);
-    }
-}
-
 template <class CharT>
 class basic_json_output_handler
 {
@@ -126,17 +86,17 @@ public:
 
     void double_value(double value) 
     {
-        do_double_value(value, 0, 0);
+        do_double_value(value, number_format());
     }
 
     void double_value(double value, uint8_t precision) 
     {
-        do_double_value(value, precision, 0);
+        do_double_value(value, number_format(precision, 0));
     }
 
-    void double_value(double value, uint8_t precision, uint8_t decimal_places) 
+    void double_value(double value, const number_format& fmt) 
     {
-        do_double_value(value, precision, decimal_places);
+        do_double_value(value, fmt);
     }
 
     void bool_value(bool value) 
@@ -239,7 +199,7 @@ private:
 
     virtual void do_byte_string_value(const uint8_t* data, size_t length) = 0;
 
-    virtual void do_double_value(double value, uint8_t precision, uint8_t decimal_places) = 0;
+    virtual void do_double_value(double value, const number_format& fmt) = 0;
 
     virtual void do_integer_value(int64_t value) = 0;
 
@@ -295,7 +255,7 @@ private:
     {
     }
 
-    void do_double_value(double, uint8_t, uint8_t) override
+    void do_double_value(double, const number_format&) override
     {
     }
 
