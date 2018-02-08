@@ -310,8 +310,8 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
     {
         library_tests tests;
         std::vector<result_code_info> result_code_infos;
-        result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
-        result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
+        result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
+        result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
         result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
         result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_succeeded,"Result undefined, parsing succeeded","#f7a8ff"});
         result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_failed,"Result undefined, parsing failed","#050f07"});
@@ -375,8 +375,8 @@ int main()
     //benchmarks_small_file();
 
     std::vector<result_code_info> result_code_infos;
-    result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
-    result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
+    result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
+    result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_succeeded,"Result undefined, parsing succeeded","#f7a8ff"});
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_failed,"Result undefined, parsing failed","#050f07"});
