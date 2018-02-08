@@ -11,6 +11,7 @@
 #include "cjson/cJSON.h"
 #include "measurements.hpp"
 #include "memory_measurer.hpp"
+#include "library_tests.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -20,7 +21,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[cjson](https://github.com/DaveGamble/cJSON)";
 
-measurements measure_cjson(const std::string& input, std::string& output)
+measurements cjson_benchmarks::measure(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -66,8 +67,7 @@ measurements measure_cjson(const std::string& input, std::string& output)
     return results;
 }
 
-measurements measure_cjson(const char *input_filename,
-                           const char* output_filename)
+measurements cjson_benchmarks::measure(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -134,7 +134,7 @@ measurements measure_cjson(const char *input_filename,
     return results;
 }
 
-std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> cjson_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

@@ -11,6 +11,7 @@
 #include <boost/filesystem.hpp>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
+#include "library_tests.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -23,7 +24,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
 
-measurements measure_rapidjson(const std::string& input, std::string& output)
+measurements rapidjson_benchmarks::measure(const std::string& input, std::string& output)
 {
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
@@ -70,7 +71,7 @@ measurements measure_rapidjson(const std::string& input, std::string& output)
     return results;
 }
 
-measurements measure_rapidjson(const char *input_filename, const char* output_filename)
+measurements rapidjson_benchmarks::measure(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
@@ -128,6 +129,7 @@ measurements measure_rapidjson(const char *input_filename, const char* output_fi
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
+    results.remarks = "Uses custom floating point conversion";
     return results;
 }
 
@@ -140,7 +142,7 @@ void print(FILE* fp, const Value& val)
     fws.Flush();
 }
 
-std::vector<test_suite_result> JsonTestSuite_rapidjson(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

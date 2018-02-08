@@ -7,6 +7,7 @@
 #include <signal.h>
 #endif
 #include "gason.h"
+#include "library_tests.hpp"
 
 const int SHIFT_WIDTH = 4;
 

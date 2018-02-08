@@ -7,6 +7,7 @@
 #include <codecvt>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
+#include "library_tests.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -18,7 +19,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
 
-measurements measure_jsoncons(const std::string& input, std::string& output)
+measurements jsoncons_benchmarks::measure(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -62,7 +63,7 @@ measurements measure_jsoncons(const std::string& input, std::string& output)
     return results;
 }
 
-measurements measure_jsoncons(const char *input_filename, const char* output_filename)
+measurements jsoncons_benchmarks::measure(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -109,7 +110,7 @@ measurements measure_jsoncons(const char *input_filename, const char* output_fil
     return results;
 }
 
-std::vector<test_suite_result> JsonTestSuite_jsoncons(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

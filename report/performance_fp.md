@@ -25,12 +25,12 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|15.011|25.643|1057|
-[cjson](https://github.com/DaveGamble/cJSON)|16.961|46.993|5713|
-[nlohmann](https://github.com/nlohmann/json)|21.253|31.605|1230|
-[json11](https://github.com/dropbox/json11)|18.813|33.992|4807|
-[rapidjson](https://github.com/miloyip/rapidjson)|3.729|5.694|1092|
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|46.899|50.288|6163|
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|227.238|65.434|2591|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|2.605|42.327|1634|No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|15.254|25.913|1057|
+[cjson](https://github.com/DaveGamble/cJSON)|17.412|46.747|5713|
+[nlohmann](https://github.com/nlohmann/json)|21.575|31.839|1230|
+[json11](https://github.com/dropbox/json11)|18.637|33.788|4809|Uses pimpl idiom, implementation uses virtual inheritance
+[rapidjson](https://github.com/miloyip/rapidjson)|3.454|6.335|1099|Uses custom floating point conversion
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|47.63|50.202|6163|Uses std::map for both arrays and objects
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|223.9|66.028|2749|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|2.73|44.464|1635|Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code
 

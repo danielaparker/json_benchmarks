@@ -6,10 +6,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include <sstream>
 #include <boost/filesystem.hpp>
 #include "gason.h"
 #include "measurements.hpp"
 #include "memory_measurer.hpp"
+#include "library_tests.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -21,7 +23,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[gason](https://github.com/vivkin/gason)";
 
-measurements measure_gason(const char *input_filename,const char* output_filename)
+measurements gason_benchmarks::measure(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -33,7 +35,62 @@ measurements measure_gason(const char *input_filename,const char* output_filenam
 
         JsonValue root;
         JsonAllocator allocator;
-        std::vector<char> buffer;
+        std::string buffer(input.data(),input.length());
+        {
+            try
+            {
+                auto start = high_resolution_clock::now();
+                char *endptr;
+                int result = jsonParse(&buffer[0], &endptr, &root, allocator);
+                auto end = high_resolution_clock::now();
+                time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                exit(1);
+            }
+        }
+        end_memory_used =  memory_measurer::get_process_memory();
+        {
+            auto start = high_resolution_clock::now();
+            std::ostringstream os;
+            
+            std::string s;
+            s.resize(input.size()*4);
+            freopen("/dev/null","w", stdout);
+            setvbuf(stdout, &s[0],_IOFBF,s.size());
+
+            dumpValue(root);
+            output = os.str();
+            auto end = high_resolution_clock::now();
+            time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        }
+    }
+    size_t final_memory_used = memory_measurer::get_process_memory();
+    
+    measurements results;
+    results.library_name = library_name;
+    results.memory_used = (end_memory_used - start_memory_used);
+    results.time_to_read = time_to_read;
+    results.time_to_write = time_to_write;
+    results.remarks = "Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code";
+    return results;
+}
+
+measurements gason_benchmarks::measure(const char *input_filename,const char* output_filename)
+{
+    size_t start_memory_used;
+    size_t end_memory_used;
+    size_t time_to_read;
+    size_t time_to_write;
+
+    {
+        start_memory_used =  memory_measurer::get_process_memory();
+
+        JsonValue root;
+        JsonAllocator allocator;
+        std::string buffer;
         {
             try
             {
@@ -47,10 +104,10 @@ measurements measure_gason(const char *input_filename,const char* output_filenam
                 size_t size = ftell(fp);
                 fseek(fp, 0, SEEK_SET);
                 buffer.resize(size);
-                fread(buffer.data(), 1, size, fp);
+                fread(&buffer[0], 1, size, fp);
                 fclose(fp);
                 char *endptr;
-                int result = jsonParse(buffer.data(), &endptr, &root, allocator);
+                int result = jsonParse(&buffer[0], &endptr, &root, allocator);
                 auto end = high_resolution_clock::now();
                 time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             }
@@ -78,11 +135,11 @@ measurements measure_gason(const char *input_filename,const char* output_filenam
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "No serialization function, using sample pretty-print code";
+    results.remarks = "Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code";
     return results;
 }
 
-std::vector<test_suite_result> JsonTestSuite_gason(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> gason_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

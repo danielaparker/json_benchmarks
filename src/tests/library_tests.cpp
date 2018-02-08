@@ -5,32 +5,6 @@
 
 namespace json_benchmarks {
 
-    measurements measure_jsoncons(const char *input_filename, const char *output_filename);
-    measurements measure_jsoncons(const std::string& input, std::string& output);
-    std::vector<test_suite_result> JsonTestSuite_jsoncons(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_rapidjson(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_rapidjson(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_nlohmann(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_nlohmann(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_cjson(const char *input_filename, const char *output_filename);
-    measurements measure_cjson(const std::string& input, std::string& output);
-    std::vector<test_suite_result> JsonTestSuite_cjson(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_jsoncpp(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_jsoncpp(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_json_spirit(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_json_spirit(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_gason(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_gason(std::vector<test_suite_file>& pathnames);
-
-    measurements measure_json11(const char *input_filename, const char *output_filename);
-    std::vector<test_suite_result> JsonTestSuite_json11(std::vector<test_suite_file>& pathnames);
-
     std::vector<library_info> library_tests::get_library_info() 
     {
         std::vector<library_info> info;
@@ -51,23 +25,15 @@ namespace json_benchmarks {
     {
         std::vector<measurements> tests;
 
-        tests.push_back(measure_jsoncons(input, output));
-        tests.push_back(measure_cjson(input, output));
-        /*
-        tests.push_back(measure_nlohmann(input_filename, 
-                                         (base / "persons-nlohmann.json").string().c_str()));
+        tests.push_back(jsoncons_benchmarks::measure(input, output));
+        tests.push_back(cjson_benchmarks::measure(input, output));
+        tests.push_back(nlohmann_benchmarks::measure(input, output));
+        tests.push_back(json11_benchmarks::measure(input, output));
+        tests.push_back(rapidjson_benchmarks::measure(input, output));
+        tests.push_back(jsoncpp_benchmarks::measure(input, output));
+        tests.push_back(json_spirit_benchmarks::measure(input, output));
+        tests.push_back(gason_benchmarks::measure(input, output));
 
-
-        tests.push_back(measure_json11(input_filename, (base / "persons-json11.json").string().c_str()));
-
-        tests.push_back(measure_rapidjson(input_filename, (base / "persons-rapidjson.json").string().c_str()));
-
-        tests.push_back(measure_jsoncpp(input_filename, (base / "persons-jsoncpp.json").string().c_str()));
-
-        tests.push_back(measure_json_spirit(input_filename, (base / "persons-json_spirit.json").string().c_str()));
-
-        tests.push_back(measure_gason(input_filename, (base / "persons-gason.json").string().c_str()));
-        */
         return tests;
     }
 
@@ -77,25 +43,25 @@ namespace json_benchmarks {
 
         std::vector<measurements> tests;
 
-        tests.push_back(measure_jsoncons(input_filename, 
+        tests.push_back(jsoncons_benchmarks::measure(input_filename, 
                                          (base / "persons-jsoncons.json").string().c_str()));
 
-        tests.push_back(measure_cjson(input_filename, 
+        tests.push_back(cjson_benchmarks::measure(input_filename, 
                                       (base / "persons-cjson.json").string().c_str()));
 
-        tests.push_back(measure_nlohmann(input_filename, 
+        tests.push_back(nlohmann_benchmarks::measure(input_filename, 
                                          (base / "persons-nlohmann.json").string().c_str()));
 
 
-        tests.push_back(measure_json11(input_filename, (base / "persons-json11.json").string().c_str()));
+        tests.push_back(json11_benchmarks::measure(input_filename, (base / "persons-json11.json").string().c_str()));
 
-        tests.push_back(measure_rapidjson(input_filename, (base / "persons-rapidjson.json").string().c_str()));
+        tests.push_back(rapidjson_benchmarks::measure(input_filename, (base / "persons-rapidjson.json").string().c_str()));
 
-        tests.push_back(measure_jsoncpp(input_filename, (base / "persons-jsoncpp.json").string().c_str()));
+        tests.push_back(jsoncpp_benchmarks::measure(input_filename, (base / "persons-jsoncpp.json").string().c_str()));
 
-        tests.push_back(measure_json_spirit(input_filename, (base / "persons-json_spirit.json").string().c_str()));
+        tests.push_back(json_spirit_benchmarks::measure(input_filename, (base / "persons-json_spirit.json").string().c_str()));
 
-        tests.push_back(measure_gason(input_filename, (base / "persons-gason.json").string().c_str()));
+        tests.push_back(gason_benchmarks::measure(input_filename, (base / "persons-gason.json").string().c_str()));
 
         return tests;
     }
@@ -104,21 +70,21 @@ namespace json_benchmarks {
     {
         std::vector<std::vector<test_suite_result>> results;
 
-        results.push_back(JsonTestSuite_jsoncons(pathnames));
+        results.push_back(jsoncons_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_cjson(pathnames));
+        results.push_back(cjson_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_nlohmann(pathnames));
+        results.push_back(nlohmann_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_json11(pathnames));
+        results.push_back(json11_benchmarks::run_test_suite(pathnames));
  
-        results.push_back(JsonTestSuite_rapidjson(pathnames));
+        results.push_back(rapidjson_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_jsoncpp(pathnames));
+        results.push_back(jsoncpp_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_json_spirit(pathnames));
+        results.push_back(json_spirit_benchmarks::run_test_suite(pathnames));
 
-        results.push_back(JsonTestSuite_gason(pathnames));
+        results.push_back(gason_benchmarks::run_test_suite(pathnames));
 
         return results;
     }
