@@ -6,6 +6,7 @@
 #include <string>
 #include "json_parsing_report_generator.hpp"
 #include "data_generator.hpp"
+#include "jsoncons/json.hpp"
 
 using namespace json_benchmarks;
 
@@ -23,11 +24,14 @@ void benchmarks_small_file()
             file_size = in.tellg(); 
         }
         std::string input;
-        input.resize(file_size);
+        input.reserve(file_size);
         std::string output;
         {
             std::ifstream in(filename, std::ifstream::binary);
-            in.read(&input[0], file_size);
+            //in.read(&input[0], file_size);
+            jsoncons::json j = jsoncons::json::parse(in);
+            j.dump(input);
+            std::cout << input << std::endl;
         }
         //std::cout << input << std::endl;
         output.reserve(input.size()*2);
@@ -367,10 +371,10 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 int main()
 {
     //benchmarks();
-    benchmarks_fp();
+    //benchmarks_fp();
     //benchmarks_small_file();
 
-    /*std::vector<result_code_info> result_code_infos;
+    std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
@@ -382,7 +386,7 @@ int main()
     json_parsing_report_generator generator("Parser Comparisons", result_code_infos, library_tests::get_library_info(),fs);
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
-    generator.generate();*/
+    generator.generate();
 
 }
 

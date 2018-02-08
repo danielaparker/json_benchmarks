@@ -32,7 +32,7 @@ namespace json_benchmarks {
         tests.push_back(rapidjson_benchmarks::measure(input, output));
         tests.push_back(jsoncpp_benchmarks::measure(input, output));
         tests.push_back(json_spirit_benchmarks::measure(input, output));
-        tests.push_back(gason_benchmarks::measure(input, output));
+        //tests.push_back(gason_benchmarks::measure(input, output));
 
         return tests;
     }

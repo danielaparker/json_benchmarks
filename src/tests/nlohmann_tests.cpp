@@ -32,9 +32,9 @@ measurements nlohmann_benchmarks::measure(const std::string& input, std::string&
                 auto start = high_resolution_clock::now();
                 try
                 {
-                    root = input;
+                    root = nlohmann::json::parse(input);
                     auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                    time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 }
                 catch (const std::exception& e)
                 {
@@ -47,7 +47,7 @@ measurements nlohmann_benchmarks::measure(const std::string& input, std::string&
                 auto start = high_resolution_clock::now();
                 output = root.dump();
                 auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
             }
         }
     }

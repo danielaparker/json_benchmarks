@@ -42,7 +42,7 @@ measurements json11_benchmarks::measure(const std::string& input, std::string& o
             }
 
             auto end = high_resolution_clock::now();
-            time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
         end_memory_used =  memory_measurer::get_process_memory();
         {
@@ -51,7 +51,7 @@ measurements json11_benchmarks::measure(const std::string& input, std::string& o
             val.dump(output);
 
             auto end = high_resolution_clock::now();
-            time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
     }
     size_t final_memory_used = memory_measurer::get_process_memory();

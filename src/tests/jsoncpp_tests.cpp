@@ -39,7 +39,7 @@ measurements jsoncpp_benchmarks::measure(const std::string& input, std::string& 
                     std::cerr << "jsoncpp failed." << std::endl;
                 }
                 auto end = high_resolution_clock::now();
-                time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
             }
             catch (const std::exception& e)
             {
@@ -56,7 +56,7 @@ measurements jsoncpp_benchmarks::measure(const std::string& input, std::string& 
             output = os.str();
 
             auto end = high_resolution_clock::now();
-            time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
     }
     size_t final_memory_used = memory_measurer::get_process_memory();

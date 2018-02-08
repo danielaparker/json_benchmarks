@@ -50,10 +50,13 @@ measurements rapidjson_benchmarks::measure(const std::string& input, std::string
         {
             try
             {
+                auto start = high_resolution_clock::now();
                 rapidjson::StringBuffer buffer;
                 rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
                 d.Accept(writer);
                 output = buffer.GetString();
+                auto end = high_resolution_clock::now();
+                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
             }
             catch (const std::exception& e)
             {

@@ -38,7 +38,7 @@ measurements json_spirit_benchmarks::measure(const std::string& input, std::stri
                 {
                     read_string(input, root);
                     auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                    time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 }
                 catch (const std::exception & e)
                 {
@@ -54,7 +54,7 @@ measurements json_spirit_benchmarks::measure(const std::string& input, std::stri
             write_stream(root,os);
             output = os.str();
             auto end = high_resolution_clock::now();
-            time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
     }
     size_t final_memory_used = memory_measurer::get_process_memory();
