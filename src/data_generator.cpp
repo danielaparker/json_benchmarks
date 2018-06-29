@@ -1,4 +1,5 @@
 #include <chrono>
+#include <sstream>
 #include "jsoncons/json_serializer.hpp"
 
 using std::chrono::high_resolution_clock;
@@ -10,7 +11,9 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
     std::ofstream os(filename, std::ofstream::binary | std::ios_base::out| std::ios_base::trunc);
     if (os.bad() || !os.is_open())
     {
-        throw jsoncons::json_exception_1<std::exception>("Cannot open file %s", std::string(filename));
+        std::ostringstream os;
+        os << "Cannot open file %s" << filename;
+        throw std::runtime_error(os.str().c_str());
     }
 
     jsoncons::serialization_options options;
@@ -44,33 +47,33 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         handler.name("person");
         handler.begin_object();
         handler.name("first_name");
-        handler.value("John");
+        handler.string_value("John");
         handler.name("last_name"   );
-        handler.value("Doe");
+        handler.string_value("Doe");
         handler.name("birthdate");
-        handler.value("1998-05-13");
+        handler.string_value("1998-05-13");
         handler.name("sex");
-        handler.value("m");
+        handler.string_value("m");
         handler.name("salary");
-        handler.value(70000);
+        handler.uinteger_value(70000);
         handler.name("married");
-        handler.value(false);
+        handler.bool_value(false);
         handler.name("interests");
         handler.begin_array();
-        handler.value("Reading");
-        handler.value("Mountain biking");
-        handler.value("Hacking");
+        handler.string_value("Reading");
+        handler.string_value("Mountain biking");
+        handler.string_value("Hacking");
         handler.end_array();
         handler.name("favorites");
         handler.begin_object();
         handler.name("color");
-        handler.value("blue");
+        handler.string_value("blue");
         handler.name("sport");
-        handler.value("soccer");
+        handler.string_value("soccer");
         handler.name("food");
-        handler.value("spaghetti");
+        handler.string_value("spaghetti");
         handler.name("big_text");
-        handler.value(big_text);
+        handler.string_value(big_text);
         handler.name("integer_values");
         handler.begin_array();
         for (auto x : integer_values)
@@ -96,33 +99,33 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         handler.name("person");
         handler.begin_object();
         handler.name("first_name");
-        handler.value("jane");
+        handler.string_value("jane");
         handler.name("last_name"   );
-        handler.value("doe");
+        handler.string_value("doe");
         handler.name("birthdate");
-        handler.value("1998-05-13");
+        handler.string_value("1998-05-13");
         handler.name("sex");
-        handler.value("f");
+        handler.string_value("f");
         handler.name("salary");
-        handler.value(80000);
+        handler.uinteger_value(80000);
         handler.name("married");
-        handler.value(true);
+        handler.bool_value(true);
         handler.name("pets");
-        handler.value(jsoncons::null_type());
+        handler.null_value();
         handler.name("interests");
         handler.begin_array();
-        handler.value("Skiing");
-        handler.value("Hiking");
-        handler.value("Camoing");
+        handler.string_value("Skiing");
+        handler.string_value("Hiking");
+        handler.string_value("Camoing");
         handler.end_array();
         handler.name("favorites");
         handler.begin_object();
         handler.name("color");
-        handler.value("Red");
+        handler.string_value("Red");
         handler.name("sport");
-        handler.value("skiing");
+        handler.string_value("skiing");
         handler.name("food");
-        handler.value("risotto");
+        handler.string_value("risotto");
         handler.end_object();
 
         handler.end_object();

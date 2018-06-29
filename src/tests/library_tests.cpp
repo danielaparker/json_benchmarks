@@ -9,7 +9,7 @@ namespace json_benchmarks {
     {
         std::vector<library_info> info;
 
-        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","master20180206", "With strict_parse_error_handler, uses wjson if utf16" });
+        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","master20180629", "With strict_parse_error_handler, uses wjson if utf16" });
         info.push_back(library_info{"cJSON","https://github.com/DaveGamble/cJSON","1.7.1", ""});
         info.push_back(library_info{"nlohmann","https://github.com/nlohmann/json","3.0.1", ""});
         info.push_back(library_info{"json11","https://github.com/dropbox/json11","master 20161125", ""});
@@ -32,7 +32,7 @@ namespace json_benchmarks {
         tests.push_back(rapidjson_benchmarks::measure(input, output));
         tests.push_back(jsoncpp_benchmarks::measure(input, output));
         tests.push_back(json_spirit_benchmarks::measure(input, output));
-        //tests.push_back(gason_benchmarks::measure(input, output));
+        tests.push_back(gason_benchmarks::measure(input, output));
 
         return tests;
     }

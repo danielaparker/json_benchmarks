@@ -10,9 +10,8 @@ int main(int argc, char *argv[])
     }
     try
     {
-        nlohmann::json val;
         std::ifstream is(argv[1]);
-        is >> val;
+        nlohmann::json val = nlohmann::json::parse(is);
         return 0;
     }
     catch (const std::exception&)

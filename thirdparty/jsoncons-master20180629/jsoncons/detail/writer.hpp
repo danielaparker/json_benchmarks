@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <exception>
 #include <jsoncons/jsoncons_config.hpp>
+#include <jsoncons/detail/type_traits_helper.hpp>
 
 namespace jsoncons { namespace detail {
 
@@ -82,11 +83,6 @@ public:
         }
     }
 
-    void write(const std::basic_string<CharT>& s)
-    {
-        write(s.data(),s.length());
-    }
-
     void put(CharT ch)
     {
         if (p_ < end_buffer_)
@@ -136,9 +132,38 @@ public:
         s_.append(s,length);
     }
 
-    void write(const std::basic_string<CharT>& s)
+    void put(CharT ch)
     {
-        s_.append(s.data(),s.length());
+        s_.push_back(ch);
+    }
+};
+
+template <class CharT>
+class bytes_writer 
+{
+public:
+    typedef CharT char_type;
+    typedef std::vector<CharT> output_type;
+private:
+    output_type& s_;
+
+    // Noncopyable and nonmoveable
+    bytes_writer(const bytes_writer&) = delete;
+    bytes_writer& operator=(const bytes_writer&) = delete;
+public:
+
+    bytes_writer(output_type& s)
+        : s_(s)
+    {
+    }
+
+    void flush()
+    {
+    }
+
+    void write(const CharT* s, size_t length)
+    {
+        s_.append(s,length);
     }
 
     void put(CharT ch)

@@ -4,8 +4,8 @@
 
 // See https://github.com/danielaparker/jsoncons for latest version
 
-#ifndef JSONCONS_DETAIL_NUMBERPARSERS_HPP
-#define JSONCONS_DETAIL_NUMBERPARSERS_HPP
+#ifndef JSONCONS_DETAIL_PARSENUMBER_HPP
+#define JSONCONS_DETAIL_PARSENUMBER_HPP
 
 #include <stdexcept>
 #include <string>
@@ -24,6 +24,120 @@
 #include <jsoncons/jsoncons_config.hpp>
 
 namespace jsoncons { namespace detail {
+
+struct to_integer_result
+{
+    int64_t value;
+    bool overflow;
+};
+
+// Precondition: s satisfies
+
+// digit
+// digit1-digits 
+// - digit
+// - digit1-digits
+
+template <class CharT>
+to_integer_result to_integer(const CharT* s, size_t length)
+{
+    JSONCONS_ASSERT(length > 0);
+
+    int64_t n = 0;
+    bool overflow = false;
+    const CharT* end = s + length; 
+    if (*s == '-')
+    {
+        static const int64_t min_value = (std::numeric_limits<int64_t>::min)();
+        static const int64_t min_value_div_10 = min_value / 10;
+        ++s;
+        for (; s < end; ++s)
+        {
+            int64_t x = *s - '0';
+            if (n < min_value_div_10)
+            {
+                overflow = true;
+                break;
+            }
+            n = n * 10;
+            if (n < min_value + x)
+            {
+                overflow = true;
+                break;
+            }
+
+            n -= x;
+        }
+    }
+    else
+    {
+        static const int64_t max_value = (std::numeric_limits<int64_t>::max)();
+        static const int64_t max_value_div_10 = max_value / 10;
+        for (; s < end; ++s)
+        {
+            int64_t x = *s - '0';
+            if (n > max_value_div_10)
+            {
+                overflow = true;
+                break;
+            }
+            n = n * 10;
+            if (n > max_value - x)
+            {
+                overflow = true;
+                break;
+            }
+
+            n += x;
+        }
+    }
+
+    return to_integer_result({ n,overflow });
+}
+
+struct to_uinteger_result
+{
+    uint64_t value;
+    bool overflow;
+};
+
+// Precondition: s satisfies
+
+// digit
+// digit1-digits 
+// - digit
+// - digit1-digits
+
+template <class CharT>
+to_uinteger_result to_uinteger(const CharT* s, size_t length)
+{
+    JSONCONS_ASSERT(length > 0);
+
+    static const uint64_t max_value = (std::numeric_limits<uint64_t>::max)();
+    static const uint64_t max_value_div_10 = max_value / 10;
+    uint64_t n = 0;
+    bool overflow = false;
+
+    const CharT* end = s + length; 
+    for (; s < end; ++s)
+    {
+        uint64_t x = *s - '0';
+        if (n > max_value_div_10)
+        {
+            overflow = true;
+            break;
+        }
+        n = n * 10;
+        if (n > max_value - x)
+        {
+            overflow = true;
+            break;
+        }
+
+        n += x;
+    }
+    return to_uinteger_result{ n,overflow };
+}
 
 #if defined(JSONCONS_HAS_MSC__STRTOD_L)
 
@@ -53,7 +167,7 @@ public:
         double val = _strtod_l(begin, &end, locale_);
         if (begin == end)
         {
-            throw std::invalid_argument("Invalid float value");
+            JSONCONS_THROW(json_exception_impl<std::invalid_argument>("Invalid float value"));
         }
         return val;
     }
@@ -91,7 +205,7 @@ public:
         double val = strtold_l(begin, &end, locale_);
         if (begin == end)
         {
-            throw std::invalid_argument("Invalid float value");
+            JSONCONS_THROW(json_exception_impl<std::invalid_argument>("Invalid float value"));
         }
         return val;
     }
@@ -135,7 +249,7 @@ public:
         double val = strtod(s, &end);
         if (s == end)
         {
-            throw std::invalid_argument("string_to_double failed");
+            JSONCONS_THROW(json_exception_impl<std::invalid_argument>("string_to_double failed"));
         }
         return val;
     }

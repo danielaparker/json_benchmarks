@@ -20,6 +20,7 @@
 #include <limits>
 #include <type_traits>
 #include <jsoncons/jsoncons_utilities.hpp>
+#include <jsoncons/detail/type_traits_helper.hpp>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -185,6 +186,7 @@ public:
     typedef typename std::iterator_traits<iterator_base>::pointer pointer;
     typedef T reference;
     typedef std::input_iterator_tag iterator_category;
+    typedef typename T::first_type key_type;
     typedef typename T::second_type mapped_type;
 
     json_object_input_iterator()
@@ -230,7 +232,7 @@ public:
 
     reference operator*() const
     {
-        return T(it_->key(),json_type_traits<Json,mapped_type>::as(it_->value()));
+        return T(key_type(it_->key()),json_type_traits<Json,mapped_type>::as(it_->value()));
     }
 
     friend bool operator==(const json_object_input_iterator& it1, const json_object_input_iterator& it2)
@@ -260,7 +262,6 @@ struct json_type_traits<Json, typename type_wrapper<typename Json::char_type>::c
     typedef typename Json::char_type char_type;
     typedef typename Json::allocator_type allocator_type;
 
-#if !defined(JSONCONS_NO_DEPRECATED)
     static bool is(const Json& j) JSONCONS_NOEXCEPT
     {
         return j.is_string();
@@ -269,7 +270,6 @@ struct json_type_traits<Json, typename type_wrapper<typename Json::char_type>::c
     {
         return j.as_cstring();
     }
-#endif
     template <class ... Args>
     static Json to_json(Args&&... args)
     {
@@ -564,7 +564,7 @@ struct json_type_traits<Json, T,
         }
         else
         {
-            JSONCONS_THROW_EXCEPTION(std::runtime_error,"Attempt to cast json non-array to array");
+            JSONCONS_THROW(json_exception_impl<std::runtime_error>("Attempt to cast json non-array to array"));
         }
     }
 
@@ -585,7 +585,7 @@ struct json_type_traits<Json, T,
         }
         else
         {
-            JSONCONS_THROW_EXCEPTION(std::runtime_error,"Attempt to cast json non-array to array");
+            JSONCONS_THROW(json_exception_impl<std::runtime_error>("Attempt to cast json non-array to array"));
         }
     }
 
@@ -924,7 +924,7 @@ struct json_type_traits<Json, std::valarray<T>>
         }
         else
         {
-            JSONCONS_THROW_EXCEPTION(std::runtime_error,"Attempt to cast json non-array to array");
+            JSONCONS_THROW(json_exception_impl<std::runtime_error>("Attempt to cast json non-array to array"));
         }
     }
     
@@ -964,3 +964,4 @@ struct json_type_traits<Json, std::valarray<T>>
 #endif
 
 #endif
+

@@ -77,7 +77,7 @@ measurements nlohmann_benchmarks::measure(const char *input_filename, const char
                 try
                 {
                     std::ifstream is(input_filename);
-                    is >> root;
+                    root = nlohmann::json::parse(is);
                     auto end = high_resolution_clock::now();
                     time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
                 }

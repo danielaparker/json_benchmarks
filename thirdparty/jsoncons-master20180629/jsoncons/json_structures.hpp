@@ -56,12 +56,12 @@ public:
 template <class Json>
 class json_array: public Json_array_base_<Json>
 {
+    typedef typename Json::array_storage_type array_storage_type;
+    array_storage_type elements_;
 public:
     typedef typename Json::allocator_type allocator_type;
     typedef Json value_type;
     typedef typename std::allocator_traits<allocator_type>:: template rebind_alloc<value_type> val_allocator_type;
-
-    typedef typename Json::array_storage_type array_storage_type;
 
     typedef typename array_storage_type::iterator iterator;
     typedef typename array_storage_type::const_iterator const_iterator;
@@ -172,7 +172,7 @@ public:
     {
         JSONCONS_ASSERT(from_index <= to_index);
         JSONCONS_ASSERT(to_index <= elements_.size());
-        elements_.erase(elements_.begin()+from_index,elements_.begin()+to_index);
+        elements_.erase(elements_.cbegin()+from_index,elements_.cbegin()+to_index);
     }
 
     void erase(const_iterator pos) 
@@ -290,7 +290,6 @@ public:
         return true;
     }
 private:
-    array_storage_type elements_;
 
     json_array& operator=(const json_array<Json>&) = delete;
 };
@@ -547,7 +546,7 @@ class json_object
 
 // Do not preserve order
 template <class KeyT,class Json>
-class json_object<KeyT,Json,false> : public Json_object_<KeyT,Json>
+class json_object<KeyT,Json,false> final : public Json_object_<KeyT,Json>
 {
 public:
     using typename Json_object_<KeyT,Json>::allocator_type;
@@ -658,7 +657,7 @@ public:
     {
         if (i >= this->members_.size())
         {
-            JSONCONS_THROW_EXCEPTION(std::out_of_range,"Invalid array subscript");
+            JSONCONS_THROW(json_exception_impl<std::out_of_range>("Invalid array subscript"));
         }
         return this->members_[i].value();
     }
@@ -667,7 +666,7 @@ public:
     {
         if (i >= this->members_.size())
         {
-            JSONCONS_THROW_EXCEPTION(std::out_of_range,"Invalid array subscript");
+            JSONCONS_THROW(json_exception_impl<std::out_of_range>("Invalid array subscript"));
         }
         return this->members_[i].value();
     }
@@ -1260,7 +1259,7 @@ private:
 
 // Preserve order
 template <class KeyT,class Json>
-class json_object<KeyT,Json,true> : public Json_object_<KeyT,Json>
+class json_object<KeyT,Json,true> final : public Json_object_<KeyT,Json>
 {
 public:
     using typename Json_object_<KeyT,Json>::allocator_type;
@@ -1311,7 +1310,7 @@ public:
         {
             if (element.size() != 2 || !element[0].is_string())
             {
-                JSONCONS_THROW_EXCEPTION(std::runtime_error, "Cannot create object from initializer list");
+                JSONCONS_THROW(json_exception_impl<std::runtime_error>("Cannot create object from initializer list"));
                 break;
             }
         }
@@ -1329,7 +1328,7 @@ public:
         {
             if (element.size() != 2 || !element[0].is_string())
             {
-                JSONCONS_THROW_EXCEPTION(std::runtime_error, "Cannot create object from initializer list");
+                JSONCONS_THROW(json_exception_impl<std::runtime_error>("Cannot create object from initializer list"));
                 break;
             }
         }
@@ -1385,7 +1384,7 @@ public:
     {
         if (i >= this->members_.size())
         {
-            JSONCONS_THROW_EXCEPTION(std::out_of_range,"Invalid array subscript");
+            JSONCONS_THROW(json_exception_impl<std::out_of_range>("Invalid array subscript"));
         }
         return this->members_[i].value();
     }
@@ -1394,7 +1393,7 @@ public:
     {
         if (i >= this->members_.size())
         {
-            JSONCONS_THROW_EXCEPTION(std::out_of_range,"Invalid array subscript");
+            JSONCONS_THROW(json_exception_impl<std::out_of_range>("Invalid array subscript"));
         }
         return this->members_[i].value();
     }

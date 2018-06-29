@@ -16,7 +16,7 @@ void benchmarks_small_file()
     {
         library_tests tests;
 
-        const char *filename = "data/input/small_file/small_file_text.json";
+        const char *filename = "data/input/small_file/small_file_text_array.json";
 
         size_t file_size;
         {
@@ -24,19 +24,20 @@ void benchmarks_small_file()
             file_size = in.tellg(); 
         }
         std::string input;
-        input.reserve(file_size);
+        input.resize(file_size);
         std::string output;
         {
             std::ifstream in(filename, std::ifstream::binary);
-            //in.read(&input[0], file_size);
-            jsoncons::json j = jsoncons::json::parse(in);
-            j.dump(input);
-            std::cout << input << std::endl;
+            in.read(&input[0], file_size);
+            //input[file_size] = 0;
+            //jsoncons::json j = jsoncons::json::parse(in);
+            //j.dump(input);
+            //std::cout << input << std::endl;
         }
         //std::cout << input << std::endl;
         output.reserve(input.size()*2);
 
-        std::ofstream os("report/performance_small_file_text.md");
+        std::ofstream os("report/performance_small_file_text_array.md");
         os << std::endl;
         os << "## Read and Write Time Comparison" << std::endl << std::endl;
         os << std::endl;
@@ -370,8 +371,8 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 
 int main()
 {
-    //benchmarks();
-    //benchmarks_fp();
+    benchmarks();
+    benchmarks_fp();
     //benchmarks_small_file();
 
     std::vector<result_code_info> result_code_infos;

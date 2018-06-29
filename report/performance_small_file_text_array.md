@@ -4,7 +4,7 @@
 
 Input filename|Size (bytes)|Content
 ---|---|---
-data/input/small_file/small_file_text.json|6571|Text,integers
+data/input/small_file/small_file_text_array.json|3930|Text,integers
 
 Environment|Windows, Intel
 ---|---
@@ -25,6 +25,6 @@ Library|Version
 
 Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|89|23|204|
-[cjson](https://github.com/DaveGamble/cJSON)|55|18|32|
+[jsoncons](https://github.com/danielaparker/jsoncons)|52|18|28|
+[cjson](https://github.com/DaveGamble/cJSON)|31|14|24|
 
