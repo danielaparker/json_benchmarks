@@ -9,9 +9,9 @@ namespace json_benchmarks {
     {
         std::vector<library_info> info;
 
-        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","master20180629", "With strict_parse_error_handler, uses wjson if utf16" });
-        info.push_back(library_info{"cJSON","https://github.com/DaveGamble/cJSON","1.7.1", ""});
-        info.push_back(library_info{"nlohmann","https://github.com/nlohmann/json","3.0.1", ""});
+        info.push_back(library_info{"jsoncons","https://github.com/danielaparker/jsoncons","0.114.0", "With strict_parse_error_handler, uses wjson if utf16" });
+        info.push_back(library_info{"cJSON","https://github.com/DaveGamble/cJSON","1.7.9", ""});
+        info.push_back(library_info{"nlohmann","https://github.com/nlohmann/json","3.4.0", ""});
         info.push_back(library_info{"json11","https://github.com/dropbox/json11","master 20161125", ""});
         info.push_back(library_info{"rapidjson","https://github.com/miloyip/rapidjson","1.1.0", "Uses custom (non standard lib) floating point conversion"});
         info.push_back(library_info{"jsoncpp","https://github.com/open-source-parsers/jsoncpp","1.7.7", "Uses map for both arrays and objects"});

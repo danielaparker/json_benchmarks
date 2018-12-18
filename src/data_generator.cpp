@@ -1,6 +1,7 @@
 #include <chrono>
 #include <sstream>
 #include "jsoncons/json_serializer.hpp"
+#include <fstream>
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -18,7 +19,7 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
 
     jsoncons::serialization_options options;
     options.escape_all_non_ascii(true);
-    jsoncons::json_serializer handler(os, options, false);
+    jsoncons::json_serializer handler(os, options);
 
     auto start = high_resolution_clock::now();
 
