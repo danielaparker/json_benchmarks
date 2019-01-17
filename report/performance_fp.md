@@ -4,7 +4,7 @@
 
 Input filename|Size (MB)|Content
 ---|---|---
-data/output/persons_fp.json|797.1|Text,doubles
+data/output/persons_fp.json|697.35|Text,doubles
 
 Environment|Windows, Intel
 ---|---
@@ -14,7 +14,7 @@ Compiler|Visual Studio 2015
 
 Library|Version
 ---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|0.114.0
+[jsoncons](https://github.com/danielaparker/jsoncons)|master e72c822
 [cJSON](https://github.com/DaveGamble/cJSON)|1.7.9
 [nlohmann](https://github.com/nlohmann/json)|3.4.0
 [json11](https://github.com/dropbox/json11)|master 20161125
@@ -25,12 +25,12 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|18.597|26.966|1047|
-[cjson](https://github.com/DaveGamble/cJSON)|30.473|51.606|4958|
-[nlohmann](https://github.com/nlohmann/json)|29.98|14.382|1190|
-[json11](https://github.com/dropbox/json11)|26.025|38.399|4985|Uses pimpl idiom, implementation uses virtual inheritance
-[rapidjson](https://github.com/miloyip/rapidjson)|6.319|5.72|1046|Uses custom floating point conversion
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|58.6|58.137|6162|Uses std::map for both arrays and objects
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|334.598|62.316|203|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|4.353|49.254|1836|Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|17.881|7.862|1047|
+[cjson](https://github.com/DaveGamble/cJSON)|28.657|51.213|4855|
+[nlohmann](https://github.com/nlohmann/json)|28.95|13.678|1189|
+[json11](https://github.com/dropbox/json11)|23.892|40.378|4887|Uses pimpl idiom, implementation uses virtual inheritance
+[rapidjson](https://github.com/miloyip/rapidjson)|6.379|7.25|1048|Uses custom floating point conversion
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|59.065|60.588|6162|Uses std::map for both arrays and objects
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|295.107|60.147|299|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|3.722|51.139|1736|Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code
 

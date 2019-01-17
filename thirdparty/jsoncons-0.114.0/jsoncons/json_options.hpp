@@ -90,11 +90,19 @@ public:
 
     virtual size_t max_nesting_depth() const = 0;
 
+    virtual bool is_str_to_nan() const = 0;
+
     virtual std::basic_string<CharT> nan_to_str() const = 0;
+
+    virtual bool is_str_to_inf() const = 0;
 
     virtual std::basic_string<CharT> inf_to_str() const = 0;
 
+    virtual bool is_str_to_neginf() const = 0;
+
     virtual std::basic_string<CharT> neginf_to_str() const = 0;
+
+    virtual bool dec_to_str() const = 0;
 };
 
 template <class CharT>
@@ -141,15 +149,27 @@ public:
 
     virtual std::basic_string<CharT> new_line_chars() const = 0;
 
+    virtual bool is_nan_to_num() const = 0;
+
     virtual std::basic_string<CharT> nan_to_num() const = 0;
+
+    virtual bool is_inf_to_num() const = 0;
 
     virtual std::basic_string<CharT> inf_to_num() const = 0;
 
+    virtual bool is_neginf_to_num() const = 0;
+
     virtual std::basic_string<CharT> neginf_to_num() const = 0;
+
+    virtual bool is_nan_to_str() const = 0;
 
     virtual std::basic_string<CharT> nan_to_str() const = 0;
 
+    virtual bool is_inf_to_str() const = 0;
+
     virtual std::basic_string<CharT> inf_to_str() const = 0;
+
+    virtual bool is_neginf_to_str() const = 0;
 
     virtual std::basic_string<CharT> neginf_to_str() const = 0;
 };
@@ -189,12 +209,25 @@ private:
     bool pad_inside_object_braces_;
     bool pad_inside_array_brackets_;
     std::basic_string<CharT> new_line_chars_;
+
+    bool is_nan_to_num_;
+    bool is_inf_to_num_;
+    bool is_neginf_to_num_;
+    bool is_nan_to_str_;
+    bool is_inf_to_str_;
+    bool is_neginf_to_str_;
+    bool is_str_to_nan_;
+    bool is_str_to_inf_;
+    bool is_str_to_neginf_;
+
     std::basic_string<CharT> nan_to_num_;
     std::basic_string<CharT> inf_to_num_;
     std::basic_string<CharT> neginf_to_num_;
     std::basic_string<CharT> nan_to_str_;
     std::basic_string<CharT> inf_to_str_;
     std::basic_string<CharT> neginf_to_str_;
+
+    bool decimal_to_str_;
 public:
     static const size_t indent_size_default = 4;
     static const size_t line_length_limit_default = 120;
@@ -223,7 +256,17 @@ public:
           spaces_around_colon_(spaces_option::space_after),
           spaces_around_comma_(spaces_option::space_after),
           pad_inside_object_braces_(false),
-          pad_inside_array_brackets_(false)
+          pad_inside_array_brackets_(false),
+          is_nan_to_num_(false),
+          is_inf_to_num_(false),
+          is_neginf_to_num_(false),
+          is_nan_to_str_(false),
+          is_inf_to_str_(false),
+          is_neginf_to_str_(false),
+          is_str_to_nan_(false),
+          is_str_to_inf_(false),
+          is_str_to_neginf_(false),
+          decimal_to_str_(false)
     {
         new_line_chars_.push_back('\n');
     }
@@ -313,9 +356,54 @@ public:
         return *this;
     }
 
+    bool is_nan_to_num() const override
+    {
+        return is_nan_to_num_;
+    }
+
+    bool is_inf_to_num() const override
+    {
+        return is_inf_to_num_;
+    }
+
+    bool is_neginf_to_num() const override
+    {
+        return is_neginf_to_num_ || is_inf_to_num_;
+    }
+
+    bool is_nan_to_str() const override
+    {
+        return is_nan_to_str_;
+    }
+
+    bool is_str_to_nan() const override
+    {
+        return is_str_to_nan_;
+    }
+
+    bool is_inf_to_str() const override
+    {
+        return is_inf_to_str_;
+    }
+
+    bool is_str_to_inf() const override
+    {
+        return is_str_to_inf_;
+    }
+
+    bool is_neginf_to_str() const override
+    {
+        return is_neginf_to_str_ || is_inf_to_str_;
+    }
+
+    bool is_str_to_neginf() const override
+    {
+        return is_str_to_neginf_ || is_str_to_inf_;
+    }
+
     std::basic_string<CharT> nan_to_num() const override
     {
-        if (!nan_to_num_.empty())
+        if (is_nan_to_num_)
         {
             return nan_to_num_;
         }
@@ -333,6 +421,7 @@ public:
 
     basic_json_options<CharT>& nan_to_num(const std::basic_string<CharT>& value) 
     {
+        is_nan_to_num_ = true;
         nan_to_str_.clear();
         nan_to_num_ = value;
         return *this;
@@ -340,7 +429,7 @@ public:
 
     std::basic_string<CharT> inf_to_num() const override
     {
-        if (!inf_to_num_.empty())
+        if (is_inf_to_num_)
         {
             return inf_to_num_;
         }
@@ -358,6 +447,7 @@ public:
 
     basic_json_options<CharT>& inf_to_num(const std::basic_string<CharT>& value) 
     {
+        is_inf_to_num_ = true;
         inf_to_str_.clear();
         inf_to_num_ = value;
         return *this;
@@ -365,11 +455,11 @@ public:
 
     std::basic_string<CharT> neginf_to_num() const override
     {
-        if (!neginf_to_num_.empty())
+        if (is_neginf_to_num_)
         {
             return neginf_to_num_;
         }
-        else if (!inf_to_num_.empty())
+        else if (is_inf_to_num_)
         {
             std::basic_string<CharT> s;
             s.push_back('-');
@@ -390,6 +480,7 @@ public:
 
     basic_json_options<CharT>& neginf_to_num(const std::basic_string<CharT>& value) 
     {
+        is_neginf_to_num_ = true;
         neginf_to_str_.clear();
         neginf_to_num_ = value;
         return *this;
@@ -397,7 +488,7 @@ public:
 
     std::basic_string<CharT> nan_to_str() const override
     {
-        if (!nan_to_str_.empty())
+        if (is_nan_to_str_)
         {
             return nan_to_str_;
         }
@@ -413,8 +504,10 @@ public:
         }
     }
 
-    basic_json_options<CharT>& nan_to_str(const std::basic_string<CharT>& value) 
+    basic_json_options<CharT>& nan_to_str(const std::basic_string<CharT>& value, bool is_str_to_nan = true) 
     {
+        is_nan_to_str_ = true;
+        is_str_to_nan_ = is_str_to_nan;
         nan_to_num_.clear();
         nan_to_str_ = value;
         return *this;
@@ -422,7 +515,7 @@ public:
 
     std::basic_string<CharT> inf_to_str() const override
     {
-        if (!inf_to_str_.empty())
+        if (is_inf_to_str_)
         {
             return inf_to_str_;
         }
@@ -438,8 +531,10 @@ public:
         }
     }
 
-    basic_json_options<CharT>& inf_to_str(const std::basic_string<CharT>& value) 
+    basic_json_options<CharT>& inf_to_str(const std::basic_string<CharT>& value, bool is_inf_to_str = true) 
     {
+        is_inf_to_str_ = true;
+        is_inf_to_str_ = is_inf_to_str;
         inf_to_num_.clear();
         inf_to_str_ = value;
         return *this;
@@ -447,11 +542,11 @@ public:
 
     std::basic_string<CharT> neginf_to_str() const override
     {
-        if (!neginf_to_str_.empty())
+        if (is_neginf_to_str_)
         {
             return neginf_to_str_;
         }
-        else if (!inf_to_str_.empty())
+        else if (is_inf_to_str_)
         {
             std::basic_string<CharT> s;
             s.push_back('-');
@@ -470,10 +565,23 @@ public:
         }
     }
 
-    basic_json_options<CharT>& neginf_to_str(const std::basic_string<CharT>& value) 
+    basic_json_options<CharT>& neginf_to_str(const std::basic_string<CharT>& value, bool is_neginf_to_str = true) 
     {
+        is_neginf_to_str_ = true;
+        is_neginf_to_str_ = is_neginf_to_str;
         neginf_to_num_.clear();
         neginf_to_str_ = value;
+        return *this;
+    }
+
+    bool dec_to_str() const override
+    {
+        return decimal_to_str_;
+    }
+
+    basic_json_options<CharT>& dec_to_str(bool value) 
+    {
+        decimal_to_str_ = value;
         return *this;
     }
 
@@ -592,7 +700,7 @@ public:
 
     basic_json_options<CharT>& nan_replacement(const string_type& value)
     {
-        nan_replacement_ = string_type(value);
+        nan_replacement_ = value;
 
         can_read_nan_replacement_ = is_string(value);
 
@@ -606,7 +714,7 @@ public:
 
     basic_json_options<CharT>& pos_inf_replacement(const string_type& value)
     {
-        pos_inf_replacement_ = string_type(value);
+        pos_inf_replacement_ = value;
         can_read_pos_inf_replacement_ = is_string(value);
         return *this;
     }
@@ -618,7 +726,7 @@ public:
 
     basic_json_options<CharT>& neg_inf_replacement(const string_type& value)
     {
-        neg_inf_replacement_ = string_type(value);
+        neg_inf_replacement_ = value;
         can_read_neg_inf_replacement_ = is_string(value);
         return *this;
     }

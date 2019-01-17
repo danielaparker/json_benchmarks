@@ -39,15 +39,12 @@
 
 namespace jsoncons {
 
-struct sorted_policy
+struct sorted_policy 
 {
-    static const bool preserve_order = false;
+    static constexpr bool preserve_order = false;
 
     template <class T,class Allocator>
-    using object_storage = std::vector<T,Allocator>;
-
-    template <class T,class Allocator>
-    using array_storage = std::vector<T,Allocator>;
+    using sequence_container_type = std::vector<T,Allocator>;
 
     template <class CharT, class CharTraits, class Allocator>
     using key_storage = std::basic_string<CharT, CharTraits,Allocator>;
@@ -60,7 +57,7 @@ struct sorted_policy
 
 struct preserve_order_policy : public sorted_policy
 {
-    static const bool preserve_order = true;
+    static constexpr bool preserve_order = true;
 };
 
 template <typename IteratorT>
@@ -136,18 +133,14 @@ public:
     typedef jsoncons::null_type null_type;
 #endif
 
-    typedef typename std::allocator_traits<allocator_type>:: template rebind_alloc<basic_json> val_allocator_type;
-    using array_storage_type = typename implementation_policy::template array_storage<basic_json, val_allocator_type>;
-
     typedef typename std::allocator_traits<allocator_type>:: template rebind_alloc<uint8_t> byte_allocator_type;
-    using byte_string_storage_type = typename implementation_policy::template array_storage<uint8_t, byte_allocator_type>;
+    using byte_string_storage_type = typename implementation_policy::template sequence_container_type<uint8_t, byte_allocator_type>;
 
     typedef json_array<basic_json> array;
 
-    typedef typename std::allocator_traits<allocator_type>:: template rebind_alloc<key_value_type> kvp_allocator_type;
+    typedef typename std::allocator_traits<allocator_type>:: template rebind_alloc<key_value_type> key_value_allocator_type;
 
-    using object_storage_type = typename implementation_policy::template object_storage<key_value_type , kvp_allocator_type>;
-    typedef json_object<key_storage_type,basic_json,implementation_policy::preserve_order> object;
+    typedef json_object<key_storage_type,basic_json> object;
 
     typedef typename std::allocator_traits<Allocator>:: template rebind_alloc<array> array_allocator;
     typedef typename std::allocator_traits<Allocator>:: template rebind_alloc<object> object_allocator;
@@ -280,36 +273,17 @@ public:
 
         class double_data final : public data_base
         {
-            uint8_t format_;
-            uint8_t precision_;
-            uint8_t decimal_places_;
             double val_;
         public:
-            double_data(double val)
-                : data_base(structure_tag_type::double_tag, semantic_tag_type::none), 
-                  format_(static_cast<uint8_t>(chars_format::general)),
-                  precision_(0), 
-                  decimal_places_(0), 
-                  val_(val)
-            {
-            }
-
             double_data(double val, 
-                        const floating_point_options& fmt,
                         semantic_tag_type tag = semantic_tag_type::none)
                 : data_base(structure_tag_type::double_tag, tag), 
-                  format_(static_cast<uint8_t>(fmt.format())), 
-                  precision_(fmt.precision()), 
-                  decimal_places_(fmt.decimal_places()), 
                   val_(val)
             {
             }
 
             double_data(const double_data& val)
                 : data_base(val.type()),
-                  format_(static_cast<uint8_t>(val.format_)),
-                  precision_(val.precision_), 
-                  decimal_places_(val.decimal_places_), 
                   val_(val.val_)
             {
             }
@@ -317,13 +291,6 @@ public:
             double value() const
             {
                 return val_;
-            }
-
-            floating_point_options options() const
-            {
-                return floating_point_options(static_cast<chars_format>(format_),
-                                              precision_,
-                                              decimal_places_);
             }
         };
 
@@ -438,7 +405,6 @@ public:
             typedef typename std::allocator_traits<Allocator>:: template rebind_alloc<byte_string_storage_type> string_holder_allocator_type;
             typedef typename std::allocator_traits<string_holder_allocator_type>::pointer pointer;
 
-            byte_string_chars_format encoding_hint_;
             pointer ptr_;
 
             template <typename... Args>
@@ -460,35 +426,28 @@ public:
 
             byte_string_data(semantic_tag_type semantic_type, 
                              const uint8_t* data, size_t length, 
-                             byte_string_chars_format encoding_hint,
                              const Allocator& a)
-                : data_base(structure_tag_type::byte_string_tag, semantic_type),
-                  encoding_hint_(encoding_hint)
+                : data_base(structure_tag_type::byte_string_tag, semantic_type)
             {
                 create(string_holder_allocator_type(a), data, data+length, a);
             }
 
             byte_string_data(const byte_string_data& val)
-                : data_base(val.type()), encoding_hint_(val.encoding_hint()) 
+                : data_base(val.type())
             {
                 create(val.ptr_->get_allocator(), *(val.ptr_));
             }
 
             byte_string_data(byte_string_data&& val)
-                : data_base(val.type()), encoding_hint_(val.encoding_hint()), ptr_(nullptr)
+                : data_base(val.type()), ptr_(nullptr)
             {
                 std::swap(val.ptr_,ptr_);
             }
 
             byte_string_data(const byte_string_data& val, const Allocator& a)
-                : data_base(val.type()), encoding_hint_(val.encoding_hint())
+                : data_base(val.type())
             { 
                 create(string_holder_allocator_type(a), *(val.ptr_), a);
-            }
-
-            byte_string_chars_format encoding_hint() const
-            {
-                return encoding_hint_;
             }
 
             ~byte_string_data()
@@ -718,9 +677,9 @@ public:
             new(reinterpret_cast<void*>(&data_))uint64_data(val, tag);
         }
 
-        variant(double val, const floating_point_options& fmt, semantic_tag_type tag)
+        variant(double val, semantic_tag_type tag)
         {
-            new(reinterpret_cast<void*>(&data_))double_data(val, fmt, tag);
+            new(reinterpret_cast<void*>(&data_))double_data(val, tag);
         }
 
         variant(const char_type* s, size_t length, semantic_tag_type tag)
@@ -747,14 +706,14 @@ public:
             }
         }
 
-        variant(const byte_string_view& bs, byte_string_chars_format encoding_hint, semantic_tag_type tag)
+        variant(const byte_string_view& bs, semantic_tag_type tag)
         {
-            new(reinterpret_cast<void*>(&data_))byte_string_data(tag, bs.data(), bs.length(), encoding_hint, byte_allocator_type());
+            new(reinterpret_cast<void*>(&data_))byte_string_data(tag, bs.data(), bs.length(), byte_allocator_type());
         }
 
-        variant(const byte_string_view& bs, byte_string_chars_format encoding_hint, semantic_tag_type tag, const Allocator& allocator)
+        variant(const byte_string_view& bs, semantic_tag_type tag, const Allocator& allocator)
         {
-            new(reinterpret_cast<void*>(&data_))byte_string_data(tag, bs.data(), bs.length(), encoding_hint, allocator);
+            new(reinterpret_cast<void*>(&data_))byte_string_data(tag, bs.data(), bs.length(), allocator);
         }
 
         variant(const basic_bignum<byte_allocator_type>& n)
@@ -2585,22 +2544,21 @@ public:
     {
     }
 
-    basic_json(double val, uint8_t precision)
-        : var_(val, floating_point_options(chars_format::general, precision, 0), semantic_tag_type::none)
+#if !defined(JSONCONS_NO_DEPRECATED)
+    basic_json(double val, uint8_t)
+        : var_(val, semantic_tag_type::none)
     {
     }
+    basic_json(double val, 
+               const floating_point_options&,
+               semantic_tag_type tag = semantic_tag_type::none)
+        : var_(val, tag)
+    {
+    }
+#endif
 
     basic_json(double val, semantic_tag_type tag)
-        : var_(val, 
-               floating_point_options(),
-               tag)
-    {
-    }
-
-    basic_json(double val, 
-               const floating_point_options& fmt,
-               semantic_tag_type tag = semantic_tag_type::none)
-        : var_(val, fmt, tag)
+        : var_(val, tag)
     {
     }
 
@@ -2647,18 +2605,42 @@ public:
     {
     }
 
-    explicit basic_json(const byte_string_view& bs, 
-                        byte_string_chars_format encoding_hint = byte_string_chars_format::none,
+#if !defined(JSONCONS_NO_DEPRECATED)
+
+    basic_json(const byte_string_view& bs, 
+                        byte_string_chars_format encoding_hint,
                         semantic_tag_type tag = semantic_tag_type::none)
-        : var_(bs, encoding_hint, tag)
+        : var_(bs, tag)
+    {
+        switch (encoding_hint)
+        {
+            {
+                case byte_string_chars_format::base16:
+                    var_ = variant(bs, semantic_tag_type::base16);
+                    break;
+                case byte_string_chars_format::base64:
+                    var_ = variant(bs, semantic_tag_type::base64);
+                    break;
+                case byte_string_chars_format::base64url:
+                    var_ = variant(bs, semantic_tag_type::base64url);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+#endif
+
+    explicit basic_json(const byte_string_view& bs, 
+                        semantic_tag_type tag = semantic_tag_type::none)
+        : var_(bs, tag)
     {
     }
 
     basic_json(const byte_string_view& bs, 
-               byte_string_chars_format encoding_hint,
                semantic_tag_type tag, 
                const Allocator& allocator)
-        : var_(bs, encoding_hint, tag, allocator)
+        : var_(bs, tag, allocator)
     {
     }
 
@@ -3260,12 +3242,13 @@ public:
         }
     }
 
+#if !defined(JSONCONS_NO_DEPRECATED)
     size_t precision() const
     {
         switch (var_.structure_tag())
         {
         case structure_tag_type::double_tag:
-            return var_.double_data_cast()->options().precision();
+            return 0;
         default:
             JSONCONS_THROW(json_exception_impl<std::runtime_error>("Not a double"));
         }
@@ -3276,11 +3259,12 @@ public:
         switch (var_.structure_tag())
         {
         case structure_tag_type::double_tag:
-            return var_.double_data_cast()->options().decimal_places();
+            return 0;
         default:
             JSONCONS_THROW(json_exception_impl<std::runtime_error>("Not a double"));
         }
     }
+#endif
 
     double as_double() const
     {
@@ -3440,7 +3424,7 @@ public:
         switch (var_.structure_tag())
         {
         case structure_tag_type::double_tag:
-            return var_.double_data_cast()->precision();
+            return 0;
         default:
             JSONCONS_THROW(json_exception_impl<std::runtime_error>("Not a double"));
         }
@@ -4502,11 +4486,10 @@ private:
                 break;
             case structure_tag_type::byte_string_tag:
                 handler.byte_string_value(var_.byte_string_data_cast()->data(), var_.byte_string_data_cast()->length(), 
-                                          var_.byte_string_data_cast()->encoding_hint(), var_.semantic_tag());
+                                          var_.semantic_tag());
                 break;
             case structure_tag_type::double_tag:
                 handler.double_value(var_.double_data_cast()->value(), 
-                                     var_.double_data_cast()->options(), 
                                      var_.semantic_tag());
                 break;
             case structure_tag_type::int64_tag:

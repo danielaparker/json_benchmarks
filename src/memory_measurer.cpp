@@ -15,10 +15,8 @@ namespace json_benchmarks {
 
 size_t memory_measurer::get_process_memory()
 {
-    PROCESS_MEMORY_COUNTERS_EX pmc;
-    pmc.cb = sizeof(pmc); 
-    GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
-    //return pmc.PrivateUsage;    
+    PROCESS_MEMORY_COUNTERS pmc;
+    GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
     return pmc.WorkingSetSize;    
 }
 

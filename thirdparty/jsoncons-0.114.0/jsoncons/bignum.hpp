@@ -11,6 +11,7 @@
 #include <vector> // std::vector
 #include <iostream>
 #include <climits>
+#include <cassert> // assert
 #include <limits> // std::numeric_limits
 #include <algorithm> // std::max, std::min, std::reverse
 #include <string> // std::string
@@ -64,14 +65,14 @@ private:
     using typename basic_bignum_base<Allocator>::byte_allocator_type;
     using basic_bignum_base<Allocator>::allocator;
 
-    static const uint64_t max_basic_type;
-    static const uint64_t basic_type_bits;  // Number of bits
-    static const uint64_t basic_type_halfBits;
+    static constexpr uint64_t max_basic_type = (std::numeric_limits<uint64_t>::max)();
+    static constexpr uint64_t basic_type_bits = sizeof(uint64_t) * 8;  // Number of bits
+    static constexpr uint64_t basic_type_halfBits = basic_type_bits/2;
 
-    static const uint16_t word_length; // Use multiples of word_length words
-    static const uint64_t r_mask;
-    static const uint64_t l_mask;
-    static const uint64_t l_bit;
+    static constexpr uint16_t word_length = 4; // Use multiples of word_length words
+    static constexpr uint64_t r_mask = (uint64_t(1) << basic_type_halfBits) - 1;
+    static constexpr uint64_t l_mask = max_basic_type - r_mask;
+    static constexpr uint64_t l_bit = max_basic_type - (max_basic_type >> 1);
 
     union
     {
@@ -333,38 +334,6 @@ public:
         {
             allocator().deallocate(data_, capacity_);
         }
-    }
-
-    template <typename CharT>
-    void initialize(const CharT* data, size_t length)
-    {
-        bool neg = false;
-
-        const CharT* end = data+length;
-        while (data != end && isspace(*data))
-        {
-            ++data;
-            --length;
-        }
-
-        if ( *data == '-' )
-        {
-            neg = true;
-            data++;
-            --length;
-        }
-
-        basic_bignum<Allocator> v = 0;
-        for (size_t i = 0; i < length; i++)
-        {
-            v = (v * 10) + (uint64_t)(data[i] - '0');
-        }
-
-        if ( neg )
-        {
-            v.neg_ = true;
-        }
-        initialize( v );
     }
 
     size_t capacity() const { return dynamic_ ? capacity_ : 2; }
@@ -1082,11 +1051,11 @@ public:
         return x < q ? x : q;
     }
 
-    friend std::ostream& operator<<( std::ostream& os, const basic_bignum<Allocator>& v )
+    template <class CharT>
+    friend std::basic_ostream<CharT>& operator<<(std::basic_ostream<CharT>& os, const basic_bignum<Allocator>& v)
     {
-        std::string s; 
+        std::basic_string<CharT> s; 
         v.dump(s);
-
         os << s;
 
         return os;
@@ -1122,6 +1091,7 @@ public:
         return neg_ ? -code : code;
     }
 
+private:
     void DDproduct( basic_type A, basic_type B,
                     basic_type& hi, basic_type& lo ) const
     // Multiplying two digits: (hi, lo) = A * B
@@ -1461,22 +1431,39 @@ public:
             memset( data_+len_old, 0, (length_ - len_old)*sizeof(basic_type) );
         }
     }
-};  
 
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::max_basic_type = (std::numeric_limits<uint64_t>::max)();
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::basic_type_bits = sizeof(uint64_t) * 8;  // Number of bits
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::basic_type_halfBits = basic_bignum<Allocator>::basic_type_bits/2;
-template <class Allocator>
-const uint16_t basic_bignum<Allocator>::word_length = 4; // Use multiples of word_length words
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::r_mask = (uint64_t(1) << basic_bignum<Allocator>::basic_type_halfBits) - 1;
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::l_mask = basic_bignum<Allocator>::max_basic_type - basic_bignum<Allocator>::r_mask;
-template <class Allocator>
-const uint64_t basic_bignum<Allocator>::l_bit = basic_bignum<Allocator>::max_basic_type - (basic_bignum<Allocator>::max_basic_type >> 1);
+    template <typename CharT>
+    void initialize(const CharT* data, size_t length)
+    {
+        bool neg = false;
+
+        const CharT* end = data+length;
+        while (data != end && isspace(*data))
+        {
+            ++data;
+            --length;
+        }
+
+        if ( *data == '-' )
+        {
+            neg = true;
+            data++;
+            --length;
+        }
+
+        basic_bignum<Allocator> v = 0;
+        for (size_t i = 0; i < length; i++)
+        {
+            v = (v * 10) + (uint64_t)(data[i] - '0');
+        }
+
+        if ( neg )
+        {
+            v.neg_ = true;
+        }
+        initialize( v );
+    }
+};
 
 typedef basic_bignum<std::allocator<uint8_t>> bignum;
 

@@ -98,19 +98,17 @@ private:
     }
 
     bool do_byte_string_value(const byte_string_view& b, 
-                              byte_string_chars_format encoding_hint,
                               semantic_tag_type tag,
                               const serializing_context& context) override
     {
-        return destination_handler_.byte_string_value(b, encoding_hint, tag, context);
+        return destination_handler_.byte_string_value(b, tag, context);
     }
 
     bool do_double_value(double value, 
-                         const floating_point_options& fmt,
                          semantic_tag_type tag,
                          const serializing_context& context) override
     {
-        return destination_handler_.double_value(value, fmt, tag, context);
+        return destination_handler_.double_value(value, tag, context);
     }
 
     bool do_int64_value(int64_t value,
@@ -279,19 +277,17 @@ private:
     }
 
     bool do_byte_string_value(const byte_string_view& b, 
-                              byte_string_chars_format encoding_hint,
                               semantic_tag_type tag,
                               const serializing_context& context) override
     {
-        return destination_handler_.byte_string_value(b, encoding_hint, tag, context);
+        return destination_handler_.byte_string_value(b, tag, context);
     }
 
     bool do_double_value(double value, 
-                         const floating_point_options& fmt,
                          semantic_tag_type tag,
                          const serializing_context& context) override
     {
-        return destination_handler_.double_value(value, fmt, tag, context);
+        return destination_handler_.double_value(value, tag, context);
     }
 
     bool do_int64_value(int64_t value,
