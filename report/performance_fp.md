@@ -26,7 +26,7 @@ Library|Version
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
 [jsoncons](https://github.com/danielaparker/jsoncons)|17.881|7.862|1047|Uses girsu3 for printing floating-point numbers.
-[cjson](https://github.com/DaveGamble/cJSON)|28.657|51.213|4855|Expect larger size because of inefficient storage
+[cjson](https://github.com/DaveGamble/cJSON)|28.657|51.213|4855|Expect larger size because of inefficient storage.
 [nlohmann](https://github.com/nlohmann/json)|28.95|13.678|1189|Uses girsu2 for printing floating-point numbers.
 [json11](https://github.com/dropbox/json11)|23.892|40.378|4887|Uses pimpl idiom, implementation uses virtual inheritance
 [rapidjson](https://github.com/miloyip/rapidjson)|6.379|7.25|1048|Uses custom floating point parsing, girsu3 for printing floating-point numbers.
