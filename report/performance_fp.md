@@ -14,7 +14,7 @@ Compiler|Visual Studio 2015
 
 Library|Version
 ---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|master e72c822
+[jsoncons](https://github.com/danielaparker/jsoncons)|0.117.0
 [cJSON](https://github.com/DaveGamble/cJSON)|1.7.9
 [nlohmann](https://github.com/nlohmann/json)|3.4.0
 [json11](https://github.com/dropbox/json11)|master 20161125
@@ -25,12 +25,12 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|17.881|7.862|1047|Uses girsu3 for printing floating-point numbers.
-[cjson](https://github.com/DaveGamble/cJSON)|28.657|51.213|4855|Expect larger size because of inefficient storage.
-[nlohmann](https://github.com/nlohmann/json)|28.95|13.678|1189|Uses girsu2 for printing floating-point numbers.
-[json11](https://github.com/dropbox/json11)|23.892|40.378|4887|Uses pimpl idiom, implementation uses virtual inheritance
-[rapidjson](https://github.com/miloyip/rapidjson)|6.379|7.25|1048|Uses custom floating point parsing, girsu3 for printing floating-point numbers.
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|59.065|60.588|6162|Uses std::map for both arrays and objects
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|295.107|60.147|3499|Boost spirit parsing is slow
-[gason](https://github.com/vivkin/gason)|3.722|51.139|1736|Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code
+[jsoncons](https://github.com/danielaparker/jsoncons)|17.935|7.843|1046|Uses girsu3 for printing floating-point numbers, expect faster serializing. Uses flat sorted map for objects, expect smaller memory footprint.
+[cjson](https://github.com/DaveGamble/cJSON)|32.002|51.534|4857|Inefficient storage (items do not share the same space). Nice use of sprintf and sscanf to support locale-independent round-trip.
+[nlohmann](https://github.com/nlohmann/json)|27.756|14.448|1188|Uses girsu2 for printing floating-point numbers, expect faster serializing. Uses std::map for objects.
+[json11](https://github.com/dropbox/json11)|31.513|37.781|4884|Uses pimpl idiom, implementation uses virtual inheritance
+[rapidjson](https://github.com/miloyip/rapidjson)|5.888|5.643|1047|Uses custom floating point parsing and girsu3 for printing floating-point numbers, expect faster parsing and serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|56.694|59.691|6162|Uses std::map for both arrays and objects
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|297.711|62.381|4222|Boost spirit parsing is slow
+[gason](https://github.com/vivkin/gason)|4.003|48.635|1736|Uses naive floating point conversion, fast but inaccurate. No serialization function, using sample pretty-print code
 

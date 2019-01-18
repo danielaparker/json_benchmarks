@@ -64,7 +64,7 @@ measurements json_spirit_benchmarks::measure(const std::string& input, std::stri
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Boost spirit parsing is slow";
+    results.remarks = "Uses Boost spirit, expect slower parsing.";
     return results;
 }
 

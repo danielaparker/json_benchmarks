@@ -1,4 +1,12 @@
 /*
+Implements the Grisu3 algorithm for printing floating-point numbers. 
+ 
+Follows Florian Loitsch's grisu3_59_56 implementation, available at
+http://florian.loitsch.com/publications, in bench.tar.gz, with 
+minor modifications. 
+*/
+
+/*
   Copyright (c) 2009 Florian Loitsch
 
   Permission is hereby granted, free of charge, to any person
@@ -212,17 +220,24 @@ void fill_exponent(int K, Result& result)
         result.push_back('-');
         K = -K;
     }
+    else
+    {
+        result.push_back('+'); // compatibility with sprintf
+    }
     if (K >= 100)
     {
         result.push_back((char)('0' + K / 100)); K %= 100;
         result.push_back((char)('0' + K / 10)); K %= 10;
         result.push_back((char)('0' + K));
-    } else if (K >= 10)
+    } 
+    else if (K >= 10)
     {
         result.push_back((char)('0' + K / 10)); K %= 10;
         result.push_back((char)('0' + K));
-    } else
+    } 
+    else
     {
+        result.push_back('0'); // compatibility with sprintf
         result.push_back((char)('0' + K));
     }
 }

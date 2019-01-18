@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%BOOST_ROOT%;$(SolutionDir)\..\..\thirdparty\jsoncons-0.114.0;$(SolutionDir)\..\..\thirdparty\rapidjson-1.1.0;$(SolutionDir)\..\..\thirdparty\nlohmann-3.4.0;$(SolutionDir)\..\..\thirdparty\json_spirit-4.08;$(SolutionDir)\..\..\thirdparty\jsoncpp-1.7.7\include;$(SolutionDir)\..\..\thirdparty\gason-master20161107\src;$(SolutionDir)\..\..\src;$(SolutionDir)\..\..\thirdparty\json11-master20161125;$(SolutionDir)\..\..\thirdparty\cjson-1.7.9</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%BOOST_ROOT%;$(SolutionDir)\..\..\thirdparty\jsoncons-0.117.0;$(SolutionDir)\..\..\thirdparty\rapidjson-1.1.0;$(SolutionDir)\..\..\thirdparty\nlohmann-3.4.0;$(SolutionDir)\..\..\thirdparty\json_spirit-4.08;$(SolutionDir)\..\..\thirdparty\jsoncpp-1.7.7\include;$(SolutionDir)\..\..\thirdparty\gason-master20161107\src;$(SolutionDir)\..\..\src;$(SolutionDir)\..\..\thirdparty\json11-master20161125;$(SolutionDir)\..\..\thirdparty\cjson-1.7.9</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>

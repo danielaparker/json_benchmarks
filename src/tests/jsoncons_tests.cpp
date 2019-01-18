@@ -60,6 +60,7 @@ measurements jsoncons_benchmarks::measure(const std::string& input, std::string&
     results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
+    results.remarks = "Uses girsu3 for printing floating-point numbers, expect faster serializing. Uses flat sorted map for objects, expect smaller memory footprint.";
     return results;
 }
 

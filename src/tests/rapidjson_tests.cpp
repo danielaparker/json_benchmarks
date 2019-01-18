@@ -132,7 +132,7 @@ measurements rapidjson_benchmarks::measure(const char *input_filename, const cha
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses custom floating point conversion";
+    results.remarks = "Uses custom floating point parsing and girsu3 for printing floating-point numbers, expect faster parsing and serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.";
     return results;
 }
 

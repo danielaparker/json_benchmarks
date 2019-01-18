@@ -27,7 +27,7 @@ enum class chars_format : uint8_t {fixed=1,scientific=2,hex=4,general=fixed|scie
 class floating_point_options
 {
     chars_format format_;
-    uint8_t precision_;
+    int precision_;
     uint8_t decimal_places_;
 public:
     floating_point_options()
@@ -35,7 +35,7 @@ public:
     {
     }
 
-    floating_point_options(chars_format format, uint8_t precision, uint8_t decimal_places = 0)
+    floating_point_options(chars_format format, int precision, uint8_t decimal_places = 0)
         : format_(format), precision_(precision), decimal_places_(decimal_places)
     {
     }
@@ -50,7 +50,7 @@ public:
     floating_point_options& operator=(const floating_point_options& e) = default;
     floating_point_options& operator=(floating_point_options&& e) = default;
 
-    uint8_t precision() const
+    int precision() const
     {
         return precision_;
     }
@@ -70,11 +70,15 @@ enum class indenting : uint8_t {no_indent = 0, indent = 1};
 
 enum class line_split_kind  : uint8_t {same_line,new_line,multi_line};
 
-enum class bignum_chars_format : uint8_t {integer, base10, base64, base64url
+enum class big_integer_chars_format : uint8_t {number, base10, base64, base64url
 #if !defined(JSONCONS_NO_DEPRECATED)
-,string
+,string,integer
 #endif
 };
+
+#if !defined(JSONCONS_NO_DEPRECATED)
+typedef big_integer_chars_format bignum_chars_format;
+#endif
 
 enum class byte_string_chars_format : uint8_t {none=0,base16,base64,base64url};
 
@@ -117,7 +121,7 @@ public:
 
     virtual byte_string_chars_format byte_string_format() const = 0; 
 
-    virtual bignum_chars_format bignum_format() const = 0; 
+    virtual big_integer_chars_format big_integer_format() const = 0; 
 
     virtual line_split_kind object_object_line_splits() const = 0; 
 
@@ -133,7 +137,7 @@ public:
 
     virtual chars_format floating_point_format() const = 0; 
 
-    virtual uint8_t precision() const = 0; 
+    virtual int precision() const = 0; 
 
     virtual bool escape_all_non_ascii() const = 0; 
 
@@ -184,7 +188,7 @@ public:
 private:
     size_t indent_size_;
     chars_format floating_point_format_;
-    uint8_t precision_;
+    int precision_;
 #if !defined(JSONCONS_NO_DEPRECATED)
     bool can_read_nan_replacement_;
     bool can_read_pos_inf_replacement_;
@@ -196,7 +200,7 @@ private:
     bool escape_all_non_ascii_;
     bool escape_solidus_;
     byte_string_chars_format byte_string_format_;
-    bignum_chars_format bignum_format_;
+    big_integer_chars_format big_integer_format_;
     line_split_kind object_object_line_splits_;
     line_split_kind object_array_line_splits_;
     line_split_kind array_array_line_splits_;
@@ -227,7 +231,7 @@ private:
     std::basic_string<CharT> inf_to_str_;
     std::basic_string<CharT> neginf_to_str_;
 
-    bool decimal_to_str_;
+    bool dec_to_str_;
 public:
     static const size_t indent_size_default = 4;
     static const size_t line_length_limit_default = 120;
@@ -246,7 +250,7 @@ public:
           escape_all_non_ascii_(false),
           escape_solidus_(false),
           byte_string_format_(byte_string_chars_format::none),
-          bignum_format_(bignum_chars_format::base10),
+          big_integer_format_(big_integer_chars_format::base10),
           object_object_line_splits_(line_split_kind::multi_line),
           object_array_line_splits_(line_split_kind::same_line),
           array_array_line_splits_(line_split_kind::new_line),
@@ -266,7 +270,7 @@ public:
           is_str_to_nan_(false),
           is_str_to_inf_(false),
           is_str_to_neginf_(false),
-          decimal_to_str_(false)
+          dec_to_str_(false)
     {
         new_line_chars_.push_back('\n');
     }
@@ -275,9 +279,13 @@ public:
     byte_string_chars_format byte_string_format() const override {return byte_string_format_;}
     basic_json_options<CharT>&  byte_string_format(byte_string_chars_format value) {byte_string_format_ = value; return *this;}
 
-    bignum_chars_format bignum_format() const override {return bignum_format_;}
-    basic_json_options<CharT>&  bignum_format(bignum_chars_format value) {bignum_format_ = value; return *this;}
+    big_integer_chars_format big_integer_format() const override {return big_integer_format_;}
+    basic_json_options<CharT>&  big_integer_format(big_integer_chars_format value) {big_integer_format_ = value; return *this;}
 
+#if !defined(JSONCONS_NO_DEPRECATED)
+    bignum_chars_format bignum_format() const {return big_integer_format_;}
+    basic_json_options<CharT>&  bignum_format(bignum_chars_format value) {big_integer_format_ = value; return *this;}
+#endif
     line_split_kind object_object_line_splits() const override {return object_object_line_splits_;}
     basic_json_options<CharT>& object_object_line_splits(line_split_kind value) {object_object_line_splits_ = value; return *this;}
 
@@ -576,12 +584,12 @@ public:
 
     bool dec_to_str() const override
     {
-        return decimal_to_str_;
+        return dec_to_str_;
     }
 
     basic_json_options<CharT>& dec_to_str(bool value) 
     {
-        decimal_to_str_ = value;
+        dec_to_str_ = value;
         return *this;
     }
 
@@ -607,12 +615,12 @@ public:
         return *this;
     }
 
-    uint8_t precision() const override
+    int precision() const override
     {
         return precision_;
     }
 
-    basic_json_options<CharT>& precision(uint8_t value)
+    basic_json_options<CharT>& precision(int value)
     {
         precision_ = value;
         return *this;
