@@ -24,11 +24,11 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|17.481|8.012|1047|
-[nlohmann](https://github.com/nlohmann/json)|26.485|15.583|438|Uses girsu2 for printing floating-point numbers, expect faster serializing. Uses std::map for objects.
-[cjson](https://github.com/DaveGamble/cJSON)|31.534|52.424|5811|Inefficient storage (items do not share the same space). Nice use of sprintf and sscanf to support locale-independent round-trip.
-[json11](https://github.com/dropbox/json11)|28.616|36.791|4883|Uses pimpl idiom, implementation uses virtual inheritance
-[rapidjson](https://github.com/miloyip/rapidjson)|6.129|6.18|1046|Uses custom floating point parsing and girsu3 for printing floating-point numbers, expect faster parsing and serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|56.008|57.002|6163|Uses std::map for both arrays and objects
-[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|278.609|63.744|388|Boost spirit parsing is slow
+[jsoncons](https://github.com/danielaparker/jsoncons)|20.079|8.842|1057|
+[nlohmann](https://github.com/nlohmann/json)|20.923|15.134|1235|Uses girsu2 for printing floating-point numbers, expect faster serializing. Uses std::map for objects.
+[cjson](https://github.com/DaveGamble/cJSON)|21.742|58.382|5550|Inefficient storage (items do not share the same space). Nice use of sprintf and sscanf to support locale-independent round-trip.
+[json11](https://github.com/dropbox/json11)|19.511|40.91|4914|Uses pimpl idiom, implementation uses virtual inheritance
+[rapidjson](https://github.com/miloyip/rapidjson)|4.216|6.066|1100|Uses custom floating point parsing and girsu3 for printing floating-point numbers, expect faster parsing and serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|53.748|58.741|5682|Uses std::map for both arrays and objects
+[json_spirit](http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented)|251.069|61.536|1505|Boost spirit parsing is slow
 
