@@ -109,7 +109,7 @@ void benchmarks_small_file()
     }
 }
 
-void benchmarks()
+void benchmarks_int()
 {
     try
     {
@@ -289,7 +289,7 @@ void insert_JSONTestSuite(json_parsing_report_generator& generator)
         );
 
         std::stable_sort(pathnames.begin(),pathnames.end(),
-                         [](const test_suite_file& a, const test_suite_file& b)
+                         [](const test_suite_file& a, const test_suite_file& b) -> bool
         {
             return a.type < b.type; 
         }
@@ -371,7 +371,7 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 
 int main()
 {
-    benchmarks();
+    benchmarks_int();
     benchmarks_fp();
     //benchmarks_small_file();
 

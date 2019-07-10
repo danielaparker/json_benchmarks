@@ -151,7 +151,7 @@ std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<
     for (auto& file : pathnames)
     {
         Document d;
-        std::string command = "build\\vs2015\\x64\\Release\\rapidjson_parser.exe ";
+        std::string command = "x64\\Release\\rapidjson_parser.exe ";
         command = command + file.path.string();
         int result = std::system(command.c_str());
         if (file.type == expected_result::expect_success)

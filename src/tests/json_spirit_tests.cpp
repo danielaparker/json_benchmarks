@@ -122,7 +122,7 @@ std::vector<test_suite_result> json_spirit_benchmarks::run_test_suite(std::vecto
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)
     {
-        std::string command = "build\\vs2015\\x64\\Release\\json_spirit_parser.exe ";
+        std::string command = "x64\\Release\\json_spirit_parser.exe ";
         command = command + file.path.string();
         int result = std::system(command.c_str());
 
