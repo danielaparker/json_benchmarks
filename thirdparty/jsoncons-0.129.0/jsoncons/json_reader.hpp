@@ -287,17 +287,6 @@ public:
         buffer_length_ = length;
         buffer_.reserve(buffer_length_);
     }
-#if !defined(JSONCONS_NO_DEPRECATED)
-    size_t max_nesting_depth() const
-    {
-        return parser_.max_nesting_depth();
-    }
-
-    void max_nesting_depth(size_t depth)
-    {
-        parser_.max_nesting_depth(depth);
-    }
-#endif
     void read_next()
     {
         std::error_code ec;
@@ -448,25 +437,40 @@ public:
     }
 
 #if !defined(JSONCONS_NO_DEPRECATED)
-
-    size_t buffer_capacity() const
+    JSONCONS_DEPRECATED("Instead, use max_nesting_depth() on options")
+    size_t max_nesting_depth() const
     {
-        return buffer_length_;
+        return parser_.max_nesting_depth();
     }
 
-    void buffer_capacity(size_t length)
+    JSONCONS_DEPRECATED("Instead, use max_nesting_depth(size_t) on options")
+    void max_nesting_depth(size_t depth)
     {
-        buffer_length_ = length;
-        buffer_.reserve(buffer_length_);
+        parser_.max_nesting_depth(depth);
     }
+    JSONCONS_DEPRECATED("Instead, use max_nesting_depth() on options")
     size_t max_depth() const
     {
         return parser_.max_nesting_depth();
     }
 
+    JSONCONS_DEPRECATED("Instead, use max_nesting_depth(size_t) on options")
     void max_depth(size_t depth)
     {
         parser_.max_nesting_depth(depth);
+    }
+
+    JSONCONS_DEPRECATED("Instead, use buffer_length()")
+    size_t buffer_capacity() const
+    {
+        return buffer_length_;
+    }
+
+    JSONCONS_DEPRECATED("Instead, use buffer_length(size_t)")
+    void buffer_capacity(size_t length)
+    {
+        buffer_length_ = length;
+        buffer_.reserve(buffer_length_);
     }
 #endif
 
@@ -504,8 +508,8 @@ private:
 typedef basic_json_reader<char> json_reader;
 typedef basic_json_reader<wchar_t> wjson_reader;
 #if !defined(JSONCONS_NO_DEPRECATED)
-typedef basic_json_reader<char,jsoncons::string_source<char>> json_string_reader;
-typedef basic_json_reader<wchar_t, jsoncons::string_source<wchar_t>> wjson_string_reader;
+JSONCONS_DEPRECATED("Instead, use json_reader") typedef basic_json_reader<char,jsoncons::string_source<char>> json_string_reader;
+JSONCONS_DEPRECATED("Instead, use wjson_reader")typedef basic_json_reader<wchar_t, jsoncons::string_source<wchar_t>> wjson_string_reader;
 #endif
 
 }

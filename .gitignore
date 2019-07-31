@@ -24,3 +24,15 @@ thirdpartylib/jsoncpp-1.7.7/build/vs2015/x64/Release/
 thirdpartylib/gason_master20161107/build/vs2015/x64
 build/vs2015/test_driver.sln
 report - Copy
+*.suo
+*.sdf
+*.VC.opendb
+*.VC.db
+*.vcxproj.user
+*.vcxproj.filters
+**/x64/Debug/
+**/x64/Release/
+**/Debug/
+**/Release/
+**/build/
+

@@ -132,70 +132,6 @@ public:
     {
         return do_byte_string_value(byte_string(p, size), tag, context);
     }
-#if !defined(JSONCONS_NO_DEPRECATED)
-    bool byte_string_value(const byte_string_view& b, 
-                           byte_string_chars_format encoding_hint, 
-                           semantic_tag tag=semantic_tag::none, 
-                           const ser_context& context=null_ser_context())
-    {
-        switch (encoding_hint)
-        {
-            case byte_string_chars_format::base16:
-                tag = semantic_tag::base16;
-                break;
-            case byte_string_chars_format::base64:
-                tag = semantic_tag::base64;
-                break;
-            case byte_string_chars_format::base64url:
-                tag = semantic_tag::base64url;
-                break;
-            default:
-                break;
-        }
-        return do_byte_string_value(b, tag, context);
-    }
-
-    bool byte_string_value(const uint8_t* p, size_t size, 
-                           byte_string_chars_format encoding_hint, 
-                           semantic_tag tag=semantic_tag::none, 
-                           const ser_context& context=null_ser_context())
-    {
-        switch (encoding_hint)
-        {
-            case byte_string_chars_format::base16:
-                tag = semantic_tag::base16;
-                break;
-            case byte_string_chars_format::base64:
-                tag = semantic_tag::base64;
-                break;
-            case byte_string_chars_format::base64url:
-                tag = semantic_tag::base64url;
-                break;
-            default:
-                break;
-        }
-        return do_byte_string_value(byte_string(p, size), tag, context);
-    }
-    bool big_integer_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
-    {
-        return do_string_value(s, semantic_tag::bigint, context);
-    }
-
-    bool big_decimal_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
-    {
-        return do_string_value(s, semantic_tag::bigdec, context);
-    }
-
-    bool date_time_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
-    {
-        return do_string_value(s, semantic_tag::datetime, context);
-    }
-
-    bool timestamp_value(int64_t val, const ser_context& context=null_ser_context()) 
-    {
-        return do_int64_value(val, semantic_tag::timestamp, context);
-    }
-#endif
 
     bool int64_value(int64_t value, 
                      semantic_tag tag = semantic_tag::none, 
@@ -232,22 +168,94 @@ public:
     }
 
 #if !defined(JSONCONS_NO_DEPRECATED)
+    JSONCONS_DEPRECATED("Instead, use byte_string_value(const byte_string_view& b, semantic_tag, const ser_context&)")
+    bool byte_string_value(const byte_string_view& b, 
+                           byte_string_chars_format encoding_hint, 
+                           semantic_tag tag=semantic_tag::none, 
+                           const ser_context& context=null_ser_context())
+    {
+        switch (encoding_hint)
+        {
+            case byte_string_chars_format::base16:
+                tag = semantic_tag::base16;
+                break;
+            case byte_string_chars_format::base64:
+                tag = semantic_tag::base64;
+                break;
+            case byte_string_chars_format::base64url:
+                tag = semantic_tag::base64url;
+                break;
+            default:
+                break;
+        }
+        return do_byte_string_value(b, tag, context);
+    }
 
+    JSONCONS_DEPRECATED("Instead, use byte_string_value(const byte_string_view& b, semantic_tag, const ser_context&)")
+    bool byte_string_value(const uint8_t* p, size_t size, 
+                           byte_string_chars_format encoding_hint, 
+                           semantic_tag tag=semantic_tag::none, 
+                           const ser_context& context=null_ser_context())
+    {
+        switch (encoding_hint)
+        {
+            case byte_string_chars_format::base16:
+                tag = semantic_tag::base16;
+                break;
+            case byte_string_chars_format::base64:
+                tag = semantic_tag::base64;
+                break;
+            case byte_string_chars_format::base64url:
+                tag = semantic_tag::base64url;
+                break;
+            default:
+                break;
+        }
+        return do_byte_string_value(byte_string(p, size), tag, context);
+    }
+    JSONCONS_DEPRECATED("Instead, use string_value(const string_view_type& s, semantic_tag, const ser_context&=null_ser_context())")
+    bool big_integer_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
+    {
+        return do_string_value(s, semantic_tag::bigint, context);
+    }
+
+    JSONCONS_DEPRECATED("Instead, use string_value(const string_view_type& s, semantic_tag, const ser_context&=null_ser_context())")
+    bool big_decimal_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
+    {
+        return do_string_value(s, semantic_tag::bigdec, context);
+    }
+
+    JSONCONS_DEPRECATED("Instead, use string_value(const string_view_type& s, semantic_tag, const ser_context&=null_ser_context())")
+    bool date_time_value(const string_view_type& s, const ser_context& context=null_ser_context()) 
+    {
+        return do_string_value(s, semantic_tag::datetime, context);
+    }
+
+    JSONCONS_DEPRECATED("Instead, use int64_value(int64_t val, semantic_tag, const ser_context&=null_ser_context())")
+    bool timestamp_value(int64_t val, const ser_context& context=null_ser_context()) 
+    {
+        return do_int64_value(val, semantic_tag::timestamp, context);
+    }
+
+    JSONCONS_DEPRECATED("Instead, remove call")
     bool begin_document()
     {
         return true;
     }
 
+    JSONCONS_DEPRECATED("Instead, use flush()")
     bool end_document()
     {
         flush();
         return true;
     }
 
+    JSONCONS_DEPRECATED("Instead, remove call")
     void begin_json()
     {
     }
 
+    JSONCONS_DEPRECATED("Instead, use flush()")
     void end_json()
     {
         end_document();
@@ -258,6 +266,7 @@ public:
         name(string_view_type(p, length), context);
     }
 
+    JSONCONS_DEPRECATED("Instead, use int64_value(int64_t value)")
     void integer_value(int64_t value)
     {
         int64_value(value);
