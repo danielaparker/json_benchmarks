@@ -3,7 +3,6 @@
 #include <iostream>
 #include "json/json.h"
 #include <sstream>
-#include <boost/filesystem.hpp>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
 #include "library_tests.hpp"

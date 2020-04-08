@@ -2,7 +2,6 @@
 #include "jsoncons/json_reader.hpp"
 #include <chrono>
 #include <fstream>
-#include <boost/filesystem.hpp>
 #include <locale>
 #include <codecvt>
 #include "../measurements.hpp"

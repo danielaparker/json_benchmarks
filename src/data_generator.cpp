@@ -1,6 +1,6 @@
 #include <chrono>
 #include <sstream>
-#include "jsoncons/json_serializer.hpp"
+#include "jsoncons/json_encoder.hpp"
 #include <fstream>
 
 using std::chrono::high_resolution_clock;
@@ -17,9 +17,9 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         throw std::runtime_error(os.str().c_str());
     }
 
-    jsoncons::serialization_options options;
+    jsoncons::json_options options;
     options.escape_all_non_ascii(true);
-    jsoncons::json_serializer handler(os, options);
+    jsoncons::json_encoder handler(os, options);
 
     auto start = high_resolution_clock::now();
 
@@ -40,7 +40,6 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         integer_values.push_back(i);
     }
 
-    handler.begin_json();
     handler.begin_array();
     for (size_t i = 0; i < count; i+=2)
     {
@@ -79,7 +78,7 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         handler.begin_array();
         for (auto x : integer_values)
         {
-            handler.integer_value(x);
+            handler.int64_value(x);
         }
         handler.end_array();
         handler.name("double_values");
@@ -133,7 +132,7 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
         handler.end_object();
     }
     handler.end_array();
-    handler.end_json();
+    handler.flush();
     auto end = high_resolution_clock::now();
     auto time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << "Big file took " << (time_to_write/1000.0) << " seconds to write.\n";

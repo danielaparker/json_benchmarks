@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <fstream>
 #include <chrono>
-#include <boost/filesystem.hpp>
 #include "nlohmann/json.hpp"
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"

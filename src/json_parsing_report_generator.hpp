@@ -2,6 +2,7 @@
 #include "measurements.hpp"
 #include <string>
 #include <sstream>
+#include <functional>
 
 namespace json_benchmarks {
     

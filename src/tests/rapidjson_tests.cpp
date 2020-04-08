@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
-#include <boost/filesystem.hpp>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
 #include "library_tests.hpp"

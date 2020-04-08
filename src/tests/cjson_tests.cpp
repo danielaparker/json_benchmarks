@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
-#include <boost/filesystem.hpp>
 #include "cjson/cJSON.h"
 #include "measurements.hpp"
 #include "memory_measurer.hpp"

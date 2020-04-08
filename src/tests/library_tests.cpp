@@ -1,7 +1,7 @@
 #include "measurements.hpp"
 #include "tests/library_tests.hpp"
 #include <vector>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 namespace json_benchmarks {
 
@@ -37,7 +37,7 @@ namespace json_benchmarks {
 
     std::vector<measurements> library_tests::measure(const char *input_filename, const char* output_dir)
     {
-        boost::filesystem::path base(output_dir);
+        fs::path base(output_dir);
 
         std::vector<measurements> tests;
 

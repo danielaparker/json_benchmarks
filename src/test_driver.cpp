@@ -7,6 +7,9 @@
 #include "json_parsing_report_generator.hpp"
 #include "data_generator.hpp"
 #include "jsoncons/json.hpp"
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 using namespace json_benchmarks;
 
@@ -259,7 +262,7 @@ void insert_JSONTestSuite(json_parsing_report_generator& generator)
         json_file_finder
         (
             "data/input/JSONTestSuite",
-            [&](const boost::filesystem::path& path) 
+            [&](const fs::path& path) 
             {
                 std::string buffer;
                 {
@@ -323,7 +326,7 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
         json_file_finder
         (
             "data/input/JSON_checker",
-            [&](const boost::filesystem::path& path) 
+            [&](const fs::path& path) 
             {
                 std::string buffer;
                 {
