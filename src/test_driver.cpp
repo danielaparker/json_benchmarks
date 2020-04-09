@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 using namespace json_benchmarks;
 
-void benchmarks_small_file(std::vector<json_implementation>& info)
+void benchmarks_small_file(std::vector<json_implementation>& implementations)
 {
     try
     {
@@ -59,7 +59,7 @@ void benchmarks_small_file(std::vector<json_implementation>& info)
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        for (const auto& val : info)
+        for (const auto& val : implementations)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
         }
@@ -68,14 +68,14 @@ void benchmarks_small_file(std::vector<json_implementation>& info)
         os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        std::vector<measurements> v(info.size());
+        std::vector<measurements> v(implementations.size());
 
         size_t number_times = 50000;
         for (size_t i = 0; i < number_times; ++i)
         {
-            for (size_t j = 0; j < info.size(); ++j)
+            for (size_t j = 0; j < implementations.size(); ++j)
             {
-                auto results = info[j].measures->measure_small(input,output);
+                auto results = implementations[j].measures->measure_small(input,output);
                 v[j].time_to_read += results.time_to_read;
                 v[j].time_to_write += results.time_to_write;
                 v[j].memory_used += results.memory_used;
@@ -99,7 +99,7 @@ void benchmarks_small_file(std::vector<json_implementation>& info)
     }
 }
 
-void benchmarks_int(std::vector<json_implementation>& info)
+void benchmarks_int(std::vector<json_implementation>& implementations)
 {
     try
     {
@@ -135,7 +135,7 @@ void benchmarks_int(std::vector<json_implementation>& info)
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
 
-        for (const auto& val : info)
+        for (const auto& val : implementations)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
         }
@@ -144,11 +144,11 @@ void benchmarks_int(std::vector<json_implementation>& info)
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (auto& item : info)
+        for (auto& impl : implementations)
         {
-            std::string output_path = "data/output/persons_" + item.name + ".json";
-            auto results = item.measures->measure_big("data/output/persons.json",output_path.c_str());
-            os << results.library_name
+            std::string output_path = "data/output/persons_" + impl.name + ".json";
+            auto results = impl.measures->measure_big("data/output/persons.json",output_path.c_str());
+            os << "[" << impl.name << "](" << impl.url << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
@@ -164,7 +164,7 @@ void benchmarks_int(std::vector<json_implementation>& info)
     }
 }
 
-void benchmarks_fp(std::vector<json_implementation>& info)
+void benchmarks_fp(std::vector<json_implementation>& implementations)
 {
     try
     {
@@ -199,7 +199,7 @@ void benchmarks_fp(std::vector<json_implementation>& info)
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        for (const auto& val : info)
+        for (const auto& val : implementations)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
         }
@@ -208,11 +208,11 @@ void benchmarks_fp(std::vector<json_implementation>& info)
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (auto& item : info)
+        for (auto& impl : implementations)
         {
-            std::string output_path = "data/output_fp/persons_" + item.name + ".json";
-            auto results = item.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
-            os << results.library_name
+            std::string output_path = "data/output_fp/persons_" + impl.name + ".json";
+            auto results = impl.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
+            os << "[" << impl.name << "](" << impl.url << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
@@ -228,7 +228,7 @@ void benchmarks_fp(std::vector<json_implementation>& info)
     }
 }
 
-void json_test_suite_parsing_tests(const std::vector<json_implementation>& info,
+void json_test_suite_parsing_tests(const std::vector<json_implementation>& implementations,
                                   json_parsing_test_visitor& visitor)
 {
     try
@@ -275,9 +275,9 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& info,
         );
 
         std::vector<std::vector<test_suite_result>> results;
-        for (auto& item : info)
+        for (auto& impl : implementations)
         {
-            results.push_back(item.measures->run_test_suite(pathnames));
+            results.push_back(impl.measures->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
@@ -288,7 +288,7 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& info,
     }
 }
 
-void json_checker_parsing_tests(const std::vector<json_implementation>& info,
+void json_checker_parsing_tests(const std::vector<json_implementation>& implementations,
                                 json_parsing_test_visitor& visitor)
 {
     try
@@ -335,9 +335,9 @@ void json_checker_parsing_tests(const std::vector<json_implementation>& info,
         );
 
         std::vector<std::vector<test_suite_result>> results;
-        for (auto& item : info)
+        for (auto& impl : implementations)
         {
-            results.push_back(item.measures->run_test_suite(pathnames));
+            results.push_back(impl.measures->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
