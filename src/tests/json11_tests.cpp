@@ -1,7 +1,7 @@
 #include <fstream>
 #include <chrono>
 #include <iostream>
-#include "json11/json11.hpp"
+#include "json11.hpp"
 #include <sstream>
 #include <stdio.h>
 #include "../measurements.hpp"
@@ -18,7 +18,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[json11](https://github.com/dropbox/json11)";
 
-measurements json11_benchmarks::measure(const std::string& input, std::string& output)
+measurements json11_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -64,7 +64,7 @@ measurements json11_benchmarks::measure(const std::string& input, std::string& o
     return results;
 }
 
-measurements json11_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements json11_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;

@@ -1,5 +1,4 @@
 #include "tests/library_tests.hpp"
-
 #include <iostream>
 #include <fstream>
 #include "measurements.hpp"
@@ -13,12 +12,10 @@ namespace fs = std::filesystem;
 
 using namespace json_benchmarks;
 
-void benchmarks_small_file()
+void benchmarks_small_file(std::vector<library_info>& info)
 {
     try
     {
-        library_tests tests;
-
         const char *filename = "data/input/small_file/small_file_text_array.json";
 
         size_t file_size;
@@ -62,7 +59,6 @@ void benchmarks_small_file()
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        auto info = tests.get_library_info();
         for (const auto& val : info)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
@@ -72,31 +68,22 @@ void benchmarks_small_file()
         os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        std::vector<measurements> v;
+        std::vector<measurements> v(info.size());
 
         size_t number_times = 50000;
         for (size_t i = 0; i < number_times; ++i)
         {
-            auto measurement_results = tests.measure(input,output);
-            for (size_t j = 0; j < measurement_results.size(); ++j)
+            for (size_t j = 0; j < info.size(); ++j)
             {
-                const auto& results = measurement_results[j];
-                if (i == 0)
-                {
-                    v.push_back(results);
-                }
-                else
-                {
-                    v[j].time_to_read += results.time_to_read;
-                    v[j].time_to_write += results.time_to_write;
-                    v[j].memory_used += results.memory_used;
-                }
+                auto results = info[j].measures->measure_small(input,output);
+                v[j].time_to_read += results.time_to_read;
+                v[j].time_to_write += results.time_to_write;
+                v[j].memory_used += results.memory_used;
             }
             output.clear();
         }
-        for (size_t i = 0; i < v.size(); ++i)
+        for (const auto& results : v)
         {
-            const auto& results = v[i];
             os << results.library_name
                << "|" << results.time_to_read/(number_times)
                << "|" << results.time_to_write/(number_times)
@@ -112,12 +99,10 @@ void benchmarks_small_file()
     }
 }
 
-void benchmarks_int()
+void benchmarks_int(std::vector<library_info>& info)
 {
     try
     {
-        library_tests tests;
-
         const char *filename = "data/output/persons.json";
         make_big_file(filename, 50000, 5000, 0, 0);
 
@@ -143,13 +128,13 @@ void benchmarks_int()
         os << "Operating system"
            << "|" << "Windows 2010" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2015" << std::endl;
+           << "|" << "Visual Studio 2019" << std::endl;
 
         os << std::endl;
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        auto info = tests.get_library_info();
+
         for (const auto& val : info)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
@@ -159,9 +144,10 @@ void benchmarks_int()
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        auto measurements = tests.measure("data/output/persons.json","data/output/");
-        for (const auto& results : measurements)
+        for (auto& item : info)
         {
+            std::string output_path = "data/output/persons_" + item.name + ".json";
+            auto results = item.measures->measure_big("data/output/persons.json",output_path.c_str());
             os << results.library_name
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
@@ -178,12 +164,10 @@ void benchmarks_int()
     }
 }
 
-void benchmarks_fp()
+void benchmarks_fp(std::vector<library_info>& info)
 {
     try
     {
-        library_tests tests;
-
         const char *filename = "data/output/persons_fp.json";
         make_big_file(filename, 50000, 0, 2500, 0);
 
@@ -192,7 +176,7 @@ void benchmarks_fp()
                 std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
                 file_size = in.tellg(); 
         }
-
+ 
         std::ofstream os("report/performance_fp.md");
         os << std::endl;
         os << "## Read and Write Time Comparison" << std::endl << std::endl;
@@ -209,13 +193,12 @@ void benchmarks_fp()
         os << "Operating system"
            << "|" << "Windows 2010" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2015" << std::endl;
+           << "|" << "Visual Studio 2019" << std::endl;
 
         os << std::endl;
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        auto info = tests.get_library_info();
         for (const auto& val : info)
         {
             os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
@@ -225,9 +208,10 @@ void benchmarks_fp()
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        auto measurements = tests.measure("data/output/persons_fp.json","data/output_fp/");
-        for (const auto& results : measurements)
+        for (auto& item : info)
         {
+            std::string output_path = "data/output_fp/persons_" + item.name + ".json";
+            auto results = item.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
             os << results.library_name
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
@@ -244,11 +228,11 @@ void benchmarks_fp()
     }
 }
 
-void insert_JSONTestSuite(json_parsing_report_generator& generator)
+void insert_JSONTestSuite(const std::vector<library_info>& info,
+                          json_parsing_report_generator& generator)
 {
     try
     {
-        library_tests tests;
         std::vector<result_code_info> result_code_infos;
         result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#d19b73"});
         result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#69005e"});
@@ -298,7 +282,11 @@ void insert_JSONTestSuite(json_parsing_report_generator& generator)
         }
         );
 
-        auto results = tests.run_test_suite(pathnames);
+        std::vector<std::vector<test_suite_result>> results;
+        for (auto& item : info)
+        {
+            results.push_back(item.measures->run_test_suite(pathnames));
+        }
 
         generator.insert_results(pathnames,results);
     }
@@ -308,11 +296,11 @@ void insert_JSONTestSuite(json_parsing_report_generator& generator)
     }
 }
 
-void insert_JSON_checker(json_parsing_report_generator& generator)
+void insert_JSON_checker(const std::vector<library_info>& info,
+                         json_parsing_report_generator& generator)
 {
     try
     {
-        library_tests tests;
         std::vector<result_code_info> result_code_infos;
         result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
         result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
@@ -362,7 +350,11 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
         }
         );
 
-        auto results = tests.run_test_suite(pathnames);
+        std::vector<std::vector<test_suite_result>> results;
+        for (auto& item : info)
+        {
+            results.push_back(item.measures->run_test_suite(pathnames));
+        }
 
         generator.insert_results(pathnames,results);
     }
@@ -374,11 +366,49 @@ void insert_JSON_checker(json_parsing_report_generator& generator)
 
 int main()
 {
-    //benchmarks_int();
-    benchmarks_fp();
-    //benchmarks_small_file();
+    std::vector<library_info> info; 
 
-    std::vector<result_code_info> result_code_infos;
+    info.emplace_back("jsoncons",
+                      "https://github.com/danielaparker/jsoncons",
+                      "0.150.0", 
+                      "With strict_json_parsing, uses wjson if utf16" ,
+                      std::make_shared<jsoncons_benchmarks>());
+    info.emplace_back("nlohmann",
+                      "https://github.com/nlohmann/json",
+                      "3.7.3", 
+                      "",
+                      std::make_shared<nlohmann_benchmarks>());
+    info.emplace_back("cJSON",
+                      "https://github.com/DaveGamble/cJSON",
+                      "2019-11-30", 
+                      "",
+                      std::make_shared<cjson_benchmarks>());
+    info.emplace_back("json11",
+                      "https://github.com/dropbox/json11",
+                      "2017-06-20-2", 
+                      "",
+                      std::make_shared<json11_benchmarks>());
+    info.emplace_back("rapidjson",
+                      "https://github.com/miloyip/rapidjson",
+                      "2020-02-08", 
+                      "Uses custom (non standard lib) floating point conversion",
+                      std::make_shared<rapidjson_benchmarks>());
+    info.emplace_back("jsoncpp",
+                      "https://github.com/open-source-parsers/jsoncpp",
+                      "1.9.2", 
+                      "Uses map for both arrays and objects",
+                      std::make_shared<jsoncpp_benchmarks>());
+    info.emplace_back("json_spirit",
+                      "http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented",
+                      "4.1.0-1", 
+                      "",
+                      std::make_shared<json_spirit_benchmarks>());
+
+    benchmarks_int(info);
+    //benchmarks_fp(info);
+    //benchmarks_small_file(info);
+
+    /*std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
@@ -386,11 +416,10 @@ int main()
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_failed,"Result undefined, parsing failed","#050f07"});
     result_code_infos.push_back(result_code_info{result_code::process_stopped,"Process stopped","#e00053"});
 
-    /*std::ofstream fs("docs/index.html");
-    json_parsing_report_generator generator("Parser Comparisons", result_code_infos, library_tests::get_library_info(),fs);
+    std::ofstream fs("docs/index.html");
+    json_parsing_report_generator generator("Parser Comparisons", result_code_infos, info, fs);
     generator.insert_generator("JSON Test Suite",insert_JSONTestSuite);
     generator.insert_generator("JSON Checker",insert_JSON_checker);
     generator.generate();*/
-
 }
 

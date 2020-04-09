@@ -101,16 +101,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\tools\boost_1_72_0;C:\src\json_benchmarks\thirdparty\cjson-1.7.12;C:\src\json_benchmarks\thirdparty\json_spirit-4.08;C:\src\json_benchmarks\thirdparty\json11-master20161125\;C:\src\json_benchmarks\thirdparty\jsoncons-0.129.0;C:\src\json_benchmarks\thirdparty\jsoncpp-1.9.0\include;C:\src\json_benchmarks\thirdparty\nlohmann-3.6.1;C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;C:\src\json_benchmarks\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\danie\Documents\GitHub\json_benchmarks\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%BOOST_LIB%</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)\x64\Release\jsoncpp_lib.lib;$(SolutionDir)\x64\Release\gason_lib.lib;$(SolutionDir)\x64\Release\json11_lib.lib;$(SolutionDir)\x64\Release\cjson_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,9 +139,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\tools\boost_1_72_0;C:\src\json_benchmarks\thirdparty\cjson-1.7.12;C:\src\json_benchmarks\thirdparty\json_spirit-4.08;C:\src\json_benchmarks\thirdparty\json11-master20161125\;C:\src\json_benchmarks\thirdparty\jsoncons-0.129.0;C:\src\json_benchmarks\thirdparty\jsoncpp-1.9.0\include;C:\src\json_benchmarks\thirdparty\nlohmann-3.6.1;C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;C:\src\json_benchmarks\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\danie\Documents\GitHub\json_benchmarks\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,7 +150,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%BOOST_LIB%</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)\x64\Release\jsoncpp_lib.lib;$(SolutionDir)\x64\Release\gason_lib.lib;$(SolutionDir)\x64\Release\json11_lib.lib;$(SolutionDir)\x64\Release\cjson_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -163,7 +164,6 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\tools\boost_1_72_0\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\tools\boost_1_72_0\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="src\tests\library_tests.cpp" />
     <ClCompile Include="src\tests\nlohmann_tests.cpp" />
     <ClCompile Include="src\tests\rapidjson_tests.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

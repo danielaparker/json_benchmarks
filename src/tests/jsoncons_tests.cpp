@@ -18,7 +18,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
 
-measurements jsoncons_benchmarks::measure(const std::string& input, std::string& output)
+measurements jsoncons_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -63,8 +63,9 @@ measurements jsoncons_benchmarks::measure(const std::string& input, std::string&
     return results;
 }
 
-measurements jsoncons_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements jsoncons_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
+    std::cout << "jsoncons output_filename: " << output_filename << "\n";
     size_t start_memory_used;
     size_t end_memory_used;
     size_t time_to_read;
@@ -94,7 +95,7 @@ measurements jsoncons_benchmarks::measure(const char *input_filename, const char
                 std::ofstream os;
                 os.open(output_filename, std::ios_base::out | std::ios_base::binary);
                 auto start = high_resolution_clock::now();
-                os << root;
+                root.dump(os);
                 auto end = high_resolution_clock::now();
                 time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             }
@@ -115,7 +116,7 @@ std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<t
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)
     {
-        strict_parse_error_handler err_handler;
+        strict_json_parsing err_handler;
         if (file.type == expected_result::expect_success)
         {
             if (file.path.filename().string().find("utf16") != std::string::npos)

@@ -1,4 +1,5 @@
 #include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/filereadstream.h"
 #include "rapidjson/filewritestream.h"
@@ -23,7 +24,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
 
-measurements rapidjson_benchmarks::measure(const std::string& input, std::string& output)
+measurements rapidjson_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
@@ -73,8 +74,10 @@ measurements rapidjson_benchmarks::measure(const std::string& input, std::string
     return results;
 }
 
-measurements rapidjson_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements rapidjson_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
+    std::cout << "rapidjson output_filename: " << output_filename << "\n";
+
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
     size_t time_to_read = 0;
@@ -87,10 +90,17 @@ measurements rapidjson_benchmarks::measure(const char *input_filename, const cha
         {
             auto start = high_resolution_clock::now();
             FILE* fp = fopen(input_filename, "rb"); // non-Windows use "r"
+            assert(fp);
             std::vector<char> readBuffer; 
             readBuffer.resize(65536);
             FileReadStream is(fp, readBuffer.data(), readBuffer.size());
-            d.ParseStream(is);
+            if (d.ParseStream(is).HasParseError()) 
+            {
+                fprintf(stderr, "\nError(offset %u): %s\n", 
+                    (unsigned)d.GetErrorOffset(),
+                    GetParseError_En(d.GetParseError()));
+                exit(1);
+            }
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             fclose(fp);
@@ -104,12 +114,17 @@ measurements rapidjson_benchmarks::measure(const char *input_filename, const cha
         {
             try
             {
-                FILE* fp = fopen(output_filename, "wb"); // non-Windows use "w"
-                assert(fp != nullptr);
+                FILE* fp;
+                errno_t err  = fopen_s(&fp, output_filename, "wb");
+                if( err != 0 )
+                {
+                    printf( "The file '%s' was not opened\n", output_filename);
+                    exit(1);
+                }
 
                 std::vector<char> writeBuffer;
                 writeBuffer.resize(65536);
-                FileWriteStream os(fp, &writeBuffer[0], writeBuffer.size());
+                FileWriteStream os(fp, writeBuffer.data(), writeBuffer.size());
 
                 Writer<FileWriteStream> writer(os);
                 auto start = high_resolution_clock::now();

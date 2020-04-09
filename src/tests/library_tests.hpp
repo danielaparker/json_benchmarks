@@ -3,91 +3,103 @@
 
 #include "measurements.hpp"
 #include <vector>
+#include <memory>
 
 namespace json_benchmarks {
 
-    class cjson_benchmarks
+    class library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        virtual ~library_measures() = default;
+        virtual measurements measure_small(const std::string& input, std::string& output) = 0;
+        virtual measurements measure_big(const char *input_filename, const char* output_filename) = 0;
+        virtual std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) = 0;
     };
 
-    class gason_benchmarks
+    struct library_info
     {
-    public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
+        std::string name;
+        std::string url;
+        std::string version;
+        std::string notes;
+        std::shared_ptr<library_measures> measures;
 
+        library_info() = default;
+
+        library_info(const library_info&) = default;
+
+        library_info(const std::string& name,
+                     const std::string& url,
+                     const std::string& version,
+                     const std::string& notes,
+                     std::shared_ptr<library_measures> measures)
+            : name(name), url(url), version(version), notes(notes), measures(measures)
+        {
+        }
     };
 
-    class json11_benchmarks
+    class cjson_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class json_spirit_benchmarks
+    class gason_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class jsoncons_benchmarks
+    class json11_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class jsoncpp_benchmarks
+    class json_spirit_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class nlohmann_benchmarks
+    class jsoncons_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class rapidjson_benchmarks
+    class jsoncpp_benchmarks : public library_measures
     {
     public:
-        static measurements measure(const std::string& input, std::string& output);
-        static measurements measure(const char *input_filename, const char* output_filename);
-        static std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames);
-
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class library_tests
+    class nlohmann_benchmarks : public library_measures
     {
     public:
-        static std::vector<library_info> get_library_info();
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
+    };
 
-        std::vector<measurements> measure(const std::string& input, std::string& output);
-
-        std::vector<measurements> measure(const char *input_filename, const char *output_dir);
-
-        std::vector<std::vector<test_suite_result>> run_test_suite(std::vector<test_suite_file>& pathnames) const;
+    class rapidjson_benchmarks : public library_measures
+    {
+    public:
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 }
 

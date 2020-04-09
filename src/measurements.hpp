@@ -41,14 +41,6 @@ namespace json_benchmarks {
         }
     }
 
-    struct library_info
-    {
-        std::string name;
-        std::string url;
-        std::string version;
-        std::string notes;
-    };
-
     struct measurements
     {
         std::string library_name;
@@ -56,6 +48,11 @@ namespace json_benchmarks {
         size_t time_to_read;
         size_t time_to_write;
         std::string remarks;
+
+        measurements()
+            : memory_used(0), time_to_read(0), time_to_write(0) 
+        {
+        }
     };
 
     enum class result_code

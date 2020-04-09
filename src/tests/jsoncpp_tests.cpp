@@ -17,7 +17,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[jsoncpp](https://github.com/open-source-parsers/jsoncpp)";
 
-measurements jsoncpp_benchmarks::measure(const std::string& input, std::string& output)
+measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -50,8 +50,13 @@ measurements jsoncpp_benchmarks::measure(const std::string& input, std::string& 
         {
             std::stringstream os;
             auto start = high_resolution_clock::now();
-            Json::FastWriter writer;
-            os << writer.write( root );
+
+
+            Json::StreamWriterBuilder builder;
+            builder.settings_["indentation"] = "";
+            std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+            writer->write(root, &os);
+
             output = os.str();
 
             auto end = high_resolution_clock::now();
@@ -69,7 +74,7 @@ measurements jsoncpp_benchmarks::measure(const std::string& input, std::string& 
     return results;
 }
 
-measurements jsoncpp_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -105,15 +110,11 @@ measurements jsoncpp_benchmarks::measure(const char *input_filename, const char*
             std::ofstream os;
             os.open(output_filename, std::ios_base::out | std::ios_base::binary);
             auto start = high_resolution_clock::now();
-            //os << root;
 
-
-               Json::FastWriter writer;
-               os << writer.write( root );
-
-            //StyledWriter styledWriter;
-            //std::ofstream writer(filename, std::ifstream::binary);
-            //os << styledWriter.write(root);
+            Json::StreamWriterBuilder builder;
+            builder.settings_["indentation"] = "";
+            std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+            writer->write(root, &os);
 
             auto end = high_resolution_clock::now();
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

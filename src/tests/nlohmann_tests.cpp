@@ -16,7 +16,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[nlohmann](https://github.com/nlohmann/json)";
 
-measurements nlohmann_benchmarks::measure(const std::string& input, std::string& output)
+measurements nlohmann_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -60,7 +60,7 @@ measurements nlohmann_benchmarks::measure(const std::string& input, std::string&
     return results;
 }
 
-measurements nlohmann_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements nlohmann_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;

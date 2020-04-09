@@ -20,7 +20,7 @@ namespace json_benchmarks {
 
 const std::string library_name = "[cjson](https://github.com/DaveGamble/cJSON)";
 
-measurements cjson_benchmarks::measure(const std::string& input, std::string& output)
+measurements cjson_benchmarks::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -66,7 +66,7 @@ measurements cjson_benchmarks::measure(const std::string& input, std::string& ou
     return results;
 }
 
-measurements cjson_benchmarks::measure(const char *input_filename, const char* output_filename)
+measurements cjson_benchmarks::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
