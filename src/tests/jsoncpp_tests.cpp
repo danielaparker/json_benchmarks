@@ -5,7 +5,7 @@
 #include <sstream>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "library_tests.hpp"
+#include "json_benchmarks.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;

@@ -1,5 +1,5 @@
-#ifndef JSON_BENCHMARKS_LIBRARY_TESTS_HPP
-#define JSON_BENCHMARKS_LIBRARY_TESTS_HPP
+#ifndef JSON_BENCHMARKS_HPP
+#define JSON_BENCHMARKS_HPP
 
 #include "measurements.hpp"
 #include <vector>
@@ -7,38 +7,46 @@
 
 namespace json_benchmarks {
 
-    class library_measures
+    class benchmarks
     {
     public:
-        virtual ~library_measures() = default;
+        virtual ~benchmarks() = default;
         virtual measurements measure_small(const std::string& input, std::string& output) = 0;
         virtual measurements measure_big(const char *input_filename, const char* output_filename) = 0;
         virtual std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) = 0;
     };
 
-    struct library_info
+    class cjson_benchmarks : public benchmarks
+    {
+    public:
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
+    };
+
+    struct json_implementation
     {
         std::string name;
         std::string url;
         std::string version;
         std::string notes;
-        std::shared_ptr<library_measures> measures;
+        std::shared_ptr<benchmarks> measures;
 
-        library_info() = default;
+        json_implementation() = default;
 
-        library_info(const library_info&) = default;
+        json_implementation(const json_implementation&) = default;
 
-        library_info(const std::string& name,
-                     const std::string& url,
-                     const std::string& version,
-                     const std::string& notes,
-                     std::shared_ptr<library_measures> measures)
+        json_implementation(const std::string& name,
+                           const std::string& url,
+                           const std::string& version,
+                           const std::string& notes,
+                           std::shared_ptr<benchmarks> measures)
             : name(name), url(url), version(version), notes(notes), measures(measures)
         {
         }
     };
 
-    class cjson_benchmarks : public library_measures
+    class json11_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
@@ -46,7 +54,7 @@ namespace json_benchmarks {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class gason_benchmarks : public library_measures
+    class json_spirit_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
@@ -54,7 +62,7 @@ namespace json_benchmarks {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class json11_benchmarks : public library_measures
+    class jsoncons_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
@@ -62,7 +70,7 @@ namespace json_benchmarks {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class json_spirit_benchmarks : public library_measures
+    class jsoncpp_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
@@ -70,7 +78,7 @@ namespace json_benchmarks {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class jsoncons_benchmarks : public library_measures
+    class nlohmann_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
@@ -78,23 +86,7 @@ namespace json_benchmarks {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
-    class jsoncpp_benchmarks : public library_measures
-    {
-    public:
-        measurements measure_small(const std::string& input, std::string& output) override;
-        measurements measure_big(const char *input_filename, const char* output_filename) override;
-        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
-    };
-
-    class nlohmann_benchmarks : public library_measures
-    {
-    public:
-        measurements measure_small(const std::string& input, std::string& output) override;
-        measurements measure_big(const char *input_filename, const char* output_filename) override;
-        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
-    };
-
-    class rapidjson_benchmarks : public library_measures
+    class rapidjson_benchmarks : public benchmarks
     {
     public:
         measurements measure_small(const std::string& input, std::string& output) override;
