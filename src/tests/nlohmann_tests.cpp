@@ -104,8 +104,17 @@ measurements nlohmann_benchmarks::measure_big(const char *input_filename, const 
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses girsu2 for printing floating-point numbers, expect faster serializing. Uses std::map for objects.";
     return results;
+}
+
+const std::string& nlohmann_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses `std::map` for objects.
+Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
+    )abc";
+
+    return s;
 }
 
 std::vector<test_suite_result> nlohmann_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)

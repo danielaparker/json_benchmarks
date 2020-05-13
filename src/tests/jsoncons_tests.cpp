@@ -59,7 +59,6 @@ measurements jsoncons_benchmarks::measure_small(const std::string& input, std::s
     results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses girsu3 for printing floating-point numbers, expect faster serializing. Uses flat sorted map for objects, expect smaller memory footprint.";
     return results;
 }
 
@@ -109,6 +108,17 @@ measurements jsoncons_benchmarks::measure_big(const char *input_filename, const 
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
+}
+
+const std::string& jsoncons_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.
+Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) 
+plus fallback for printing doubles, expect faster serializing.
+    )abc";
+
+    return s;
 }
 
 std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)

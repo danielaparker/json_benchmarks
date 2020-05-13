@@ -64,7 +64,6 @@ measurements json_spirit_benchmarks::measure_small(const std::string& input, std
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses Boost spirit, expect slower parsing.";
     return results;
 }
 
@@ -113,8 +112,16 @@ measurements json_spirit_benchmarks::measure_big(const char *input_filename, con
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Boost spirit parsing is slow";
     return results;
+}
+
+const std::string& json_spirit_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses Boost spirit parsing, expect slower parsing.
+    )abc";
+
+    return s;
 }
 
 std::vector<test_suite_result> json_spirit_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)

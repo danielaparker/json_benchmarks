@@ -82,13 +82,13 @@ void benchmarks_small_file(std::vector<json_implementation>& implementations)
             }
             output.clear();
         }
-        for (const auto& results : v)
+        for (size_t j = 0; j < implementations.size(); ++j)
         {
-            os << results.library_name
-               << "|" << results.time_to_read/(number_times)
-               << "|" << results.time_to_write/(number_times)
-               << "|" << results.memory_used/number_times
-               << "|" << results.remarks
+            os << v[j].library_name
+               << "|" << v[j].time_to_read/(number_times)
+               << "|" << v[j].time_to_write/(number_times)
+               << "|" << v[j].memory_used/number_times
+               << "|" << implementations[j].measures->remarks()
                << std::endl; 
         }
         os << std::endl;
@@ -144,15 +144,16 @@ void benchmarks_int(std::vector<json_implementation>& implementations)
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (auto& impl : implementations)
+        for (size_t j = 0; j < implementations.size(); ++j)
         {
+            auto& impl = implementations[j];
             std::string output_path = "data/output/persons_" + impl.name + ".json";
             auto results = impl.measures->measure_big("data/output/persons.json",output_path.c_str());
             os << "[" << impl.name << "](" << impl.url << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << results.remarks
+               << "|" << impl.measures->remarks()
                << std::endl; 
         }
 
@@ -208,15 +209,16 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (auto& impl : implementations)
+        for (size_t j = 0; j < implementations.size(); ++j)
         {
+            auto& impl = implementations[j];
             std::string output_path = "data/output_fp/persons_" + impl.name + ".json";
             auto results = impl.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
             os << "[" << impl.name << "](" << impl.url << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << results.remarks
+               << "|" << impl.measures->remarks()
                << std::endl; 
         }
 
@@ -394,10 +396,10 @@ int main()
                                  std::make_shared<taojson_benchmarks>());
 
     //benchmarks_int(implementations);
-    //benchmarks_fp(implementations);
+    benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 
-    std::vector<result_code_info> result_code_infos;
+    /*std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
@@ -409,6 +411,6 @@ int main()
     json_parsing_test_reporter reporter("Parser Comparisons", implementations, result_code_infos, fs);
     reporter.register_test("JSON Test Suite",json_test_suite_parsing_tests);
     reporter.register_test("JSON Checker",json_checker_parsing_tests);
-    reporter.run_tests();
+    reporter.run_tests();*/
 }
 

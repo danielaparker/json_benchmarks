@@ -47,7 +47,6 @@ namespace json_benchmarks {
         size_t memory_used;
         size_t time_to_read;
         size_t time_to_write;
-        std::string remarks;
 
         measurements()
             : memory_used(0), time_to_read(0), time_to_write(0) 

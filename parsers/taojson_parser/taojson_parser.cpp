@@ -17,8 +17,9 @@ int main(int argc, char *argv[])
             tao::json::value val = tao::json::from_stream(is, argv[1]);
             return 0;
         }
-        catch (...)
+        catch (const std::exception& e)
         {
+            std::cout << "[taojson parse] " << e.what() << std::endl;
             return 1;
         }
     }

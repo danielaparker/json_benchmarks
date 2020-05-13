@@ -70,7 +70,6 @@ measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::st
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses std::map for both arrays and objects - expect larger memory footprint";
     return results;
 }
 
@@ -127,8 +126,16 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses std::map for both arrays and objects";
     return results;
+}
+
+const std::string& jsoncpp_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses std::map for both arrays and objects, expect larger memory footprint.
+    )abc";
+
+    return s;
 }
 
 std::vector<test_suite_result> jsoncpp_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)

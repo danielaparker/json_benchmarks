@@ -146,8 +146,18 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses custom floating point parsing and girsu3 for printing floating-point numbers, expect faster parsing and serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.";
     return results;
+}
+
+const std::string& rapidjson_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses custom floating point parsing, expect faster parsing. 
+Uses girsu3 for printing doubles, expect faster serializing. 
+Uses custom allocation and flat map for objects, expect smaller memory footprint.
+    )abc";
+
+    return s;
 }
 
 void print(FILE* fp, const Value& val)

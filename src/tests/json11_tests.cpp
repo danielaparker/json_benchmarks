@@ -60,7 +60,6 @@ measurements json11_benchmarks::measure_small(const std::string& input, std::str
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses pimpl idiom, implementation uses virtual inheritance, expect larger memory footprint.";
     return results;
 }
 
@@ -121,8 +120,16 @@ measurements json11_benchmarks::measure_big(const char *input_filename, const ch
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
-    results.remarks = "Uses pimpl idiom, implementation uses virtual inheritance";
     return results;
+}
+
+const std::string& json11_benchmarks::remarks() const 
+{
+    static const std::string s = R"abc(
+Uses pimpl idiom, implementation uses virtual inheritance, expect larger memory footprint.
+    )abc";
+
+    return s;
 }
 
 std::vector<test_suite_result> json11_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
