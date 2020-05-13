@@ -120,63 +120,45 @@ std::vector<test_suite_result> nlohmann_benchmarks::run_test_suite(std::vector<t
         {
             if (result == 0)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
             else if (result == 1)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_success_parsing_failed}
-                );
+                results.emplace_back(result_code::expected_success_parsing_failed);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::process_stopped}
-                );
+                results.emplace_back(result_code::process_stopped);
             }
         }
         else if (file.type == expected_result::expect_failure)
         {
             if (result == 0)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
+                results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             else if (result == 1)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::process_stopped}
-                );
+                results.emplace_back(result_code::process_stopped);
             }
         }
         else if (file.type == expected_result::result_undefined)
         {
             if (result == 0)
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_succeeded}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             else if (result == 1)
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_failed);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::process_stopped}
-                );
+                results.emplace_back(result_code::process_stopped);
             }
         }
     }

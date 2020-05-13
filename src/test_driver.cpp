@@ -237,7 +237,7 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& imple
 
         json_file_finder
         (
-            "data/input/JSONTestSuite",
+            "data/input/JSONTestSuite/test_parsing",
             [&](const fs::path& path) 
             {
                 std::string buffer;
@@ -277,7 +277,7 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& imple
         std::vector<std::vector<test_suite_result>> results;
         for (auto& impl : implementations)
         {
-            results.push_back(impl.measures->run_test_suite(pathnames));
+            results.emplace_back(impl.measures->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
@@ -337,7 +337,7 @@ void json_checker_parsing_tests(const std::vector<json_implementation>& implemen
         std::vector<std::vector<test_suite_result>> results;
         for (auto& impl : implementations)
         {
-            results.push_back(impl.measures->run_test_suite(pathnames));
+            results.emplace_back(impl.measures->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
@@ -354,7 +354,7 @@ int main()
 
     implementations.emplace_back("jsoncons",
                                  "https://github.com/danielaparker/jsoncons",
-                                 "0.150.0", 
+                                 "0.151.0", 
                                  "With strict_json_parsing, uses wjson if utf16" ,
                                   std::make_shared<jsoncons_benchmarks>());
     implementations.emplace_back("nlohmann",
@@ -387,8 +387,13 @@ int main()
                                  "4.1.0-1", 
                                  "",
                                  std::make_shared<json_spirit_benchmarks>());
+    implementations.emplace_back("taojson",
+                                 "https://github.com/taocpp/json",
+                                 "2019-07-11", 
+                                 "",
+                                 std::make_shared<taojson_benchmarks>());
 
-    benchmarks_int(implementations);
+    //benchmarks_int(implementations);
     //benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 

@@ -143,15 +143,11 @@ std::vector<test_suite_result> jsoncpp_benchmarks::run_test_suite(std::vector<te
                 Value val;
                 std::istringstream is(file.text);
                 is >> val;
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
             catch (const std::exception&)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_success_parsing_failed}
-                );
+                results.emplace_back(result_code::expected_success_parsing_failed);
             }
         }
         else if (file.type == expected_result::expect_failure)
@@ -161,15 +157,11 @@ std::vector<test_suite_result> jsoncpp_benchmarks::run_test_suite(std::vector<te
                 Value val;
                 std::istringstream is(file.text);
                 is >> val;
-                results.push_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
+                results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             catch (const std::exception&)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
         }
         else if (file.type == expected_result::result_undefined)
@@ -179,15 +171,11 @@ std::vector<test_suite_result> jsoncpp_benchmarks::run_test_suite(std::vector<te
                 Value val;
                 std::istringstream is(file.text);
                 is >> val;
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_succeeded}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             catch (const std::exception&)
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_failed);
             }
         }
     }

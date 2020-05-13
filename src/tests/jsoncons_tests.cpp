@@ -129,15 +129,11 @@ std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<t
                                           new std::codecvt_utf16<wchar_t, 0x10ffff, std::consume_header>));
                     wjson document;
                     fin >> document;
-                    results.push_back(
-                        test_suite_result{result_code::expected_result}
-                    );
+                    results.emplace_back(result_code::expected_result);
                 }
                 catch (const std::exception&)
                 {
-                    results.push_back(
-                        test_suite_result{result_code::expected_success_parsing_failed}
-                    );
+                    results.emplace_back(result_code::expected_success_parsing_failed);
                 }
             }
             else
@@ -146,15 +142,11 @@ std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<t
                 {
                     std::istringstream is(file.text);
                     json val = json::parse(is,err_handler);
-                    results.push_back(
-                        test_suite_result{result_code::expected_result}
-                    );
+                    results.emplace_back(result_code::expected_result);
                 }
                 catch (const std::exception&)
                 {
-                    results.push_back(
-                        test_suite_result{result_code::expected_success_parsing_failed}
-                    );
+                    results.emplace_back(result_code::expected_success_parsing_failed);
                 }
             }
         }
@@ -164,15 +156,11 @@ std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<t
             {
                 std::istringstream is(file.text);
                 json val = json::parse(is,err_handler);
-                results.push_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
+                results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             catch (const std::exception&)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
         }
         else if (file.type == expected_result::result_undefined)
@@ -181,15 +169,11 @@ std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<t
             {
                 std::istringstream is(file.text);
                 json val = json::parse(is,err_handler);
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_succeeded}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             catch (const std::exception&)
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_failed);
             }
         }
     }

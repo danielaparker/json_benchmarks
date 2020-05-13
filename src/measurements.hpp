@@ -89,6 +89,11 @@ namespace json_benchmarks {
     struct test_suite_result
     {
         result_code result;
+
+        test_suite_result(result_code result) :
+            result(result)
+        {
+        }
     };
 
     inline

@@ -19,7 +19,7 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
 
     jsoncons::json_options options;
     options.escape_all_non_ascii(true);
-    jsoncons::json_encoder handler(os, options);
+    jsoncons::json_stream_encoder handler(os, options);
 
     auto start = high_resolution_clock::now();
 
@@ -44,44 +44,44 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
     for (size_t i = 0; i < count; i+=2)
     {
         handler.begin_object();
-        handler.name("person");
+        handler.key("person");
         handler.begin_object();
-        handler.name("first_name");
+        handler.key("first_name");
         handler.string_value("John");
-        handler.name("last_name"   );
+        handler.key("last_name"   );
         handler.string_value("Doe");
-        handler.name("birthdate");
+        handler.key("birthdate");
         handler.string_value("1998-05-13");
-        handler.name("sex");
+        handler.key("sex");
         handler.string_value("m");
-        handler.name("salary");
-        handler.uinteger_value(70000);
-        handler.name("married");
+        handler.key("salary");
+        handler.uint64_value(70000);
+        handler.key("married");
         handler.bool_value(false);
-        handler.name("interests");
+        handler.key("interests");
         handler.begin_array();
         handler.string_value("Reading");
         handler.string_value("Mountain biking");
         handler.string_value("Hacking");
         handler.end_array();
-        handler.name("favorites");
+        handler.key("favorites");
         handler.begin_object();
-        handler.name("color");
+        handler.key("color");
         handler.string_value("blue");
-        handler.name("sport");
+        handler.key("sport");
         handler.string_value("soccer");
-        handler.name("food");
+        handler.key("food");
         handler.string_value("spaghetti");
-        handler.name("big_text");
+        handler.key("big_text");
         handler.string_value(big_text);
-        handler.name("integer_values");
+        handler.key("integer_values");
         handler.begin_array();
         for (auto x : integer_values)
         {
             handler.int64_value(x);
         }
         handler.end_array();
-        handler.name("double_values");
+        handler.key("double_values");
         handler.begin_array();
         for (auto x : double_values)
         {
@@ -96,35 +96,35 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
     for (size_t i = 0; i < count; i+=2)
     {
         handler.begin_object();
-        handler.name("person");
+        handler.key("person");
         handler.begin_object();
-        handler.name("first_name");
+        handler.key("first_name");
         handler.string_value("jane");
-        handler.name("last_name"   );
+        handler.key("last_name"   );
         handler.string_value("doe");
-        handler.name("birthdate");
+        handler.key("birthdate");
         handler.string_value("1998-05-13");
-        handler.name("sex");
+        handler.key("sex");
         handler.string_value("f");
-        handler.name("salary");
-        handler.uinteger_value(80000);
-        handler.name("married");
+        handler.key("salary");
+        handler.uint64_value(80000);
+        handler.key("married");
         handler.bool_value(true);
-        handler.name("pets");
+        handler.key("pets");
         handler.null_value();
-        handler.name("interests");
+        handler.key("interests");
         handler.begin_array();
         handler.string_value("Skiing");
         handler.string_value("Hiking");
         handler.string_value("Camoing");
         handler.end_array();
-        handler.name("favorites");
+        handler.key("favorites");
         handler.begin_object();
-        handler.name("color");
+        handler.key("color");
         handler.string_value("Red");
-        handler.name("sport");
+        handler.key("sport");
         handler.string_value("skiing");
-        handler.name("food");
+        handler.key("food");
         handler.string_value("risotto");
         handler.end_object();
 

@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_driver", "test_driver.vcxproj", "{7B15CF21-BA73-4769-ACC5-C22E2B0F313B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json_benchmarks", "test_driver.vcxproj", "{7B15CF21-BA73-4769-ACC5-C22E2B0F313B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json_spirit_parser", "parsers\json_spirit\json_spirit.vcxproj", "{BF349889-5C6C-46C4-A531-8F1E03407BC9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlohmann_parser", "parsers\nlohmann\nlohmann.vcxproj", "{D29C3129-933F-4656-80D5-03E7B82088FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rapidjson_parser", "parsers\rapidjson\rapidjson.vcxproj", "{FA4E3422-0206-4D99-8C6C-83114FD70DE2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "taojson_parser", "parsers\taojson_parser\taojson_parser.vcxproj", "{8916A435-838C-408F-87F1-68C55E45A4C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{FA4E3422-0206-4D99-8C6C-83114FD70DE2}.Release|x64.Build.0 = Release|x64
 		{FA4E3422-0206-4D99-8C6C-83114FD70DE2}.Release|x86.ActiveCfg = Release|Win32
 		{FA4E3422-0206-4D99-8C6C-83114FD70DE2}.Release|x86.Build.0 = Release|Win32
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Debug|x64.ActiveCfg = Debug|x64
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Debug|x64.Build.0 = Debug|x64
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Debug|x86.ActiveCfg = Debug|Win32
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Debug|x86.Build.0 = Debug|Win32
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Release|x64.ActiveCfg = Release|x64
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Release|x64.Build.0 = Release|x64
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Release|x86.ActiveCfg = Release|Win32
+		{8916A435-838C-408F-87F1-68C55E45A4C0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -172,19 +172,19 @@ std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<
         {
             if (result == 0)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::expected_result}
                 );
             }
             else if (result == 1)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::expected_success_parsing_failed}
                 );
             }
             else
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::process_stopped}
                 );
             }
@@ -193,19 +193,19 @@ std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<
         {
             if (result == 0)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::expected_failure_parsing_succeeded}
                 );
             }
             else if (result == 1)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::expected_result}
                 );
             }
             else
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::process_stopped}
                 );
             }
@@ -214,19 +214,19 @@ std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<
         {
             if (result == 0)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::result_undefined_parsing_succeeded}
                 );
             }
             else if (result == 1)
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::result_undefined_parsing_failed}
                 );
             }
             else
             {
-                results.push_back(
+                results.emplace_back(
                     test_suite_result{result_code::process_stopped}
                 );
             }

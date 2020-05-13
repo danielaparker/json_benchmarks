@@ -93,6 +93,14 @@ namespace json_benchmarks {
         measurements measure_big(const char *input_filename, const char* output_filename) override;
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
+
+    class taojson_benchmarks : public benchmarks
+    {
+    public:
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
+    };
 }
 
 #endif

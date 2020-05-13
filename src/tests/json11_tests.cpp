@@ -137,15 +137,11 @@ std::vector<test_suite_result> json11_benchmarks::run_test_suite(std::vector<tes
             
             if (err.length() == 0)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_success_parsing_failed}
-                );
+                results.emplace_back(result_code::expected_success_parsing_failed);
             }
         }
         else if (file.type == expected_result::expect_failure)
@@ -154,15 +150,11 @@ std::vector<test_suite_result> json11_benchmarks::run_test_suite(std::vector<tes
             Json val = Json::parse(file.text,err);
             if (err.length() == 0)
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
+                results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
         }
         else if (file.type == expected_result::result_undefined)
@@ -171,15 +163,11 @@ std::vector<test_suite_result> json11_benchmarks::run_test_suite(std::vector<tes
             Json val = Json::parse(file.text,err);
             if (err.length() == 0)
             {
-                    results.push_back(
-                        test_suite_result{result_code::result_undefined_parsing_succeeded}
-                    );
+                    results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_failed);
             }
         }
     }

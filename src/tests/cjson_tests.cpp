@@ -144,15 +144,11 @@ std::vector<test_suite_result> cjson_benchmarks::run_test_suite(std::vector<test
             cJSON* j = cJSON_Parse(text.c_str());
             if (j != nullptr) 
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_success_parsing_failed}
-                );
+                results.emplace_back(result_code::expected_success_parsing_failed);
             }
             cJSON_Delete(j);
         }
@@ -161,15 +157,11 @@ std::vector<test_suite_result> cjson_benchmarks::run_test_suite(std::vector<test
             cJSON* j = cJSON_Parse(text.c_str());
             if (j != nullptr) 
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
+                results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::expected_result}
-                );
+                results.emplace_back(result_code::expected_result);
             }
 
         }
@@ -178,15 +170,11 @@ std::vector<test_suite_result> cjson_benchmarks::run_test_suite(std::vector<test
             cJSON* j = cJSON_Parse(text.c_str());
             if (j != nullptr) 
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_succeeded}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             else
             {
-                results.push_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
+                results.emplace_back(result_code::result_undefined_parsing_failed);
             }
             cJSON_Delete(j);
         }
