@@ -117,9 +117,7 @@ measurements json_spirit_benchmarks::measure_big(const char *input_filename, con
 
 const std::string& json_spirit_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses Boost spirit parsing, expect slower parsing.
-    )abc";
+    static const std::string s = R"abc(Uses Boost spirit parsing, expect slower parsing.)abc";
 
     return s;
 }

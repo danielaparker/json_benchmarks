@@ -112,11 +112,7 @@ measurements jsoncons_benchmarks::measure_big(const char *input_filename, const 
 
 const std::string& jsoncons_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.
-Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) 
-plus fallback for printing doubles, expect faster serializing.
-    )abc";
+    static const std::string s = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
 
     return s;
 }

@@ -109,10 +109,7 @@ measurements nlohmann_benchmarks::measure_big(const char *input_filename, const 
 
 const std::string& nlohmann_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses `std::map` for objects.
-Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
-    )abc";
+    static const std::string s = R"abc(Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
     return s;
 }

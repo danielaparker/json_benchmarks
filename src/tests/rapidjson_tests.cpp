@@ -151,11 +151,7 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
 
 const std::string& rapidjson_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses custom floating point parsing, expect faster parsing. 
-Uses girsu3 for printing doubles, expect faster serializing. 
-Uses custom allocation and flat map for objects, expect smaller memory footprint.
-    )abc";
+    static const std::string s = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
 
     return s;
 }

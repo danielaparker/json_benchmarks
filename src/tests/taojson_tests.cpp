@@ -114,11 +114,7 @@ measurements taojson_benchmarks::measure_big(const char *input_filename, const c
 
 const std::string& taojson_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses modified [google/double conversion](https://github.com/google/double-conversion) routines for parsing doubles.
-Uses modified [jeaiii/itoa](https://github.com/jeaiii/itoa) routines for outputting integers.
-Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
-    )abc";
+    static const std::string s = R"abc(Uses modified [google/double conversion](https://github.com/google/double-conversion) routines for parsing doubles. Uses modified [jeaiii/itoa](https://github.com/jeaiii/itoa) routines for outputting integers. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
     return s;
 }

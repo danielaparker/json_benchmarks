@@ -125,9 +125,7 @@ measurements json11_benchmarks::measure_big(const char *input_filename, const ch
 
 const std::string& json11_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses pimpl idiom, implementation uses virtual inheritance, expect larger memory footprint.
-    )abc";
+    static const std::string s = R"abc(Uses pimpl idiom, implementation uses virtual inheritance, expect larger memory footprint.)abc";
 
     return s;
 }

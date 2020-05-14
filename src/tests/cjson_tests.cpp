@@ -133,10 +133,7 @@ measurements cjson_benchmarks::measure_big(const char *input_filename, const cha
 
 const std::string& cjson_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Inefficient storage (items do not share the same space), expect larger memory footprint. 
-Uses sprintf and sscanf to support locale-independent round-trip.
-    )abc";
+    static const std::string s = R"abc(Inefficient storage (items do not share the same space), expect larger memory footprint. Uses sprintf and sscanf to support locale-independent round-trip.)abc";
 
     return s;
 }

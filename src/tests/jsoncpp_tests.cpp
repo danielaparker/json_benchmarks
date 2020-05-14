@@ -131,9 +131,7 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
 
 const std::string& jsoncpp_benchmarks::remarks() const 
 {
-    static const std::string s = R"abc(
-Uses std::map for both arrays and objects, expect larger memory footprint.
-    )abc";
+    static const std::string s = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
 
     return s;
 }
