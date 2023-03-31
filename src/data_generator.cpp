@@ -9,11 +9,11 @@ using std::chrono::duration;
 
 void make_big_file(const char *filename, size_t count, size_t numIntegers, size_t numDoubles, uint64_t flags)
 {
-    std::ofstream os(filename, std::ofstream::binary | std::ios_base::out| std::ios_base::trunc);
+    std::fstream os(filename, std::fstream::binary | std::fstream::out| std::fstream::trunc);
     if (os.bad() || !os.is_open())
     {
         std::ostringstream os;
-        os << "Cannot open file %s" << filename;
+        os << "Cannot open file " << filename;
         throw std::runtime_error(os.str().c_str());
     }
 

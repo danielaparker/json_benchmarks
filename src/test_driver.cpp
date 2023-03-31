@@ -49,11 +49,11 @@ void benchmarks_small_file(std::vector<json_implementation>& implementations)
            << "|" << "Windows, Intel" << std::endl;
         os << "---|---" << std::endl;
         os << "Computer"
-           << "|" << "Dell Mobile Precision 2015, Intel Xeon E3-1535M v5, 32GB memory, 1TB SSD" << std::endl;
+           << "|" << "Lenovo Thinkpad X Extreme with 8 cores, 16 hardware threads, 32 GB memory, 2 TB solid state drive" << std::endl;
         os << "Operating system"
-           << "|" << "Windows 2010" << std::endl;
+           << "|" << "Windows 2011" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2015" << std::endl;
+           << "|" << "Visual Studio 2022" << std::endl;
 
         os << std::endl;
 
@@ -356,17 +356,17 @@ int main()
 
     implementations.emplace_back("jsoncons",
                                  "https://github.com/danielaparker/jsoncons",
-                                 "0.151.0", 
+                                 "0.170.0", 
                                  "With strict_json_parsing, uses wjson if utf16" ,
                                   std::make_shared<jsoncons_benchmarks>());
     implementations.emplace_back("nlohmann",
                                  "https://github.com/nlohmann/json",
-                                 "3.7.3", 
+                                 "3.11.2", 
                                  "",
                                  std::make_shared<nlohmann_benchmarks>());
     implementations.emplace_back("cJSON",
                                  "https://github.com/DaveGamble/cJSON",
-                                 "2019-11-30", 
+                                 "1.7.15", 
                                  "",
                                  std::make_shared<cjson_benchmarks>());
     implementations.emplace_back("json11",
@@ -381,7 +381,7 @@ int main()
                                  std::make_shared<rapidjson_benchmarks>());
     implementations.emplace_back("jsoncpp",
                                  "https://github.com/open-source-parsers/jsoncpp",
-                                 "1.9.2", 
+                                 "1.9.5", 
                                  "Uses map for both arrays and objects",
                                  std::make_shared<jsoncpp_benchmarks>());
     implementations.emplace_back("json_spirit",
@@ -391,12 +391,12 @@ int main()
                                  std::make_shared<json_spirit_benchmarks>());
     implementations.emplace_back("taojson",
                                  "https://github.com/taocpp/json",
-                                 "2019-07-11", 
+                                 "2020-09-14", 
                                  "",
                                  std::make_shared<taojson_benchmarks>());
 
-    //benchmarks_int(implementations);
-    benchmarks_fp(implementations);
+    benchmarks_int(implementations);
+    //benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 
     /*std::vector<result_code_info> result_code_infos;
