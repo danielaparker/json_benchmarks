@@ -54,6 +54,8 @@ void benchmarks_small_file(std::vector<json_implementation>& implementations)
            << "|" << "Windows 2011" << std::endl;
         os << "Compiler"
            << "|" << "Visual Studio 2022" << std::endl;
+        os << "Language"
+           << "|" << "C++ 2017" << std::endl;
 
         os << std::endl;
 
@@ -124,11 +126,13 @@ void benchmarks_int(std::vector<json_implementation>& implementations)
            << "|" << "Windows, Intel" << std::endl;
         os << "---|---" << std::endl;
         os << "Computer"
-           << "|" << "Dell Mobile Precision 2015, Intel Xeon E3-1535M v5, 32GB memory, 1TB SSD" << std::endl;
+           << "|" << "Lenovo Thinkpad X Extreme with 8 cores, 16 hardware threads, 32 GB memory, 2 TB solid state drive" << std::endl;
         os << "Operating system"
-           << "|" << "Windows 2010" << std::endl;
+           << "|" << "Windows 2011" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2019" << std::endl;
+           << "|" << "Visual Studio 2022" << std::endl;
+        os << "Language"
+           << "|" << "C++ 2017" << std::endl;
 
         os << std::endl;
 
@@ -190,11 +194,13 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
            << "|" << "Windows, Intel" << std::endl;
         os << "---|---" << std::endl;
         os << "Computer"
-           << "|" << "Dell Mobile Precision 2015, Intel Xeon E3-1535M v5, 32GB memory, 1TB SSD" << std::endl;
+           << "|" << "Lenovo Thinkpad X Extreme with 8 cores, 16 hardware threads, 32 GB memory, 2 TB solid state drive" << std::endl;
         os << "Operating system"
-           << "|" << "Windows 2010" << std::endl;
+           << "|" << "Windows 2011" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2019" << std::endl;
+           << "|" << "Visual Studio 2022" << std::endl;
+        os << "Language"
+           << "|" << "C++ 2017" << std::endl;
 
         os << std::endl;
 

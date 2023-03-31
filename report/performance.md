@@ -8,9 +8,10 @@ data/output/persons.json|897.95|Text,integers
 
 Environment|Windows, Intel
 ---|---
-Computer|Dell Mobile Precision 2015, Intel Xeon E3-1535M v5, 32GB memory, 1TB SSD
-Operating system|Windows 2010
-Compiler|Visual Studio 2019
+Computer|Lenovo Thinkpad X Extreme with 8 cores, 16 hardware threads, 32 GB memory, 2 TB solid state drive
+Operating system|Windows 2011
+Compiler|Visual Studio 2022
+Language|C++ 2017
 
 Library|Version
 ---|---
