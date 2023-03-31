@@ -212,7 +212,7 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
         for (size_t j = 0; j < implementations.size(); ++j)
         {
             auto& impl = implementations[j];
-            std::string output_path = "data/output_fp/persons_" + impl.name + ".json";
+            std::string output_path = "data/output/persons_fp_" + impl.name + ".json";
             auto results = impl.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
             os << "[" << impl.name << "](" << impl.url << ")"
                << "|" << (results.time_to_read/1000.0) 
@@ -395,8 +395,8 @@ int main()
                                  "",
                                  std::make_shared<taojson_benchmarks>());
 
-    benchmarks_int(implementations);
-    //benchmarks_fp(implementations);
+    //benchmarks_int(implementations);
+    benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 
     /*std::vector<result_code_info> result_code_infos;
