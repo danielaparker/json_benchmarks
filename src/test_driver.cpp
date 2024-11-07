@@ -106,7 +106,7 @@ void benchmarks_int(std::vector<json_implementation>& implementations)
     try
     {
         const char *filename = "data/output/persons.json";
-        make_big_file(filename, 50000, 5000, 0, 0);
+        make_big_file(filename, 20000, 2000, 0, 0);
 
         size_t file_size;
         {
@@ -174,7 +174,7 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
     try
     {
         const char *filename = "data/output/persons_fp.json";
-        make_big_file(filename, 50000, 0, 2500, 0);
+        make_big_file(filename, 20000, 0, 2500, 0);
 
         size_t file_size;
         {
@@ -362,24 +362,19 @@ int main()
 
     implementations.emplace_back("jsoncons",
                                  "https://github.com/danielaparker/jsoncons",
-                                 "0.170.0", 
+                                 "0.179.0", 
                                  "With strict_json_parsing, uses wjson if utf16" ,
                                   std::make_shared<jsoncons_benchmarks>());
+
     implementations.emplace_back("nlohmann",
                                  "https://github.com/nlohmann/json",
                                  "3.11.2", 
                                  "",
-                                 std::make_shared<nlohmann_benchmarks>());
-    implementations.emplace_back("cJSON",
+                                 std::make_shared<nlohmann_benchmarks>());    /*implementations.emplace_back("cJSON",
                                  "https://github.com/DaveGamble/cJSON",
                                  "1.7.15", 
                                  "",
-                                 std::make_shared<cjson_benchmarks>());
-    implementations.emplace_back("json11",
-                                 "https://github.com/dropbox/json11",
-                                 "2017-06-20-2", 
-                                 "",
-                                 std::make_shared<json11_benchmarks>());
+                                 std::make_shared<cjson_benchmarks>());*/
     implementations.emplace_back("rapidjson",
                                  "https://github.com/miloyip/rapidjson",
                                  "2020-02-08", 
@@ -390,22 +385,17 @@ int main()
                                  "1.9.5", 
                                  "Uses map for both arrays and objects",
                                  std::make_shared<jsoncpp_benchmarks>());
-    implementations.emplace_back("json_spirit",
-                                 "http://www.codeproject.com/Articles/20027/JSON-Spirit-A-C-JSON-Parser-Generator-Implemented",
-                                 "4.1.0-1", 
-                                 "",
-                                 std::make_shared<json_spirit_benchmarks>());
     implementations.emplace_back("taojson",
                                  "https://github.com/taocpp/json",
                                  "2020-09-14", 
                                  "",
                                  std::make_shared<taojson_benchmarks>());
 
-    //benchmarks_int(implementations);
+    benchmarks_int(implementations);
     benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 
-    /*std::vector<result_code_info> result_code_infos;
+    std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
     result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
@@ -417,6 +407,6 @@ int main()
     json_parsing_test_reporter reporter("Parser Comparisons", implementations, result_code_infos, fs);
     reporter.register_test("JSON Test Suite",json_test_suite_parsing_tests);
     reporter.register_test("JSON Checker",json_checker_parsing_tests);
-    reporter.run_tests();*/
+    reporter.run_tests();
 }
 

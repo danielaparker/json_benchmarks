@@ -100,18 +100,20 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%BOOST_LIB%</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +142,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -158,13 +160,8 @@
     <ClCompile Include="src\data_generator.cpp" />
     <ClCompile Include="src\memory_measurer.cpp" />
     <ClCompile Include="src\tests\cjson_tests.cpp" />
-    <ClCompile Include="src\tests\json11_tests.cpp" />
     <ClCompile Include="src\tests\jsoncons_tests.cpp" />
     <ClCompile Include="src\tests\jsoncpp_tests.cpp" />
-    <ClCompile Include="src\tests\json_spirit_tests.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\tools\boost_1_72_0\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\tools\boost_1_72_0\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
     <ClCompile Include="src\tests\nlohmann_tests.cpp" />
     <ClCompile Include="src\tests\rapidjson_tests.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
