@@ -11,9 +11,9 @@
 #undef max
 #include "memory_measurer.hpp"
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
-size_t memory_measurer::get_process_memory()
+size_t memory_measurer::get_physical_memory_use()
 {
     PROCESS_MEMORY_COUNTERS pmc;
     GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));

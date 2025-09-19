@@ -10,17 +10,42 @@
 #include "cjson/cJSON.h"
 #include "measurements.hpp"
 #include "memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[cjson](https://github.com/DaveGamble/cJSON)";
 
-measurements cjson_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string cjson_benchmark::version()
+{
+    return "";
+}
+
+std::string cjson_benchmark::name()
+{
+    return "cjson";
+}
+
+std::string cjson_benchmark::url()
+{
+    return "https://github.com/DaveGamble/cJSON";
+}
+
+std::string cjson_benchmark::notes()
+{
+    return "";
+}
+
+std::string cjson_benchmark::get_version() const {return cjson_benchmark::version();}
+std::string cjson_benchmark::get_name() const {return cjson_benchmark::name();}
+std::string cjson_benchmark::get_url() const {return cjson_benchmark::url();}
+std::string cjson_benchmark::get_notes() const {return cjson_benchmark::notes();}
+
+measurements cjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -28,7 +53,7 @@ measurements cjson_benchmarks::measure_small(const std::string& input, std::stri
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         cJSON* root = nullptr;
         {
@@ -46,7 +71,7 @@ measurements cjson_benchmarks::measure_small(const std::string& input, std::stri
                 exit(1);
             }
         }
-        end_memory_used = memory_measurer::get_process_memory();
+        end_memory_used = memory_measurer::get_physical_memory_use();
         {
             auto start = high_resolution_clock::now();
             output = cJSON_PrintUnformatted(root);
@@ -55,7 +80,6 @@ measurements cjson_benchmarks::measure_small(const std::string& input, std::stri
         }
         cJSON_Delete(root);
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -65,7 +89,7 @@ measurements cjson_benchmarks::measure_small(const std::string& input, std::stri
     return results;
 }
 
-measurements cjson_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements cjson_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -73,7 +97,7 @@ measurements cjson_benchmarks::measure_big(const char *input_filename, const cha
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         cJSON* root = nullptr;
         std::string buffer;
@@ -103,7 +127,7 @@ measurements cjson_benchmarks::measure_big(const char *input_filename, const cha
                 exit(1);
             }
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             auto start = high_resolution_clock::now();
             //FILE *fp = fopen(output_filename, "w");
@@ -121,7 +145,6 @@ measurements cjson_benchmarks::measure_big(const char *input_filename, const cha
         }
         cJSON_Delete(root);
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -131,14 +154,14 @@ measurements cjson_benchmarks::measure_big(const char *input_filename, const cha
     return results;
 }
 
-const std::string& cjson_benchmarks::remarks() const 
+const std::string& cjson_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Inefficient storage (items do not share the same space), expect larger memory footprint. Uses sprintf and sscanf to support locale-independent round-trip.)abc";
 
     return s;
 }
 
-std::vector<test_suite_result> cjson_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> cjson_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

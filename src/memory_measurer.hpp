@@ -8,12 +8,12 @@
 #ifndef JSON_BENCHMARKS_MEASURER_HPP
 #define JSON_BENCHMARKS_MEASURER_HPP
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 class memory_measurer
 {
 public:
-    static size_t get_process_memory();
+    static size_t get_physical_memory_use();
 };
 
 }

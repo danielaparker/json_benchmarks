@@ -43,48 +43,48 @@
             <table>
             <tr>
               <th></th>
-        <th class="rotate"><div><span>jsoncons-0.179.0</span></div></th>
-<th class="rotate"><div><span>nlohmann-3.11.2</span></div></th>
-<th class="rotate"><div><span>rapidjson-2020-02-08</span></div></th>
-<th class="rotate"><div><span>jsoncpp-1.9.5</span></div></th>
-<th class="rotate"><div><span>taojson-2020-09-14</span></div></th>
+        <th class="rotate"><div><span>jsoncons-1.4.1</span></div></th>
+<th class="rotate"><div><span>nlohmann-3.12.0</span></div></th>
+<th class="rotate"><div><span>rapidjson-RAPIDJSON_VERSION_MAJOR.RAPIDJSON_VERSION_MINOR.RAPIDJSON_VERSION_PATCH</span></div></th>
+<th class="rotate"><div><span>jsoncpp-1.9.6</span></div></th>
+<th class="rotate"><div><span>taojson-TAO_JSON_VERSION_MAJOR.TAO_JSON_VERSION_MINOR.TAO_JSON_VERSION_PATCH</span></div></th>
 
             </tr>
         <tr><td bgcolor="#008000"><font color="white">Expected result</font></td><td>283</td>
-<td>188</td>
-<td>188</td>
+<td>282</td>
+<td>280</td>
 <td>246</td>
-<td>188</td>
+<td>279</td>
 </tr>
 <tr><td bgcolor="#d19b73"><font color="white">Expected success, parsing failed</font></td><td>0</td>
-<td>95</td>
-<td>95</td>
 <td>0</td>
-<td>95</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
 </tr>
 <tr><td bgcolor="#001a75"><font color="white">Expected failure, parsing succeeded</font></td><td>0</td>
-<td>0</td>
-<td>0</td>
+<td>1</td>
+<td>1</td>
 <td>37</td>
 <td>0</td>
 </tr>
 <tr><td bgcolor="#f7a8ff"><font color="white">Result undefined, parsing succeeded</font></td><td>17</td>
-<td>0</td>
-<td>0</td>
+<td>7</td>
+<td>16</td>
 <td>25</td>
-<td>0</td>
+<td>6</td>
 </tr>
 <tr><td bgcolor="#050f07"><font color="white">Result undefined, parsing failed</font></td><td>18</td>
-<td>35</td>
-<td>35</td>
+<td>28</td>
+<td>19</td>
 <td>10</td>
-<td>35</td>
+<td>29</td>
 </tr>
 <tr><td bgcolor="#e00053"><font color="white">Process stopped</font></td><td>0</td>
 <td>0</td>
+<td>2</td>
 <td>0</td>
-<td>0</td>
-<td>0</td>
+<td>2</td>
 </tr>
 
             </table>
@@ -103,766 +103,766 @@
             </tr>
         <tr>
 <td>y_array_arraysWithSpaces.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[[]   ]</td>
 </tr>
 <tr>
 <td>y_array_empty-string.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[""]</td>
 </tr>
 <tr>
 <td>y_array_empty.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[]</td>
 </tr>
 <tr>
 <td>y_array_ending_with_newline.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["a"]</td>
 </tr>
 <tr>
 <td>y_array_false.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[false]</td>
 </tr>
 <tr>
 <td>y_array_heterogeneous.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[null, 1, "1", {}]</td>
 </tr>
 <tr>
 <td>y_array_null.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[null]</td>
 </tr>
 <tr>
 <td>y_array_with_1_and_newline.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1
 ]</td>
 </tr>
 <tr>
 <td>y_array_with_leading_space.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td> [1]</td>
 </tr>
 <tr>
 <td>y_array_with_several_null.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1,null,null,null,2]</td>
 </tr>
 <tr>
 <td>y_array_with_trailing_space.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[2] </td>
 </tr>
 <tr>
 <td>y_number.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[123e65]</td>
 </tr>
 <tr>
 <td>y_number_0e+1.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[0e+1]</td>
 </tr>
 <tr>
 <td>y_number_0e1.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[0e1]</td>
 </tr>
 <tr>
 <td>y_number_after_space.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[ 4]</td>
 </tr>
 <tr>
 <td>y_number_double_close_to_zero.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[-0.00000000000000000000000000 ...</td>
 </tr>
 <tr>
 <td>y_number_int_with_exp.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[20e1]</td>
 </tr>
 <tr>
 <td>y_number_minus_zero.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[-0]</td>
 </tr>
 <tr>
 <td>y_number_negative_int.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[-123]</td>
 </tr>
 <tr>
 <td>y_number_negative_one.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[-1]</td>
 </tr>
 <tr>
 <td>y_number_negative_zero.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[-0]</td>
 </tr>
 <tr>
 <td>y_number_real_capital_e.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1E22]</td>
 </tr>
 <tr>
 <td>y_number_real_capital_e_neg_exp.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1E-2]</td>
 </tr>
 <tr>
 <td>y_number_real_capital_e_pos_exp.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1E+2]</td>
 </tr>
 <tr>
 <td>y_number_real_exponent.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[123e45]</td>
 </tr>
 <tr>
 <td>y_number_real_fraction_exponent.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[123.456e78]</td>
 </tr>
 <tr>
 <td>y_number_real_neg_exp.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1e-2]</td>
 </tr>
 <tr>
 <td>y_number_real_pos_exponent.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[1e+2]</td>
 </tr>
 <tr>
 <td>y_number_simple_int.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[123]</td>
 </tr>
 <tr>
 <td>y_number_simple_real.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[123.456789]</td>
 </tr>
 <tr>
 <td>y_object.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"asd":"sdf", "dfg":"fgh"}</td>
 </tr>
 <tr>
 <td>y_object_basic.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"asd":"sdf"}</td>
 </tr>
 <tr>
 <td>y_object_duplicated_key.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td bgcolor="#008000"></td>
 <td bgcolor="#d19b73"></td>
 <td>{"a":"b","a":"c"}</td>
 </tr>
 <tr>
 <td>y_object_duplicated_key_and_value.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td bgcolor="#008000"></td>
 <td bgcolor="#d19b73"></td>
 <td>{"a":"b","a":"b"}</td>
 </tr>
 <tr>
 <td>y_object_empty.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{}</td>
 </tr>
 <tr>
 <td>y_object_empty_key.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"":0}</td>
 </tr>
 <tr>
 <td>y_object_escaped_null_in_key.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"foo\u0000bar": 42}</td>
 </tr>
 <tr>
 <td>y_object_extreme_numbers.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{ "min": -1.0e+28, "max": 1.0e ...</td>
 </tr>
 <tr>
 <td>y_object_long_strings.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"x":[{"id": "xxxxxxxxxxxxxxxx ...</td>
 </tr>
 <tr>
 <td>y_object_simple.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"a":[]}</td>
 </tr>
 <tr>
 <td>y_object_string_unicode.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{"title":"\u041f\u043e\u043b\u ...</td>
 </tr>
 <tr>
 <td>y_object_with_newlines.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{
 "a": "b"
 }</td>
 </tr>
 <tr>
 <td>y_string_1_2_3_bytes_UTF-8_sequences.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0060\u012a\u12AB"]</td>
 </tr>
 <tr>
 <td>y_string_accepted_surrogate_pair.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uD801\udc37"]</td>
 </tr>
 <tr>
 <td>y_string_accepted_surrogate_pairs.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\ud83d\ude39\ud83d\udc8d"]</td>
 </tr>
 <tr>
 <td>y_string_allowed_escapes.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\"\\\/\b\f\n\r\t"]</td>
 </tr>
 <tr>
 <td>y_string_backslash_and_u_escaped_zero.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\\u0000"]</td>
 </tr>
 <tr>
 <td>y_string_backslash_doublequotes.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\""]</td>
 </tr>
 <tr>
 <td>y_string_comments.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["a/*b*/c/*d//e"]</td>
 </tr>
 <tr>
 <td>y_string_double_escape_a.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\\a"]</td>
 </tr>
 <tr>
 <td>y_string_double_escape_n.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\\n"]</td>
 </tr>
 <tr>
 <td>y_string_escaped_control_character.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0012"]</td>
 </tr>
 <tr>
 <td>y_string_escaped_noncharacter.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uFFFF"]</td>
 </tr>
 <tr>
 <td>y_string_in_array.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["asd"]</td>
 </tr>
 <tr>
 <td>y_string_in_array_with_leading_space.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[ "asd"]</td>
 </tr>
 <tr>
 <td>y_string_last_surrogates_1_and_2.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uDBFF\uDFFF"]</td>
 </tr>
 <tr>
 <td>y_string_nbsp_uescaped.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["new\u00A0line"]</td>
 </tr>
 <tr>
 <td>y_string_nonCharacterInUTF-8_U+10FFFF.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["Ùèøø"]</td>
 </tr>
 <tr>
 <td>y_string_nonCharacterInUTF-8_U+FFFF.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["Ôøø"]</td>
 </tr>
 <tr>
 <td>y_string_null_escape.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0000"]</td>
 </tr>
 <tr>
 <td>y_string_one-byte-utf-8.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u002c"]</td>
 </tr>
 <tr>
 <td>y_string_pi.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["œÄ"]</td>
 </tr>
 <tr>
 <td>y_string_reservedCharacterInUTF-8_U+1BFFF.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["õøø"]</td>
 </tr>
 <tr>
 <td>y_string_simple_ascii.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["asd "]</td>
 </tr>
 <tr>
 <td>y_string_space.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>" "</td>
 </tr>
 <tr>
 <td>y_string_surrogates_U+1D11E_MUSICAL_SYMBOL_G_CLEF.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uD834\uDd1e"]</td>
 </tr>
 <tr>
 <td>y_string_three-byte-utf-8.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0821"]</td>
 </tr>
 <tr>
 <td>y_string_two-byte-utf-8.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0123"]</td>
 </tr>
 <tr>
 <td>y_string_u+2028_line_sep.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["‚Ä®"]</td>
 </tr>
 <tr>
 <td>y_string_u+2029_par_sep.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["‚Ä©"]</td>
 </tr>
 <tr>
 <td>y_string_uEscape.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0061\u30af\u30EA\u30b9"]</td>
 </tr>
 <tr>
 <td>y_string_uescaped_newline.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["new\u000Aline"]</td>
 </tr>
 <tr>
 <td>y_string_unescaped_char_delete.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[""]</td>
 </tr>
 <tr>
 <td>y_string_unicode.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uA66D"]</td>
 </tr>
 <tr>
 <td>y_string_unicodeEscapedBackslash.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u005C"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_2.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["‚çÇ„à¥‚çÇ"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_escaped_double_quote.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u0022"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+10FFFE_nonchar.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uDBFF\uDFFE"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+1FFFE_nonchar.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uD83F\uDFFE"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+200B_ZERO_WIDTH_SPACE.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u200B"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+2064_invisible_plus.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\u2064"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+FDD0_nonchar.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uFDD0"]</td>
 </tr>
 <tr>
 <td>y_string_unicode_U+FFFE_nonchar.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["\uFFFE"]</td>
 </tr>
 <tr>
 <td>y_string_utf8.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["‚Ç¨ùÑû"]</td>
 </tr>
 <tr>
 <td>y_string_with_del_character.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["aa"]</td>
 </tr>
 <tr>
 <td>y_structure_lonely_false.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>false</td>
 </tr>
 <tr>
 <td>y_structure_lonely_int.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>42</td>
 </tr>
 <tr>
 <td>y_structure_lonely_negative_real.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>-0.1</td>
 </tr>
 <tr>
 <td>y_structure_lonely_null.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>null</td>
 </tr>
 <tr>
 <td>y_structure_lonely_string.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>"asd"</td>
 </tr>
 <tr>
 <td>y_structure_lonely_true.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>true</td>
 </tr>
 <tr>
 <td>y_structure_string_empty.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>""</td>
 </tr>
 <tr>
 <td>y_structure_trailing_newline.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>["a"]
 </td>
 </tr>
 <tr>
 <td>y_structure_true_in_array.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[true]</td>
 </tr>
 <tr>
 <td>y_structure_whitespace_array.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td> [] </td>
 </tr>
 <tr>
@@ -1103,8 +1103,8 @@
 </tr>
 <tr>
 <td>n_multidigit_number_then_00.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
+<td bgcolor="#001a75"></td>
+<td bgcolor="#001a75"></td>
 <td bgcolor="#001a75"></td>
 <td bgcolor="#008000"></td>
 <td>123 </td>
@@ -1987,9 +1987,9 @@ line"]</td>
 <tr>
 <td>n_structure_100000_opening_arrays.json</td><td bgcolor="#008000"></td>
 <td bgcolor="#008000"></td>
+<td bgcolor="#e00053"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
+<td bgcolor="#e00053"></td>
 <td>[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ ...</td>
 </tr>
 <tr>
@@ -2179,9 +2179,9 @@ line"]</td>
 <tr>
 <td>n_structure_open_array_object.json</td><td bgcolor="#008000"></td>
 <td bgcolor="#008000"></td>
+<td bgcolor="#e00053"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
+<td bgcolor="#e00053"></td>
 <td>[{"":[{"":[{"":[{"":[{"":[{"": ...</td>
 </tr>
 <tr>
@@ -2378,10 +2378,10 @@ line"]</td>
 </tr>
 <tr>
 <td>i_number_double_huge_neg_exp.json</td><td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[123.456e-789]</td>
 </tr>
 <tr>
@@ -2426,34 +2426,34 @@ line"]</td>
 </tr>
 <tr>
 <td>i_number_real_underflow.json</td><td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[123e-10000000]</td>
 </tr>
 <tr>
 <td>i_number_too_big_neg_int.json</td><td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
 <td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[-1231231231231231231231231231 ...</td>
 </tr>
 <tr>
 <td>i_number_too_big_pos_int.json</td><td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
 <td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[100000000000000000000]</td>
 </tr>
 <tr>
 <td>i_number_very_big_negative_int.json</td><td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
 <td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[-2374623746732768942798327498 ...</td>
 </tr>
 <tr>
@@ -2523,7 +2523,7 @@ line"]</td>
 <tr>
 <td>i_string_invalid_utf-8.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["ˇ"]</td>
@@ -2539,7 +2539,7 @@ line"]</td>
 <tr>
 <td>i_string_iso_latin_1.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["È"]</td>
@@ -2555,7 +2555,7 @@ line"]</td>
 <tr>
 <td>i_string_lone_utf8_continuation_byte.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["Å"]</td>
@@ -2563,7 +2563,7 @@ line"]</td>
 <tr>
 <td>i_string_not_in_unicode_range.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["Ùøøø"]</td>
@@ -2571,7 +2571,7 @@ line"]</td>
 <tr>
 <td>i_string_overlong_sequence_2_bytes.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["¿Ø"]</td>
@@ -2579,7 +2579,7 @@ line"]</td>
 <tr>
 <td>i_string_overlong_sequence_6_bytes.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["¸Éøøøø"]</td>
@@ -2587,7 +2587,7 @@ line"]</td>
 <tr>
 <td>i_string_overlong_sequence_6_bytes_null.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["¸ÄÄÄÄÄ"]</td>
@@ -2595,7 +2595,7 @@ line"]</td>
 <tr>
 <td>i_string_truncated-utf-8.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["‡ˇ"]</td>
@@ -2611,7 +2611,7 @@ line"]</td>
 <tr>
 <td>i_string_UTF-8_invalid_sequence.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["Êó•—à˙"]</td>
@@ -2635,22 +2635,22 @@ line"]</td>
 <tr>
 <td>i_string_UTF8_surrogate_U+D800.json</td><td bgcolor="#050f07"></td>
 <td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td>["Ì†Ä"]</td>
 </tr>
 <tr>
 <td>i_structure_500_nested_arrays.json</td><td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
-<td bgcolor="#050f07"></td>
 <td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
+<td bgcolor="#f7a8ff"></td>
 <td>[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ ...</td>
 </tr>
 <tr>
 <td>i_structure_UTF-8_BOM_empty_object.json</td><td bgcolor="#f7a8ff"></td>
-<td bgcolor="#050f07"></td>
+<td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
 <td bgcolor="#f7a8ff"></td>
 <td bgcolor="#050f07"></td>
@@ -2665,30 +2665,30 @@ line"]</td>
             <table>
             <tr>
               <th></th>
-        <th class="rotate"><div><span>jsoncons-0.179.0</span></div></th>
-<th class="rotate"><div><span>nlohmann-3.11.2</span></div></th>
-<th class="rotate"><div><span>rapidjson-2020-02-08</span></div></th>
-<th class="rotate"><div><span>jsoncpp-1.9.5</span></div></th>
-<th class="rotate"><div><span>taojson-2020-09-14</span></div></th>
+        <th class="rotate"><div><span>jsoncons-1.4.1</span></div></th>
+<th class="rotate"><div><span>nlohmann-3.12.0</span></div></th>
+<th class="rotate"><div><span>rapidjson-RAPIDJSON_VERSION_MAJOR.RAPIDJSON_VERSION_MINOR.RAPIDJSON_VERSION_PATCH</span></div></th>
+<th class="rotate"><div><span>jsoncpp-1.9.6</span></div></th>
+<th class="rotate"><div><span>taojson-TAO_JSON_VERSION_MAJOR.TAO_JSON_VERSION_MINOR.TAO_JSON_VERSION_PATCH</span></div></th>
 
             </tr>
         <tr><td bgcolor="#008000"><font color="white">Expected result</font></td><td>34</td>
-<td>31</td>
-<td>31</td>
+<td>34</td>
+<td>34</td>
 <td>27</td>
-<td>31</td>
+<td>34</td>
 </tr>
 <tr><td bgcolor="#d19b73"><font color="white">Expected success, parsing failed</font></td><td>0</td>
-<td>4</td>
-<td>4</td>
 <td>0</td>
-<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 </tr>
 <tr><td bgcolor="#001a75"><font color="white">Expected failure, parsing succeeded</font></td><td>1</td>
-<td>0</td>
-<td>0</td>
+<td>1</td>
+<td>1</td>
 <td>8</td>
-<td>0</td>
+<td>1</td>
 </tr>
 <tr><td bgcolor="#f7a8ff"><font color="white">Result undefined, parsing succeeded</font></td><td>0</td>
 <td>0</td>
@@ -2725,36 +2725,36 @@ line"]</td>
             </tr>
         <tr>
 <td>pass1.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[
     "JSON Test Pattern pass1 ...</td>
 </tr>
 <tr>
 <td>pass2.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>[[[[[[[[[[[[[[[[[[["Not too de ...</td>
 </tr>
 <tr>
 <td>pass3.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>{
     "JSON Test Pattern pass3 ...</td>
 </tr>
 <tr>
 <td>pass4.json</td><td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
-<td bgcolor="#d19b73"></td>
 <td bgcolor="#008000"></td>
-<td bgcolor="#d19b73"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
+<td bgcolor="#008000"></td>
 <td>"A JSON payload can be string. ...</td>
 </tr>
 <tr>
@@ -2823,10 +2823,10 @@ line"]</td>
 </tr>
 <tr>
 <td>fail18.json</td><td bgcolor="#001a75"></td>
-<td bgcolor="#008000"></td>
-<td bgcolor="#008000"></td>
 <td bgcolor="#001a75"></td>
-<td bgcolor="#008000"></td>
+<td bgcolor="#001a75"></td>
+<td bgcolor="#001a75"></td>
+<td bgcolor="#001a75"></td>
 <td>[[[[[[[[[[[[[[[[[[[["Too deep" ...</td>
 </tr>
 <tr>

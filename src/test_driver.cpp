@@ -1,4 +1,4 @@
-#include "tests/json_benchmarks.hpp"
+#include "tests/benchmark.hpp"
 #include <iostream>
 #include <fstream>
 #include "measurements.hpp"
@@ -10,7 +10,7 @@
 
 namespace fs = std::filesystem;
 
-using namespace json_benchmarks;
+using namespace json_benchmark;
 
 void benchmarks_small_file(std::vector<json_implementation>& implementations)
 {
@@ -358,41 +358,45 @@ void json_checker_parsing_tests(const std::vector<json_implementation>& implemen
 
 int main()
 {
+    jsoncons::versioning_info info = jsoncons::version();
+    std::stringstream os;
+    os << info;
+    
     std::vector<json_implementation> implementations; 
 
-    implementations.emplace_back("jsoncons",
-                                 "https://github.com/danielaparker/jsoncons",
-                                 "0.179.0", 
-                                 "With strict_json_parsing, uses wjson if utf16" ,
-                                  std::make_shared<jsoncons_benchmarks>());
-
-    implementations.emplace_back("nlohmann",
-                                 "https://github.com/nlohmann/json",
-                                 "3.11.2", 
-                                 "",
-                                 std::make_shared<nlohmann_benchmarks>());    /*implementations.emplace_back("cJSON",
-                                 "https://github.com/DaveGamble/cJSON",
-                                 "1.7.15", 
-                                 "",
-                                 std::make_shared<cjson_benchmarks>());*/
-    implementations.emplace_back("rapidjson",
-                                 "https://github.com/miloyip/rapidjson",
-                                 "2020-02-08", 
-                                 "Uses custom (non standard lib) floating point conversion",
-                                 std::make_shared<rapidjson_benchmarks>());
-    implementations.emplace_back("jsoncpp",
-                                 "https://github.com/open-source-parsers/jsoncpp",
-                                 "1.9.5", 
-                                 "Uses map for both arrays and objects",
-                                 std::make_shared<jsoncpp_benchmarks>());
-    implementations.emplace_back("taojson",
-                                 "https://github.com/taocpp/json",
-                                 "2020-09-14", 
-                                 "",
-                                 std::make_shared<taojson_benchmarks>());
+    implementations.emplace_back(jsoncons_benchmark::name(),
+        jsoncons_benchmark::url(), 
+        jsoncons_benchmark::version(), 
+        jsoncons_benchmark::notes(), 
+        std::make_shared<jsoncons_benchmark>());
+    implementations.emplace_back(nlohmann_benchmark::name(),
+        nlohmann_benchmark::url(), 
+        nlohmann_benchmark::version(), 
+        nlohmann_benchmark::notes(), 
+        std::make_shared<nlohmann_benchmark>());    
+    /*implementations.emplace_back(cjson_benchmark::name(),
+        cjson_benchmark::url(), 
+        cjson_benchmark::version(), 
+        cjson_benchmark::notes(), 
+        std::make_shared<cjson_benchmark>());*/
+    implementations.emplace_back(rapidjson_benchmark::name(),
+        rapidjson_benchmark::url(),
+        rapidjson_benchmark::version(),
+        rapidjson_benchmark::notes(),
+        std::make_shared<rapidjson_benchmark>());
+    implementations.emplace_back(jsoncpp_benchmark::name(),
+        jsoncpp_benchmark::url(),                                 
+        jsoncpp_benchmark::version(),                                 
+        jsoncpp_benchmark::notes(),                                 
+        std::make_shared<jsoncpp_benchmark>());
+    /*implementations.emplace_back(taojson_benchmark::name(),
+        taojson_benchmark::url(),                                 
+        taojson_benchmark::version(),                                 
+        taojson_benchmark::notes(),
+        std::make_shared<taojson_benchmark>());*/
 
     benchmarks_int(implementations);
-    benchmarks_fp(implementations);
+    //benchmarks_fp(implementations);
     //benchmarks_small_file(implementations);
 
     std::vector<result_code_info> result_code_infos;

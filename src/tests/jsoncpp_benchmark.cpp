@@ -5,19 +5,44 @@
 #include <sstream>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmarks;
+using namespace json_benchmark;
 using namespace Json;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[jsoncpp](https://github.com/open-source-parsers/jsoncpp)";
 
-measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string jsoncpp_benchmark::version()
+{
+    return JSONCPP_VERSION_STRING;
+}
+
+std::string jsoncpp_benchmark::name()
+{
+    return "jsoncpp";
+}
+
+std::string jsoncpp_benchmark::url()
+{
+    return "https://github.com/open-source-parsers/jsoncpp";
+}
+
+std::string jsoncpp_benchmark::notes()
+{
+    return "Uses map for both arrays and objects";
+}
+
+std::string jsoncpp_benchmark::get_version() const {return jsoncpp_benchmark::version();}
+std::string jsoncpp_benchmark::get_name() const {return jsoncpp_benchmark::name();}
+std::string jsoncpp_benchmark::get_url() const {return jsoncpp_benchmark::url();}
+std::string jsoncpp_benchmark::get_notes() const {return jsoncpp_benchmark::notes();}
+
+measurements jsoncpp_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -25,7 +50,7 @@ measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::st
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         Value root;
         {
@@ -46,7 +71,7 @@ measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::st
                 exit(1);
             }
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             std::stringstream os;
             auto start = high_resolution_clock::now();
@@ -63,7 +88,6 @@ measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::st
             time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -73,7 +97,7 @@ measurements jsoncpp_benchmarks::measure_small(const std::string& input, std::st
     return results;
 }
 
-measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements jsoncpp_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -81,7 +105,7 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
     size_t time_to_write;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         Value root;
         {
@@ -104,7 +128,7 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
                 exit(1);
             }
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             std::ofstream os;
             os.open(output_filename, std::ios_base::out | std::ios_base::binary);
@@ -119,7 +143,6 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -129,14 +152,14 @@ measurements jsoncpp_benchmarks::measure_big(const char *input_filename, const c
     return results;
 }
 
-const std::string& jsoncpp_benchmarks::remarks() const 
+const std::string& jsoncpp_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
 
     return s;
 }
 
-std::vector<test_suite_result> jsoncpp_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

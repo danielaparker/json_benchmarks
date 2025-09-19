@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\data_generator.cpp" />
+    <ClCompile Include="src\memory_measurer.cpp" />
+    <ClCompile Include="src\tests\cjson_benchmark.cpp" />
+    <ClCompile Include="src\tests\jsoncons_benchmark.cpp" />
+    <ClCompile Include="src\tests\jsoncpp_benchmark.cpp" />
+    <ClCompile Include="src\tests\nlohmann_benchmark.cpp" />
+    <ClCompile Include="src\tests\rapidjson_benchmark.cpp" />
+    <ClCompile Include="src\tests\taojson_benchmark.cpp" />
+    <ClCompile Include="src\test_driver.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7B15CF21-BA73-4769-ACC5-C22E2B0F313B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -105,7 +116,7 @@
       <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
@@ -144,7 +155,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
@@ -156,20 +167,6 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\data_generator.cpp" />
-    <ClCompile Include="src\memory_measurer.cpp" />
-    <ClCompile Include="src\tests\cjson_tests.cpp" />
-    <ClCompile Include="src\tests\jsoncons_tests.cpp" />
-    <ClCompile Include="src\tests\jsoncpp_tests.cpp" />
-    <ClCompile Include="src\tests\nlohmann_tests.cpp" />
-    <ClCompile Include="src\tests\rapidjson_tests.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\src\json_benchmarks\thirdparty\rapidjson-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <ClCompile Include="src\tests\taojson_tests.cpp" />
-    <ClCompile Include="src\test_driver.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

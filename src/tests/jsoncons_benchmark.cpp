@@ -6,53 +6,73 @@
 #include <codecvt>
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmarks;
+using namespace json_benchmark;
 using namespace jsoncons;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
 
-measurements jsoncons_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string jsoncons_benchmark::version()
+{
+    return JSONCONS_VERSION;
+}
+
+std::string jsoncons_benchmark::name()
+{
+    return "jsoncons";
+}
+
+std::string jsoncons_benchmark::url()
+{
+    return "https://github.com/danielaparker/jsoncons";
+}
+
+std::string jsoncons_benchmark::notes()
+{
+    return "With strict_json_parsing, uses wjson if utf16";
+}
+
+std::string jsoncons_benchmark::get_version() const {return jsoncons_benchmark::version();}
+std::string jsoncons_benchmark::get_name() const {return jsoncons_benchmark::name();}
+std::string jsoncons_benchmark::get_url() const {return jsoncons_benchmark::url();}
+std::string jsoncons_benchmark::get_notes() const {return jsoncons_benchmark::notes();}
+
+measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
     size_t time_to_read;
     size_t time_to_write;
 
+    start_memory_used =  memory_measurer::get_physical_memory_use();
+    jsoncons::json root;
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        auto start = high_resolution_clock::now();
+        try
         {
-            jsoncons::json root;
-            {
-                auto start = high_resolution_clock::now();
-                try
-                {
-                    root = jsoncons::json::parse(input.data(),input.length());
-                    auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-                }
-                catch (const std::exception& e)
-                {
-                    std::cout << e.what() << std::endl;
-                    exit(1);
-                }
-            }
-            end_memory_used =  memory_measurer::get_process_memory();
-            {
-                auto start = high_resolution_clock::now();
-                root.dump(output);
-                auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-            }
+            root = jsoncons::json::parse(input.data(),input.length());
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            exit(1);
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
+    end_memory_used =  memory_measurer::get_physical_memory_use();
+    {
+        auto start = high_resolution_clock::now();
+        root.dump(output);
+        auto end = high_resolution_clock::now();
+        time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    }   
     
     measurements results;
     results.library_name = library_name;
@@ -62,7 +82,7 @@ measurements jsoncons_benchmarks::measure_small(const std::string& input, std::s
     return results;
 }
 
-measurements jsoncons_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements jsoncons_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     std::cout << "jsoncons output_filename: " << output_filename << "\n";
     size_t start_memory_used;
@@ -70,37 +90,32 @@ measurements jsoncons_benchmarks::measure_big(const char *input_filename, const 
     size_t time_to_read;
     size_t time_to_write;
 
+    start_memory_used =  memory_measurer::get_physical_memory_use();
+    jsoncons::json root;
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        auto start = high_resolution_clock::now();
+        try
         {
-            jsoncons::json root;
-            {
-                auto start = high_resolution_clock::now();
-                try
-                {
-                    std::ifstream is(input_filename);
-                    root = jsoncons::json::parse(is);
-                    auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-                }
-                catch (const std::exception& e)
-                {
-                    std::cout << e.what() << std::endl;
-                    exit(1);
-                }
-            }
-            end_memory_used =  memory_measurer::get_process_memory();
-            {
-                std::ofstream os;
-                os.open(output_filename, std::ios_base::out | std::ios_base::binary);
-                auto start = high_resolution_clock::now();
-                root.dump(os);
-                auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-            }
+            std::ifstream is(input_filename);
+            root = jsoncons::json::parse(is);
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            exit(1);
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
+    end_memory_used =  memory_measurer::get_physical_memory_use();
+    {
+        std::ofstream os;
+        os.open(output_filename, std::ios_base::out | std::ios_base::binary);
+        auto start = high_resolution_clock::now();
+        root.dump(os);
+        auto end = high_resolution_clock::now();
+        time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    }
     
     measurements results;
     results.library_name = library_name;
@@ -110,14 +125,14 @@ measurements jsoncons_benchmarks::measure_big(const char *input_filename, const 
     return results;
 }
 
-const std::string& jsoncons_benchmarks::remarks() const 
+const std::string& jsoncons_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
 
     return s;
 }
 
-std::vector<test_suite_result> jsoncons_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

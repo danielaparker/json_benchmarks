@@ -9,29 +9,55 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include "jsoncons/config/version.hpp"
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
 
-using namespace json_benchmarks;
+using namespace json_benchmark;
 using namespace rapidjson;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
 
-measurements rapidjson_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string rapidjson_benchmark::version()
+{
+    return "1.1.0";
+}
+
+std::string rapidjson_benchmark::name()
+{
+    return "rapidjson";
+}
+
+std::string rapidjson_benchmark::url()
+{
+    return "https://github.com/miloyip/rapidjson";
+}
+
+std::string rapidjson_benchmark::notes()
+{
+    return "Uses custom (non standard lib) floating point conversion";
+}
+
+std::string rapidjson_benchmark::get_version() const {return rapidjson_benchmark::version();}
+std::string rapidjson_benchmark::get_name() const {return rapidjson_benchmark::name();}
+std::string rapidjson_benchmark::get_url() const {return rapidjson_benchmark::url();}
+std::string rapidjson_benchmark::get_notes() const {return rapidjson_benchmark::notes();}
+
+measurements rapidjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
     size_t time_to_read = 0;
     size_t time_to_write = 0;
 
-    start_memory_used =  memory_measurer::get_process_memory();
+    start_memory_used =  memory_measurer::get_physical_memory_use();
     {
         Document d;
         try
@@ -46,7 +72,7 @@ measurements rapidjson_benchmarks::measure_small(const std::string& input, std::
             std::cout << e.what() << std::endl;
             exit(1);
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             try
             {
@@ -64,7 +90,6 @@ measurements rapidjson_benchmarks::measure_small(const std::string& input, std::
             }
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -74,7 +99,7 @@ measurements rapidjson_benchmarks::measure_small(const std::string& input, std::
     return results;
 }
 
-measurements rapidjson_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements rapidjson_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     std::cout << "rapidjson output_filename: " << output_filename << "\n";
 
@@ -83,7 +108,7 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
     size_t time_to_read = 0;
     size_t time_to_write = 0;
 
-    start_memory_used =  memory_measurer::get_process_memory();
+    start_memory_used =  memory_measurer::get_physical_memory_use();
     {
         Document d;
         try
@@ -110,7 +135,7 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
             std::cout << e.what() << std::endl;
             exit(1);
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             try
             {
@@ -139,7 +164,6 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
             }
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -149,7 +173,7 @@ measurements rapidjson_benchmarks::measure_big(const char *input_filename, const
     return results;
 }
 
-const std::string& rapidjson_benchmarks::remarks() const 
+const std::string& rapidjson_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
 
@@ -165,7 +189,7 @@ void print(FILE* fp, const Value& val)
     fws.Flush();
 }
 
-std::vector<test_suite_result> rapidjson_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> rapidjson_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

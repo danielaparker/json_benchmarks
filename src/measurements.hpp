@@ -14,7 +14,7 @@
 #include <filesystem>
 #include <fstream>
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
     namespace fs = std::filesystem;
 
@@ -44,14 +44,9 @@ namespace json_benchmarks {
     struct measurements
     {
         std::string library_name;
-        size_t memory_used;
-        size_t time_to_read;
-        size_t time_to_write;
-
-        measurements()
-            : memory_used(0), time_to_read(0), time_to_write(0) 
-        {
-        }
+        size_t memory_used{0};
+        size_t time_to_read{0};
+        size_t time_to_write{0};
     };
 
     enum class result_code
@@ -110,7 +105,7 @@ namespace json_benchmarks {
         return count;
     }
 
-} // namespace json_benchmarks
+} // namespace json_benchmark
 
 #endif
 

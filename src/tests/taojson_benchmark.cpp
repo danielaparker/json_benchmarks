@@ -4,20 +4,46 @@
 #include <tao/json.hpp>
 #include <sstream>
 #include <stdio.h>
+#include "jsoncons/config/version.hpp"
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmarks;
+using namespace json_benchmark;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[taojson](https://github.com/taocpp/json)";
 
-measurements taojson_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string taojson_benchmark::version()
+{
+    return "";
+}
+
+std::string taojson_benchmark::name()
+{
+    return "taojson";
+}
+
+std::string taojson_benchmark::url()
+{
+    return "https://github.com/taocpp/json";
+}
+
+std::string taojson_benchmark::notes()
+{
+    return "";
+}
+
+std::string taojson_benchmark::get_version() const {return taojson_benchmark::version();}
+std::string taojson_benchmark::get_name() const {return taojson_benchmark::name();}
+std::string taojson_benchmark::get_url() const {return taojson_benchmark::url();}
+std::string taojson_benchmark::get_notes() const {return taojson_benchmark::notes();}
+
+measurements taojson_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -26,7 +52,7 @@ measurements taojson_benchmarks::measure_small(const std::string& input, std::st
     std::string buffer;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         tao::json::value val;
         {
@@ -36,7 +62,7 @@ measurements taojson_benchmarks::measure_small(const std::string& input, std::st
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             auto start = high_resolution_clock::now();
 
@@ -46,7 +72,6 @@ measurements taojson_benchmarks::measure_small(const std::string& input, std::st
             time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -56,7 +81,7 @@ measurements taojson_benchmarks::measure_small(const std::string& input, std::st
     return results;
 }
 
-measurements taojson_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements taojson_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -65,7 +90,7 @@ measurements taojson_benchmarks::measure_big(const char *input_filename, const c
     std::string buffer;
 
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        start_memory_used =  memory_measurer::get_physical_memory_use();
 
         tao::json::value val;
         {
@@ -82,7 +107,7 @@ measurements taojson_benchmarks::measure_big(const char *input_filename, const c
                 std::cout << "[taojson_measure_big1] " << e.what() << std::endl;
             }
         }
-        end_memory_used =  memory_measurer::get_process_memory();
+        end_memory_used =  memory_measurer::get_physical_memory_use();
         {
             auto start = high_resolution_clock::now();
 
@@ -102,7 +127,6 @@ measurements taojson_benchmarks::measure_big(const char *input_filename, const c
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
     
     measurements results;
     results.library_name = library_name;
@@ -112,13 +136,13 @@ measurements taojson_benchmarks::measure_big(const char *input_filename, const c
     return results;
 }
 
-const std::string& taojson_benchmarks::remarks() const 
+const std::string& taojson_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Uses modified [google/double conversion](https://github.com/google/double-conversion) routines for parsing doubles. Uses modified [jeaiii/itoa](https://github.com/jeaiii/itoa) routines for outputting integers. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
     return s;
 }
-std::vector<test_suite_result> taojson_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> taojson_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

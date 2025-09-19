@@ -1,56 +1,77 @@
 #include <assert.h>
 #include <fstream>
 #include <chrono>
+#include "jsoncons/config/version.hpp"
 #include "nlohmann/json.hpp"
 #include "../measurements.hpp"
 #include "../memory_measurer.hpp"
-#include "json_benchmarks.hpp"
+#include "benchmark.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmarks;
+using namespace json_benchmark;
 using namespace nlohmann;
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
 const std::string library_name = "[nlohmann](https://github.com/nlohmann/json)";
 
-measurements nlohmann_benchmarks::measure_small(const std::string& input, std::string& output)
+std::string nlohmann_benchmark::version()
+{
+    return JSONCONS_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR,NLOHMANN_JSON_VERSION_MINOR,NLOHMANN_JSON_VERSION_PATCH);
+}
+
+std::string nlohmann_benchmark::name()
+{
+    return "nlohmann";
+}
+
+std::string nlohmann_benchmark::url()
+{
+    return "https://github.com/nlohmann/json";
+}
+
+std::string nlohmann_benchmark::notes()
+{
+    return "";
+}
+
+std::string nlohmann_benchmark::get_version() const {return nlohmann_benchmark::version();}
+std::string nlohmann_benchmark::get_name() const {return nlohmann_benchmark::name();}
+std::string nlohmann_benchmark::get_url() const {return nlohmann_benchmark::url();}
+std::string nlohmann_benchmark::get_notes() const {return nlohmann_benchmark::notes();}
+
+measurements nlohmann_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
     size_t time_to_read;
     size_t time_to_write;
 
+    start_memory_used =  memory_measurer::get_physical_memory_use();
+    nlohmann::json root;
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        auto start = high_resolution_clock::now();
+        try
         {
-            nlohmann::json root;
-            {
-                auto start = high_resolution_clock::now();
-                try
-                {
-                    root = nlohmann::json::parse(input);
-                    auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-                }
-                catch (const std::exception& e)
-                {
-                    std::cout << e.what() << std::endl;
-                    exit(1);
-                }
-            }
-            end_memory_used =  memory_measurer::get_process_memory();
-            {
-                auto start = high_resolution_clock::now();
-                output = root.dump();
-                auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-            }
+            root = nlohmann::json::parse(input);
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            exit(1);
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
+    end_memory_used =  memory_measurer::get_physical_memory_use();
+    {
+        auto start = high_resolution_clock::now();
+        output = root.dump();
+        auto end = high_resolution_clock::now();
+        time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    }
     
     measurements results;
     results.library_name = library_name;
@@ -60,44 +81,39 @@ measurements nlohmann_benchmarks::measure_small(const std::string& input, std::s
     return results;
 }
 
-measurements nlohmann_benchmarks::measure_big(const char *input_filename, const char* output_filename)
+measurements nlohmann_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
     size_t time_to_read;
     size_t time_to_write;
 
+    start_memory_used =  memory_measurer::get_physical_memory_use();
+    nlohmann::json root;
     {
-        start_memory_used =  memory_measurer::get_process_memory();
+        auto start = high_resolution_clock::now();
+        try
         {
-            nlohmann::json root;
-            {
-                auto start = high_resolution_clock::now();
-                try
-                {
-                    std::ifstream is(input_filename);
-                    root = nlohmann::json::parse(is);
-                    auto end = high_resolution_clock::now();
-                    time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-                }
-                catch (const std::exception& e)
-                {
-                    std::cout << e.what() << std::endl;
-                    exit(1);
-                }
-            }
-            end_memory_used =  memory_measurer::get_process_memory();
-            {
-                std::ofstream os; 
-                os.open(output_filename, std::ios_base::out | std::ios_base::binary);
-                auto start = high_resolution_clock::now();
-                os << root;
-                auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-            }
+            std::ifstream is(input_filename);
+            root = nlohmann::json::parse(is);
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            exit(1);
         }
     }
-    size_t final_memory_used = memory_measurer::get_process_memory();
+    end_memory_used =  memory_measurer::get_physical_memory_use();
+    {
+        std::ofstream os; 
+        os.open(output_filename, std::ios_base::out | std::ios_base::binary);
+        auto start = high_resolution_clock::now();
+        os << root;
+        auto end = high_resolution_clock::now();
+        time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    }
     
     measurements results;
     results.library_name = library_name;
@@ -107,14 +123,14 @@ measurements nlohmann_benchmarks::measure_big(const char *input_filename, const 
     return results;
 }
 
-const std::string& nlohmann_benchmarks::remarks() const 
+const std::string& nlohmann_benchmark::remarks() const 
 {
     static const std::string s = R"abc(Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
     return s;
 }
 
-std::vector<test_suite_result> nlohmann_benchmarks::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> nlohmann_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)

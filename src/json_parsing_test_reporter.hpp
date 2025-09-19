@@ -7,7 +7,7 @@
 #include <functional>
 #include "measurements.hpp"
 
-namespace json_benchmarks {
+namespace json_benchmark {
 
     class json_parsing_test_visitor
     {
@@ -232,6 +232,6 @@ namespace json_benchmarks {
 
     };
 
-} // namespace json_benchmarks
+} // namespace json_benchmark
 
 #endif
