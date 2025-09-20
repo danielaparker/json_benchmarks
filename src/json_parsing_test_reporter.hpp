@@ -21,19 +21,19 @@ namespace json_benchmark {
     private:
         const size_t max_text_length = 30;
         std::string title_;
-        std::vector<json_implementation> implementations_;
+        std::vector<std::shared_ptr<benchmark>> benchmarks_;
         std::vector<result_code_info> result_code_info_;
         std::ostream* os_ptr_;
-        std::vector<std::tuple<std::string,std::string,std::function<void(const std::vector<json_implementation>&,json_parsing_test_visitor&)>>> tests_;
+        std::vector<std::tuple<std::string,std::string,std::function<void(const std::vector<std::shared_ptr<benchmark>>&,json_parsing_test_visitor&)>>> tests_;
         size_t counter_;
     public:
 
         json_parsing_test_reporter(const std::string& title,
-                                   const std::vector<json_implementation>& implementations,
+                                   const std::vector<std::shared_ptr<benchmark>>& benchmarks,
                                    const std::vector<result_code_info>& result_code_info,
                                    std::ostream& os)
             : title_(title),
-              implementations_(implementations),
+              benchmarks_(benchmarks),
               result_code_info_(result_code_info), 
               os_ptr_(std::addressof(os)),
               counter_(0)
@@ -45,7 +45,7 @@ namespace json_benchmark {
         }
 
         void register_test(const std::string& heading, 
-                           std::function<void(const std::vector<json_implementation>&,json_parsing_test_visitor&)> test)
+                           std::function<void(const std::vector<std::shared_ptr<benchmark>>&,json_parsing_test_visitor&)> test)
         {
             std::ostringstream os;
             os << "a" << counter_;
@@ -65,7 +65,7 @@ namespace json_benchmark {
         (*os_ptr_) << "<h2>";
         (*os_ptr_) << std::get<0>(pr);
         (*os_ptr_) << "</h2>" << std::endl;
-                std::get<2>(pr)(implementations_,*this);
+                std::get<2>(pr)(benchmarks_,*this);
         (*os_ptr_) << "</div>\n";
             }
             end_report();
@@ -79,10 +79,10 @@ namespace json_benchmark {
             <tr>
               <th></th>
         )";
-        for (const auto& lib : implementations_)
+        for (const auto& lib : benchmarks_)
         {
             (*os_ptr_) << "<th class=\"rotate\"><div><span>";
-            (*os_ptr_) << lib.name << "-" << lib.version;
+            (*os_ptr_) << lib->get_name() << "-" << lib->get_version();
             (*os_ptr_) << "</span></div></th>\n"; 
         }
         (*os_ptr_) << R"(
@@ -112,10 +112,10 @@ namespace json_benchmark {
             <tr>
               <th></th>
         )";
-        for (const auto& lib : implementations_)
+        for (const auto& lib : benchmarks_)
         {
             (*os_ptr_) << "<th class=\"rotate\"><div><span>";
-            (*os_ptr_) << lib.name;
+            (*os_ptr_) << lib->get_name();
             (*os_ptr_) << "</span></div></th>\n"; 
         }
         (*os_ptr_) << R"(

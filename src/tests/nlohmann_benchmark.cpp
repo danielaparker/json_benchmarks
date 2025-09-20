@@ -17,30 +17,16 @@ namespace json_benchmark {
 
 const std::string library_name = "[nlohmann](https://github.com/nlohmann/json)";
 
-std::string nlohmann_benchmark::version()
-{
-    return JSONCONS_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR,NLOHMANN_JSON_VERSION_MINOR,NLOHMANN_JSON_VERSION_PATCH);
-}
+std::string nlohmann_benchmark::get_version() const {return JSONCONS_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR,NLOHMANN_JSON_VERSION_MINOR,NLOHMANN_JSON_VERSION_PATCH);}
+std::string nlohmann_benchmark::get_name() const {return "nlohmann";}
+std::string nlohmann_benchmark::get_url() const {return "https://github.com/nlohmann/json";}
 
-std::string nlohmann_benchmark::name()
+const std::string& nlohmann_benchmark::get_notes() const 
 {
-    return "nlohmann";
-}
+    static const std::string s = R"abc(Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
-std::string nlohmann_benchmark::url()
-{
-    return "https://github.com/nlohmann/json";
+    return s;
 }
-
-std::string nlohmann_benchmark::notes()
-{
-    return "";
-}
-
-std::string nlohmann_benchmark::get_version() const {return nlohmann_benchmark::version();}
-std::string nlohmann_benchmark::get_name() const {return nlohmann_benchmark::name();}
-std::string nlohmann_benchmark::get_url() const {return nlohmann_benchmark::url();}
-std::string nlohmann_benchmark::get_notes() const {return nlohmann_benchmark::notes();}
 
 measurements nlohmann_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -121,13 +107,6 @@ measurements nlohmann_benchmark::measure_big(const char *input_filename, const c
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
-}
-
-const std::string& nlohmann_benchmark::remarks() const 
-{
-    static const std::string s = R"abc(Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
-
-    return s;
 }
 
 std::vector<test_suite_result> nlohmann_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)

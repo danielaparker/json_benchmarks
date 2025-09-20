@@ -20,30 +20,9 @@ namespace json_benchmark {
 
 const std::string library_name = "[cjson](https://github.com/DaveGamble/cJSON)";
 
-std::string cjson_benchmark::version()
-{
-    return "";
-}
-
-std::string cjson_benchmark::name()
-{
-    return "cjson";
-}
-
-std::string cjson_benchmark::url()
-{
-    return "https://github.com/DaveGamble/cJSON";
-}
-
-std::string cjson_benchmark::notes()
-{
-    return "";
-}
-
-std::string cjson_benchmark::get_version() const {return cjson_benchmark::version();}
-std::string cjson_benchmark::get_name() const {return cjson_benchmark::name();}
-std::string cjson_benchmark::get_url() const {return cjson_benchmark::url();}
-std::string cjson_benchmark::get_notes() const {return cjson_benchmark::notes();}
+std::string cjson_benchmark::get_version() const {return "";}
+std::string cjson_benchmark::get_name() const {return "cjson"; }
+std::string cjson_benchmark::get_url() const {return "https://github.com/DaveGamble/cJSON";}
 
 measurements cjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -154,7 +133,7 @@ measurements cjson_benchmark::measure_big(const char *input_filename, const char
     return results;
 }
 
-const std::string& cjson_benchmark::remarks() const 
+const std::string& cjson_benchmark::get_notes() const 
 {
     static const std::string s = R"abc(Inefficient storage (items do not share the same space), expect larger memory footprint. Uses sprintf and sscanf to support locale-independent round-trip.)abc";
 

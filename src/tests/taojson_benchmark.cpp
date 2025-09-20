@@ -18,30 +18,16 @@ namespace json_benchmark {
 
 const std::string library_name = "[taojson](https://github.com/taocpp/json)";
 
-std::string taojson_benchmark::version()
-{
-    return "";
-}
+std::string taojson_benchmark::get_version() const {return "2020-09-14";}
+std::string taojson_benchmark::get_name() const {return "taocpp-json";}
+std::string taojson_benchmark::get_url() const {return "https://github.com/taocpp/json";}
 
-std::string taojson_benchmark::name()
+const std::string& taojson_benchmark::get_notes() const 
 {
-    return "taojson";
-}
+    static const std::string s = R"abc(Uses modified [google/double conversion](https://github.com/google/double-conversion) routines for parsing doubles. Uses modified [jeaiii/itoa](https://github.com/jeaiii/itoa) routines for outputting integers. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
 
-std::string taojson_benchmark::url()
-{
-    return "https://github.com/taocpp/json";
+    return s;
 }
-
-std::string taojson_benchmark::notes()
-{
-    return "";
-}
-
-std::string taojson_benchmark::get_version() const {return taojson_benchmark::version();}
-std::string taojson_benchmark::get_name() const {return taojson_benchmark::name();}
-std::string taojson_benchmark::get_url() const {return taojson_benchmark::url();}
-std::string taojson_benchmark::get_notes() const {return taojson_benchmark::notes();}
 
 measurements taojson_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -136,12 +122,6 @@ measurements taojson_benchmark::measure_big(const char *input_filename, const ch
     return results;
 }
 
-const std::string& taojson_benchmark::remarks() const 
-{
-    static const std::string s = R"abc(Uses modified [google/double conversion](https://github.com/google/double-conversion) routines for parsing doubles. Uses modified [jeaiii/itoa](https://github.com/jeaiii/itoa) routines for outputting integers. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.)abc";
-
-    return s;
-}
 std::vector<test_suite_result> taojson_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;

@@ -22,6 +22,8 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|7.67|1.54|343|Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.
-[nlohmann](https://github.com/nlohmann/json)|16.771|5.686|410|Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
-[rapidjson](https://github.com/miloyip/rapidjson)|4.299|1.24|332|Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
+[jsoncons](https://github.com/danielaparker/jsoncons)|3.68|0.741|343|Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.
+[nlohmann](https://github.com/nlohmann/json)|8.88|3.389|410|Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
+[rapidjson](https://github.com/miloyip/rapidjson)|2.311|0.642|332|Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|17.435|7.383|1985|Uses std::map for both arrays and objects, expect larger memory footprint.
+

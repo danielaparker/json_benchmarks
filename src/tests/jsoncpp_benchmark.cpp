@@ -17,30 +17,16 @@ namespace json_benchmark {
 
 const std::string library_name = "[jsoncpp](https://github.com/open-source-parsers/jsoncpp)";
 
-std::string jsoncpp_benchmark::version()
-{
-    return JSONCPP_VERSION_STRING;
-}
+std::string jsoncpp_benchmark::get_version() const {return JSONCPP_VERSION_STRING;}
+std::string jsoncpp_benchmark::get_name() const {return "jsoncpp";}
+std::string jsoncpp_benchmark::get_url() const {return "https://github.com/open-source-parsers/jsoncpp";}
 
-std::string jsoncpp_benchmark::name()
+const std::string& jsoncpp_benchmark::get_notes() const 
 {
-    return "jsoncpp";
-}
+    static const std::string s = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
 
-std::string jsoncpp_benchmark::url()
-{
-    return "https://github.com/open-source-parsers/jsoncpp";
+    return s;
 }
-
-std::string jsoncpp_benchmark::notes()
-{
-    return "Uses map for both arrays and objects";
-}
-
-std::string jsoncpp_benchmark::get_version() const {return jsoncpp_benchmark::version();}
-std::string jsoncpp_benchmark::get_name() const {return jsoncpp_benchmark::name();}
-std::string jsoncpp_benchmark::get_url() const {return jsoncpp_benchmark::url();}
-std::string jsoncpp_benchmark::get_notes() const {return jsoncpp_benchmark::notes();}
 
 measurements jsoncpp_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -150,13 +136,6 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
-}
-
-const std::string& jsoncpp_benchmark::remarks() const 
-{
-    static const std::string s = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
-
-    return s;
 }
 
 std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)

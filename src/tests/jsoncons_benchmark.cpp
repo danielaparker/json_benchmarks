@@ -18,30 +18,16 @@ namespace json_benchmark {
 
 const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
 
-std::string jsoncons_benchmark::version()
-{
-    return JSONCONS_VERSION;
-}
+std::string jsoncons_benchmark::get_version() const {return JSONCONS_VERSION;}
+std::string jsoncons_benchmark::get_name() const {return "jsoncons";}
+std::string jsoncons_benchmark::get_url() const {return "https://github.com/danielaparker/jsoncons";}
 
-std::string jsoncons_benchmark::name()
+const std::string& jsoncons_benchmark::get_notes() const 
 {
-    return "jsoncons";
-}
+    static const std::string s = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
 
-std::string jsoncons_benchmark::url()
-{
-    return "https://github.com/danielaparker/jsoncons";
+    return s;
 }
-
-std::string jsoncons_benchmark::notes()
-{
-    return "With strict_json_parsing, uses wjson if utf16";
-}
-
-std::string jsoncons_benchmark::get_version() const {return jsoncons_benchmark::version();}
-std::string jsoncons_benchmark::get_name() const {return jsoncons_benchmark::name();}
-std::string jsoncons_benchmark::get_url() const {return jsoncons_benchmark::url();}
-std::string jsoncons_benchmark::get_notes() const {return jsoncons_benchmark::notes();}
 
 measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -123,13 +109,6 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
-}
-
-const std::string& jsoncons_benchmark::remarks() const 
-{
-    static const std::string s = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
-
-    return s;
 }
 
 std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)

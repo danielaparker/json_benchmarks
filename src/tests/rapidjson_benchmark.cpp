@@ -25,30 +25,16 @@ namespace json_benchmark {
 
 const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
 
-std::string rapidjson_benchmark::version()
-{
-    return "1.1.0";
-}
+std::string rapidjson_benchmark::get_version() const {return "1.1.0";}
+std::string rapidjson_benchmark::get_name() const {return "rapidjson";}
+std::string rapidjson_benchmark::get_url() const {return "https://github.com/miloyip/rapidjson";}
 
-std::string rapidjson_benchmark::name()
+const std::string& rapidjson_benchmark::get_notes() const 
 {
-    return "rapidjson";
-}
+    static const std::string s = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
 
-std::string rapidjson_benchmark::url()
-{
-    return "https://github.com/miloyip/rapidjson";
+    return s;
 }
-
-std::string rapidjson_benchmark::notes()
-{
-    return "Uses custom (non standard lib) floating point conversion";
-}
-
-std::string rapidjson_benchmark::get_version() const {return rapidjson_benchmark::version();}
-std::string rapidjson_benchmark::get_name() const {return rapidjson_benchmark::name();}
-std::string rapidjson_benchmark::get_url() const {return rapidjson_benchmark::url();}
-std::string rapidjson_benchmark::get_notes() const {return rapidjson_benchmark::notes();}
 
 measurements rapidjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -171,13 +157,6 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
-}
-
-const std::string& rapidjson_benchmark::remarks() const 
-{
-    static const std::string s = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
-
-    return s;
 }
 
 void print(FILE* fp, const Value& val)

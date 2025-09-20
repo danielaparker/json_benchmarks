@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 using namespace json_benchmark;
 
-void benchmarks_small_file(std::vector<json_implementation>& implementations)
+void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
@@ -61,36 +61,36 @@ void benchmarks_small_file(std::vector<json_implementation>& implementations)
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        for (const auto& val : implementations)
+        for (const auto& item : benchmarks)
         {
-            os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
+            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << std::endl;
         }
         os << std::endl;
 
         os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        std::vector<measurements> v(implementations.size());
+        std::vector<measurements> v(benchmarks.size());
 
         size_t number_times = 50000;
         for (size_t i = 0; i < number_times; ++i)
         {
-            for (size_t j = 0; j < implementations.size(); ++j)
+            for (size_t j = 0; j < benchmarks.size(); ++j)
             {
-                auto results = implementations[j].measures->measure_small(input,output);
+                auto results = benchmarks[j]->measure_small(input,output);
                 v[j].time_to_read += results.time_to_read;
                 v[j].time_to_write += results.time_to_write;
                 v[j].memory_used += results.memory_used;
             }
             output.clear();
         }
-        for (size_t j = 0; j < implementations.size(); ++j)
+        for (size_t j = 0; j < benchmarks.size(); ++j)
         {
             os << v[j].library_name
                << "|" << v[j].time_to_read/(number_times)
                << "|" << v[j].time_to_write/(number_times)
                << "|" << v[j].memory_used/number_times
-               << "|" << implementations[j].measures->remarks()
+               << "|" << benchmarks[j]->get_notes()
                << std::endl; 
         }
         os << std::endl;
@@ -101,7 +101,7 @@ void benchmarks_small_file(std::vector<json_implementation>& implementations)
     }
 }
 
-void benchmarks_int(std::vector<json_implementation>& implementations)
+void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
@@ -139,25 +139,25 @@ void benchmarks_int(std::vector<json_implementation>& implementations)
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
 
-        for (const auto& val : implementations)
+        for (const auto& item : benchmarks)
         {
-            os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
+            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << std::endl;
         }
         os << std::endl;
 
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (size_t j = 0; j < implementations.size(); ++j)
+        for (size_t j = 0; j < benchmarks.size(); ++j)
         {
-            auto& impl = implementations[j];
-            std::string output_path = "data/output/persons_" + impl.name + ".json";
-            auto results = impl.measures->measure_big("data/output/persons.json",output_path.c_str());
-            os << "[" << impl.name << "](" << impl.url << ")"
+            auto& impl = benchmarks[j];
+            std::string output_path = "data/output/persons_" + impl->get_name() + ".json";
+            auto results = impl->measure_big("data/output/persons.json",output_path.c_str());
+            os << "[" << impl->get_name() << "](" << impl->get_url() << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << impl.measures->remarks()
+               << "|" << impl->get_notes()
                << std::endl; 
         }
 
@@ -169,7 +169,7 @@ void benchmarks_int(std::vector<json_implementation>& implementations)
     }
 }
 
-void benchmarks_fp(std::vector<json_implementation>& implementations)
+void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
@@ -206,25 +206,25 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
 
         os << "Library|Version" << std::endl;
         os << "---|---" << std::endl;
-        for (const auto& val : implementations)
+        for (const auto& item : benchmarks)
         {
-            os << "[" << val.name << "](" << val.url << ")" << "|" << val.version << std::endl;
+            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << std::endl;
         }
         os << std::endl;
 
         os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
-        for (size_t j = 0; j < implementations.size(); ++j)
+        for (size_t j = 0; j < benchmarks.size(); ++j)
         {
-            auto& impl = implementations[j];
-            std::string output_path = "data/output/persons_fp_" + impl.name + ".json";
-            auto results = impl.measures->measure_big("data/output/persons_fp.json",output_path.c_str());
-            os << "[" << impl.name << "](" << impl.url << ")"
+            auto& impl = benchmarks[j];
+            std::string output_path = "data/output/persons_fp_" + impl->get_name() + ".json";
+            auto results = impl->measure_big("data/output/persons_fp.json",output_path.c_str());
+            os << "[" << impl->get_name() << "](" << impl->get_url() << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << impl.measures->remarks()
+               << "|" << impl->get_notes()
                << std::endl; 
         }
 
@@ -236,7 +236,7 @@ void benchmarks_fp(std::vector<json_implementation>& implementations)
     }
 }
 
-void json_test_suite_parsing_tests(const std::vector<json_implementation>& implementations,
+void json_test_suite_parsing_tests(const std::vector<std::shared_ptr<benchmark>>& benchmarks,
                                   json_parsing_test_visitor& visitor)
 {
     try
@@ -283,9 +283,9 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& imple
         );
 
         std::vector<std::vector<test_suite_result>> results;
-        for (auto& impl : implementations)
+        for (auto& impl : benchmarks)
         {
-            results.emplace_back(impl.measures->run_test_suite(pathnames));
+            results.emplace_back(impl->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
@@ -296,7 +296,7 @@ void json_test_suite_parsing_tests(const std::vector<json_implementation>& imple
     }
 }
 
-void json_checker_parsing_tests(const std::vector<json_implementation>& implementations,
+void json_checker_parsing_tests(const std::vector<std::shared_ptr<benchmark>>& benchmarks,
                                 json_parsing_test_visitor& visitor)
 {
     try
@@ -343,9 +343,9 @@ void json_checker_parsing_tests(const std::vector<json_implementation>& implemen
         );
 
         std::vector<std::vector<test_suite_result>> results;
-        for (auto& impl : implementations)
+        for (auto& impl : benchmarks)
         {
-            results.emplace_back(impl.measures->run_test_suite(pathnames));
+            results.emplace_back(impl->run_test_suite(pathnames));
         }
 
         visitor.visit(pathnames,results);
@@ -358,46 +358,18 @@ void json_checker_parsing_tests(const std::vector<json_implementation>& implemen
 
 int main()
 {
-    jsoncons::versioning_info info = jsoncons::version();
-    std::stringstream os;
-    os << info;
-    
-    std::vector<json_implementation> implementations; 
+    std::vector<std::shared_ptr<benchmark>> benchmarks; 
 
-    implementations.emplace_back(jsoncons_benchmark::name(),
-        jsoncons_benchmark::url(), 
-        jsoncons_benchmark::version(), 
-        jsoncons_benchmark::notes(), 
-        std::make_shared<jsoncons_benchmark>());
-    implementations.emplace_back(nlohmann_benchmark::name(),
-        nlohmann_benchmark::url(), 
-        nlohmann_benchmark::version(), 
-        nlohmann_benchmark::notes(), 
-        std::make_shared<nlohmann_benchmark>());    
-    /*implementations.emplace_back(cjson_benchmark::name(),
-        cjson_benchmark::url(), 
-        cjson_benchmark::version(), 
-        cjson_benchmark::notes(), 
-        std::make_shared<cjson_benchmark>());*/
-    implementations.emplace_back(rapidjson_benchmark::name(),
-        rapidjson_benchmark::url(),
-        rapidjson_benchmark::version(),
-        rapidjson_benchmark::notes(),
-        std::make_shared<rapidjson_benchmark>());
-    implementations.emplace_back(jsoncpp_benchmark::name(),
-        jsoncpp_benchmark::url(),                                 
-        jsoncpp_benchmark::version(),                                 
-        jsoncpp_benchmark::notes(),                                 
-        std::make_shared<jsoncpp_benchmark>());
-    /*implementations.emplace_back(taojson_benchmark::name(),
-        taojson_benchmark::url(),                                 
-        taojson_benchmark::version(),                                 
-        taojson_benchmark::notes(),
-        std::make_shared<taojson_benchmark>());*/
+    benchmarks.push_back(std::make_shared<jsoncons_benchmark>());
+    benchmarks.push_back(std::make_shared<nlohmann_benchmark>());    
+    /*benchmarks.push_back(std::make_shared<cjson_benchmark>());*/
+    benchmarks.push_back(std::make_shared<rapidjson_benchmark>());
+    benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
+    /*benchmarks.push_back(std::make_shared<taojson_benchmark>());*/
 
-    benchmarks_int(implementations);
-    //benchmarks_fp(implementations);
-    //benchmarks_small_file(implementations);
+    //benchmarks_int(benchmarks);
+    benchmarks_fp(benchmarks);
+    //benchmarks_small_file(benchmarks);
 
     std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
@@ -408,7 +380,7 @@ int main()
     result_code_infos.push_back(result_code_info{result_code::process_stopped,"Process stopped","#e00053"});
 
     std::ofstream fs("docs/index.html");
-    json_parsing_test_reporter reporter("Parser Comparisons", implementations, result_code_infos, fs);
+    json_parsing_test_reporter reporter("Parser Comparisons", benchmarks, result_code_infos, fs);
     reporter.register_test("JSON Test Suite",json_test_suite_parsing_tests);
     reporter.register_test("JSON Checker",json_checker_parsing_tests);
     reporter.run_tests();
