@@ -15,18 +15,9 @@ using namespace Json;
 
 namespace json_benchmark {
 
-const std::string library_name = "[jsoncpp](https://github.com/open-source-parsers/jsoncpp)";
-
 std::string jsoncpp_benchmark::get_version() const {return JSONCPP_VERSION_STRING;}
 std::string jsoncpp_benchmark::get_name() const {return "jsoncpp";}
 std::string jsoncpp_benchmark::get_url() const {return "https://github.com/open-source-parsers/jsoncpp";}
-
-const std::string& jsoncpp_benchmark::get_notes() const 
-{
-    static const std::string s = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
-
-    return s;
-}
 
 measurements jsoncpp_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -76,7 +67,7 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
     }
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
@@ -131,7 +122,7 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
     }
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses std::map for both arrays and objects, expect larger memory footprint.)abc";
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;

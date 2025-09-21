@@ -23,18 +23,9 @@ using namespace rapidjson;
 
 namespace json_benchmark {
 
-const std::string library_name = "[rapidjson](https://github.com/miloyip/rapidjson)";
-
 std::string rapidjson_benchmark::get_version() const {return "1.1.0";}
 std::string rapidjson_benchmark::get_name() const {return "rapidjson";}
 std::string rapidjson_benchmark::get_url() const {return "https://github.com/miloyip/rapidjson";}
-
-const std::string& rapidjson_benchmark::get_notes() const 
-{
-    static const std::string s = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
-
-    return s;
-}
 
 measurements rapidjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -78,7 +69,7 @@ measurements rapidjson_benchmark::measure_small(const std::string& input, std::s
     }
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
     results.memory_used = (end_memory_used - start_memory_used);
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
@@ -152,7 +143,7 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
     }
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;

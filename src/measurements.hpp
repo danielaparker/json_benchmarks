@@ -43,7 +43,7 @@ namespace json_benchmark {
 
     struct measurements
     {
-        std::string library_name;
+        std::string notes;
         size_t memory_used{0};
         size_t time_to_read{0};
         size_t time_to_write{0};

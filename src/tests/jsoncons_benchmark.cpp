@@ -16,18 +16,9 @@ using namespace jsoncons;
 
 namespace json_benchmark {
 
-const std::string library_name = "[jsoncons](https://github.com/danielaparker/jsoncons)";
-
 std::string jsoncons_benchmark::get_version() const {return JSONCONS_VERSION;}
 std::string jsoncons_benchmark::get_name() const {return "jsoncons";}
 std::string jsoncons_benchmark::get_url() const {return "https://github.com/danielaparker/jsoncons";}
-
-const std::string& jsoncons_benchmark::get_notes() const 
-{
-    static const std::string s = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
-
-    return s;
-}
 
 measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -61,7 +52,7 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
     }   
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
     results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
@@ -104,7 +95,7 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
     }
     
     measurements results;
-    results.library_name = library_name;
+    results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;

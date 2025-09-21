@@ -29,12 +29,7 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         {
             std::ifstream in(filename, std::ifstream::binary);
             in.read(&input[0], file_size);
-            //input[file_size] = 0;
-            //jsoncons::json j = jsoncons::json::parse(in);
-            //j.dump(input);
-            //std::cout << input << std::endl;
         }
-        //std::cout << input << std::endl;
         output.reserve(input.size()*2);
 
         std::ofstream os("report/performance_small_file_text_array.md");
@@ -67,7 +62,7 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         }
         os << std::endl;
 
-        os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Memory footprint of json value (bytes)|Remarks" << std::endl;
+        os << "Library|Time to read (milliseconds)|Time to write (milliseconds)|Physical memory footprint of json value (bytes)|Notes" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
         std::vector<measurements> v(benchmarks.size());
@@ -86,11 +81,11 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         }
         for (size_t j = 0; j < benchmarks.size(); ++j)
         {
-            os << v[j].library_name
+            os << "[" << benchmarks[j]->get_name() << "](" << benchmarks[j]->get_url() << ")"
                << "|" << v[j].time_to_read/(number_times)
                << "|" << v[j].time_to_write/(number_times)
                << "|" << v[j].memory_used/number_times
-               << "|" << benchmarks[j]->get_notes()
+               << "|" << v[j].notes
                << std::endl; 
         }
         os << std::endl;
@@ -145,7 +140,7 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         }
         os << std::endl;
 
-        os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
+        os << "Library|Time to read (s)|Time to write (s)|Physical memory footprint of json value (MB)|Notes" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
         for (size_t j = 0; j < benchmarks.size(); ++j)
@@ -157,7 +152,7 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << impl->get_notes()
+               << "|" << results.notes
                << std::endl; 
         }
 
@@ -212,7 +207,7 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         }
         os << std::endl;
 
-        os << "Library|Time to read (s)|Time to write (s)|Memory footprint of json value (MB)|Remarks" << std::endl;
+        os << "Library|Time to read (s)|Time to write (s)|Physical memory footprint of json value (MB)|Notes" << std::endl;
         os << "---|---|---|---|---" << std::endl;
 
         for (size_t j = 0; j < benchmarks.size(); ++j)
@@ -224,7 +219,7 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
                << "|" << (results.memory_used)
-               << "|" << impl->get_notes()
+               << "|" << results.notes
                << std::endl; 
         }
 
@@ -362,19 +357,18 @@ int main()
 
     benchmarks.push_back(std::make_shared<jsoncons_benchmark>());
     benchmarks.push_back(std::make_shared<nlohmann_benchmark>());    
-    /*benchmarks.push_back(std::make_shared<cjson_benchmark>());*/
     benchmarks.push_back(std::make_shared<rapidjson_benchmark>());
     benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
-    /*benchmarks.push_back(std::make_shared<taojson_benchmark>());*/
+    benchmarks.push_back(std::make_shared<yyjson_benchmark>());
 
-    //benchmarks_int(benchmarks);
-    benchmarks_fp(benchmarks);
+    benchmarks_int(benchmarks);
+    //benchmarks_fp(benchmarks);
     //benchmarks_small_file(benchmarks);
 
     std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});
     result_code_infos.push_back(result_code_info{result_code::expected_success_parsing_failed,"Expected success, parsing failed","#d19b73"});
-    result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#001a75"});
+    result_code_infos.push_back(result_code_info{result_code::expected_failure_parsing_succeeded,"Expected failure, parsing succeeded","#e1d6a7"});
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_succeeded,"Result undefined, parsing succeeded","#f7a8ff"});
     result_code_infos.push_back(result_code_info{result_code::result_undefined_parsing_failed,"Result undefined, parsing failed","#050f07"});
     result_code_infos.push_back(result_code_info{result_code::process_stopped,"Process stopped","#e00053"});
