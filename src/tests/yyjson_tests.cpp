@@ -26,42 +26,37 @@ measurements yyjson_benchmark::measure_small(const std::string& input, std::stri
 
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
+        yyjson_doc *doc{nullptr};
         {
-            yyjson_doc *doc;
+            auto start = high_resolution_clock::now();
+            doc = yyjson_read(input.data(), input.length(), 0);
+            if (!doc)
             {
-                auto start = high_resolution_clock::now();
-                doc = yyjson_read(input.data(), input.length(), 0);
-                if (!doc)
-                {
-                    std::cout << "yyjson parse failed" << std::endl;
-                    exit(1);
-                }
-                auto end = high_resolution_clock::now();
-                time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                std::cout << "yyjson parse failed" << std::endl;
+                exit(1);
             }
-            
-            end_memory_used =  memory_measurer::get_physical_memory_use();
-            {
-                auto start = high_resolution_clock::now();
-                yyjson_write_flag flg = 0;
-                yyjson_write_err err;
-                std::cout << "write yyjson " << output.c_str() << "\n";
-                std::size_t len{0};
-                char* ptr = yyjson_write(doc, flg, &len);
-                if (err.code) {
-                    printf("write error (%u): %s\n", err.code, err.msg);
-                }
-                output = std::string(ptr, len);
-                auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+            auto end = high_resolution_clock::now();
+            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        end_memory_used =  memory_measurer::get_physical_memory_use();
+        {
+            auto start = high_resolution_clock::now();
+            yyjson_write_flag flg = 0;
+            yyjson_write_err err;
+            std::size_t len{0};
+            char* ptr = yyjson_write(doc, flg, &len);
+            if (err.code) {
+                printf("write error (%u): %s\n", err.code, err.msg);
             }
-            if (doc)
-            {
-                yyjson_doc_free(doc);
-            }
+            output = std::string(ptr, len);
+            auto end = high_resolution_clock::now();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+        if (doc)
+        {
+            yyjson_doc_free(doc);
         }
     }
-    size_t final_memory_used = memory_measurer::get_physical_memory_use();
     
     measurements results;
     results.notes = "";
@@ -73,7 +68,6 @@ measurements yyjson_benchmark::measure_small(const std::string& input, std::stri
 
 measurements yyjson_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
-    std::cout << "yyjson output_filename: " << output_filename << "\n";
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
     size_t time_to_read = 0;
@@ -81,8 +75,8 @@ measurements yyjson_benchmark::measure_big(const char *input_filename, const cha
 
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
+        yyjson_doc *doc{nullptr};
         {
-            yyjson_doc *doc;
             {
                 auto start = high_resolution_clock::now();
                 doc = yyjson_read_file(input_filename, 0, nullptr, nullptr);
@@ -91,8 +85,10 @@ measurements yyjson_benchmark::measure_big(const char *input_filename, const cha
                     std::cout << "yyjson parse failed" << std::endl;
                     exit(1);
                 }
+                auto end = high_resolution_clock::now();
+                end_memory_used = memory_measurer::get_physical_memory_use();
+                time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             }
-            end_memory_used =  memory_measurer::get_physical_memory_use();
             {
                 auto start = high_resolution_clock::now();
                 yyjson_write_flag flg = 0;
@@ -104,13 +100,12 @@ measurements yyjson_benchmark::measure_big(const char *input_filename, const cha
                 auto end = high_resolution_clock::now();
                 time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             }
-            if (doc)
-            {
-                yyjson_doc_free(doc);
-            }
+        }
+        if (doc)
+        {
+            yyjson_doc_free(doc);
         }
     }
-    size_t final_memory_used = memory_measurer::get_physical_memory_use();
     
     measurements results;
     results.notes = "";

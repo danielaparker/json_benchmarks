@@ -61,7 +61,6 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
 
 measurements jsoncons_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
-    std::cout << "jsoncons output_filename: " << output_filename << "\n";
     size_t start_memory_used;
     size_t end_memory_used;
     size_t time_to_read;

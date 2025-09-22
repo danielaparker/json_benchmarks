@@ -78,8 +78,6 @@ measurements rapidjson_benchmark::measure_small(const std::string& input, std::s
 
 measurements rapidjson_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
-    std::cout << "rapidjson output_filename: " << output_filename << "\n";
-
     size_t start_memory_used = 0;
     size_t end_memory_used = 0;
     size_t time_to_read = 0;
