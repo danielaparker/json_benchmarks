@@ -24,7 +24,7 @@ void make_big_file(const char *filename, size_t count, size_t numIntegers, size_
     auto start = high_resolution_clock::now();
 
     std::string big_text;
-    for (size_t i = 0; i < 5000; ++i)
+    for (size_t i = 0; i < 50000; ++i)
     {
         big_text.assign("All cats like mice.");
         big_text.assign("\"\\uD800\\uDC00\"");
