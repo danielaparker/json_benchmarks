@@ -16,7 +16,7 @@ using namespace jsoncons;
 
 namespace json_benchmark {
 
-std::string glaze_benchmark::get_version() const {return JSONCONS_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR, NLOHMANN_JSON_VERSION_MINOR, NLOHMANN_JSON_VERSION_PATCH);
+std::string glaze_benchmark::get_version() const {glz::version_t ver; return JSONCONS_VERSION_CONCAT(ver.major, ver.minor, ver.patch);
 }
 std::string glaze_benchmark::get_name() const {return "glaze";}
 std::string glaze_benchmark::get_url() const {return "https://github.com/stephenberry/glaze";}
