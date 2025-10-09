@@ -27,12 +27,12 @@ measurements nlohmann_benchmark::measure_small(const std::string& input, std::st
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    nlohmann::json root;
+    nlohmann::json json_val;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            root = nlohmann::json::parse(input);
+            json_val = nlohmann::json::parse(input);
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
@@ -45,7 +45,7 @@ measurements nlohmann_benchmark::measure_small(const std::string& input, std::st
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        output = root.dump();
+        output = json_val.dump();
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     }
@@ -66,13 +66,13 @@ measurements nlohmann_benchmark::measure_big(const char *input_filename, const c
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    nlohmann::json root;
+    nlohmann::json json_val;
     {
         auto start = high_resolution_clock::now();
         try
         {
             std::ifstream is(input_filename);
-            root = nlohmann::json::parse(is);
+            json_val = nlohmann::json::parse(is);
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
@@ -87,7 +87,7 @@ measurements nlohmann_benchmark::measure_big(const char *input_filename, const c
         std::ofstream os; 
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
-        os << root;
+        os << json_val;
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }

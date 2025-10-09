@@ -29,13 +29,13 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Value root;
+        Value json_val;
         {
             try
             {
                 auto start = high_resolution_clock::now();
                 Reader reader;
-                if (!reader.parse(input, root))
+                if (!reader.parse(input, json_val))
                 {
                     std::cerr << "jsoncpp failed." << std::endl;
                 }
@@ -57,7 +57,7 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
             Json::StreamWriterBuilder builder;
             builder.settings_["indentation"] = "";
             std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-            writer->write(root, &os);
+            writer->write(json_val, &os);
 
             output = os.str();
 
@@ -84,15 +84,15 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Value root;
+        Value json_val;
         {
             try
             {
                 auto start = high_resolution_clock::now();
                 std::ifstream is(input_filename);
-                is >> root;
+                is >> json_val;
                 //Reader reader;
-                //if (!reader.parse(input_filename, root))
+                //if (!reader.parse(input_filename, json_val))
                 //{
                 //    std::cerr << "jsoncpp failed." << std::endl;
                 //}
@@ -114,7 +114,7 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
             Json::StreamWriterBuilder builder;
             builder.settings_["indentation"] = "";
             std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-            writer->write(root, &os);
+            writer->write(json_val, &os);
 
             auto end = high_resolution_clock::now();
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

@@ -1,5 +1,6 @@
-#include "jsoncons/json.hpp"
-#include "jsoncons/json_reader.hpp"
+#include "jsoncons/config/version.hpp"
+#include <rfl/json.hpp>
+#include <rfl.hpp>
 #include <chrono>
 #include <fstream>
 #include <locale>
@@ -16,11 +17,11 @@ using namespace jsoncons;
 
 namespace json_benchmark {
 
-std::string jsoncons_benchmark::get_version() const {return JSONCONS_VERSION_STRING;}
-std::string jsoncons_benchmark::get_name() const {return "jsoncons";}
-std::string jsoncons_benchmark::get_url() const {return "https://github.com/danielaparker/jsoncons";}
+std::string reflectcpp_benchmark::get_version() const {return "0.21.0"; }
+std::string reflectcpp_benchmark::get_name() const {return "reflect-cpp";}
+std::string reflectcpp_benchmark::get_url() const {return "https://github.com/getml/reflect-cpp";}
 
-measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
+measurements reflectcpp_benchmark::measure_small(const std::string& input, std::string& output)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -28,25 +29,25 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json json_val;
+    rfl::Generic json_val;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            json_val = jsoncons::json::parse(input.data(),input.length());
+            json_val = rfl::json::read<rfl::Generic>(input).value();
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
         catch (const std::exception& e)
         {
-            std::cout << e.what() << std::endl;
+            std::cout << "reflect-cpp read error: " << e.what() << std::endl;
             exit(1);
         }
     }
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        json_val.dump(output);
+        output = rfl::json::write(json_val);
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     }   
@@ -59,7 +60,7 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
     return results;
 }
 
-measurements jsoncons_benchmark::measure_big(const char *input_filename, const char* output_filename)
+measurements reflectcpp_benchmark::measure_big(const char *input_filename, const char* output_filename)
 {
     size_t start_memory_used;
     size_t end_memory_used;
@@ -67,19 +68,27 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json json_val;
+    rfl::Generic json_val;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            std::ifstream is(input_filename);
-            json_val = jsoncons::json::parse(is);
+            std::ifstream is(input_filename, std::ios::binary | std::ios::ate);
+            std::streamsize size = is.tellg();
+            is.seekg(0, std::ios::beg);
+            std::string buffer(size, 0);
+            if (!is.read(buffer.data(), size))
+            {
+                std::cout << "reflect-cpp read error\n";
+                exit(1);
+            }
+            json_val = rfl::json::read<rfl::Generic>(buffer).value();
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
         catch (const std::exception& e)
         {
-            std::cout << e.what() << std::endl;
+            std::cout << "reflect-cpp read error: " << e.what() << std::endl;
             exit(1);
         }
     }
@@ -88,64 +97,41 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
         std::ofstream os;
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
-        json_val.dump(os);
+        rfl::json::write(json_val, os);
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
     
     measurements results;
-    results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
+    results.notes = R"abc()abc";
     results.memory_used = (end_memory_used - start_memory_used)/1000000;
     results.time_to_read = time_to_read;
     results.time_to_write = time_to_write;
     return results;
 }
 
-std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
+std::vector<test_suite_result> reflectcpp_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
 {
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)
     {
-        strict_json_parsing err_handler;
         if (file.type == expected_result::expect_success)
         {
-            if (file.path.filename().string().find("utf16") != std::string::npos)
+            try
             {
-                try
-                {
-                    std::wifstream fin(file.path.string().c_str(), std::ios::binary);
-                    // apply BOM-sensitive UTF-16 facet
-                    fin.imbue(std::locale(fin.getloc(),
-                                          new std::codecvt_utf16<wchar_t, 0x10ffff, std::consume_header>));
-                    wjson document;
-                    fin >> document;
-                    results.emplace_back(result_code::expected_result);
-                }
-                catch (const std::exception&)
-                {
-                    results.emplace_back(result_code::expected_success_parsing_failed);
-                }
+                auto json_val = rfl::json::read<rfl::Generic>(file.text).value();
+                results.emplace_back(result_code::expected_result);
             }
-            else
+            catch (const std::exception&)
             {
-                try
-                {
-                    std::istringstream is(file.text);
-                    json val = json::parse(is,err_handler);
-                    results.emplace_back(result_code::expected_result);
-                }
-                catch (const std::exception&)
-                {
-                    results.emplace_back(result_code::expected_success_parsing_failed);
-                }
+                results.emplace_back(result_code::expected_success_parsing_failed);
             }
         }
         else if (file.type == expected_result::expect_failure)
         {
             try
             {
-                std::istringstream is(file.text);
-                json val = json::parse(is,err_handler);
+                auto json_val = rfl::json::read<rfl::Generic>(file.text).value();
                 results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             catch (const std::exception&)
@@ -157,8 +143,7 @@ std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<te
         {
             try
             {
-                std::istringstream is(file.text);
-                json val = json::parse(is,err_handler);
+                auto json_val = rfl::json::read<rfl::Generic>(file.text).value();
                 results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             catch (const std::exception&)

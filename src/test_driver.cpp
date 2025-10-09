@@ -367,6 +367,7 @@ int main()
     benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
     benchmarks.push_back(std::make_shared<yyjson_benchmark>());
     benchmarks.push_back(std::make_shared<glaze_benchmark>());
+    benchmarks.push_back(std::make_shared<reflectcpp_benchmark>());
 
     benchmarks_int(benchmarks);
     //benchmarks_fp(benchmarks);

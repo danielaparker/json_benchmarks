@@ -42,12 +42,13 @@ measurements yyjson_benchmark::measure_small(const std::string& input, std::stri
         {
             auto start = high_resolution_clock::now();
             yyjson_write_flag flg = 0;
-            yyjson_write_err err;
             std::size_t len{0};
             char* ptr = yyjson_write(doc, flg, &len);
-            if (err.code) {
-                printf("write error (%u): %s\n", err.code, err.msg);
+            if (!ptr) {
+                printf("yyjson write error\n");
+                exit(1);
             }
+            free(ptr);
             output = std::string(ptr, len);
             auto end = high_resolution_clock::now();
             time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -95,7 +96,8 @@ measurements yyjson_benchmark::measure_big(const char *input_filename, const cha
                 yyjson_write_err err;
                 yyjson_write_file(output_filename, doc, flg, NULL, &err);
                 if (err.code) {
-                    printf("write error (%u): %s\n", err.code, err.msg);
+                    printf("yyjson write error (%u): %s\n", err.code, err.msg);
+                    exit(1);
                 }
                 auto end = high_resolution_clock::now();
                 time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

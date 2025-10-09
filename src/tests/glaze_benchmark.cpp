@@ -28,12 +28,12 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    glz::json_t root;
+    glz::json_t json_val;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            auto ec = glz::read_json(root, input);
+            auto ec = glz::read_json(json_val, input);
             if (ec)
             {
                 std::cerr << "glaze read failed" << "\n";
@@ -51,7 +51,7 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        auto ec = glz::write_json(root, output);
+        auto ec = glz::write_json(json_val, output);
         if (ec)
         {
             std::cerr << "glaze write failed" << "\n";
@@ -77,7 +77,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    glz::json_t root;
+    glz::json_t json_val;
     {
         auto start = high_resolution_clock::now();
         try
@@ -90,7 +90,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
             {
                 /* worked! */
             }
-            auto ec = glz::read_json(root, buffer);
+            auto ec = glz::read_json(json_val, buffer);
             if (ec)
             {
                 std::cerr << "glaze read failed" << "\n";
@@ -111,7 +111,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
         std::string output;
-        auto ec = glz::write_json(root, output);
+        auto ec = glz::write_json(json_val, output);
         if (ec)
         {
             std::cerr << "glaze write failed" << "\n";

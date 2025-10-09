@@ -26,7 +26,8 @@
     <ClCompile Include="src\tests\jsoncpp_benchmark.cpp" />
     <ClCompile Include="src\tests\nlohmann_benchmark.cpp" />
     <ClCompile Include="src\tests\rapidjson_benchmark.cpp" />
-    <ClCompile Include="src\tests\yyjson_tests.cpp" />
+    <ClCompile Include="src\tests\reflectcpp_benchmark.cpp" />
+    <ClCompile Include="src\tests\yyjson_benchmark.cpp" />
     <ClCompile Include="src\test_driver.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
