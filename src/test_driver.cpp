@@ -135,12 +135,11 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 
         os << std::endl;
 
-        os << "Library|Version" << std::endl;
-        os << "---|---" << std::endl;
-
+        os << "Library|Version|Type to read into/write from" << std::endl;
+        os << "---|---|---" << std::endl;
         for (const auto& item : benchmarks)
         {
-            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << std::endl;
+            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << "|" << item->get_type() << std::endl;
         }
         os << std::endl;
 
@@ -205,11 +204,11 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 
         os << std::endl;
 
-        os << "Library|Version" << std::endl;
-        os << "---|---" << std::endl;
+        os << "Library|Version|Type to read into/write from" << std::endl;
+        os << "---|---|---" << std::endl;
         for (const auto& item : benchmarks)
         {
-            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << std::endl;
+            os << "[" << item->get_name() << "](" << item->get_url() << ")" << "|" << item->get_version() << "|" << item->get_type() << std::endl;
         }
         os << std::endl;
 
@@ -369,8 +368,8 @@ int main()
     benchmarks.push_back(std::make_shared<glaze_benchmark>());
     benchmarks.push_back(std::make_shared<reflectcpp_benchmark>());
 
-    //benchmarks_int(benchmarks);
-    benchmarks_fp(benchmarks);
+    benchmarks_int(benchmarks);
+    //benchmarks_fp(benchmarks);
     //benchmarks_small_file(benchmarks);
 
     std::vector<result_code_info> result_code_infos;
