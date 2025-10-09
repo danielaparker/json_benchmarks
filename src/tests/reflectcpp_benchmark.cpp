@@ -12,14 +12,13 @@
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmark;
-using namespace jsoncons;
 
 namespace json_benchmark {
 
 std::string reflectcpp_benchmark::get_version() const {return "0.21.0"; }
 std::string reflectcpp_benchmark::get_name() const {return "reflect-cpp";}
 std::string reflectcpp_benchmark::get_url() const {return "https://github.com/getml/reflect-cpp";}
+std::string reflectcpp_benchmark::get_type() const {return "rfl::Generic";}
 
 measurements reflectcpp_benchmark::measure_small(const std::string& input, std::string& output)
 {

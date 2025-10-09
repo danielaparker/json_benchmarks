@@ -10,14 +10,13 @@
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmark;
-using namespace Json;
 
 namespace json_benchmark {
 
 std::string jsoncpp_benchmark::get_version() const {return JSONCPP_VERSION_STRING;}
 std::string jsoncpp_benchmark::get_name() const {return "jsoncpp";}
 std::string jsoncpp_benchmark::get_url() const {return "https://github.com/open-source-parsers/jsoncpp";}
+std::string jsoncpp_benchmark::get_type() const {return "Json::Value";}
 
 measurements jsoncpp_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -29,12 +28,12 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Value json_val;
+        Json::Value json_val;
         {
             try
             {
                 auto start = high_resolution_clock::now();
-                Reader reader;
+                Json::Reader reader;
                 if (!reader.parse(input, json_val))
                 {
                     std::cerr << "jsoncpp failed." << std::endl;
@@ -84,7 +83,7 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Value json_val;
+        Json::Value json_val;
         {
             try
             {
@@ -138,7 +137,7 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Value val;
+                Json::Value val;
                 std::istringstream is(file.text);
                 is >> val;
                 results.emplace_back(result_code::expected_result);
@@ -152,7 +151,7 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Value val;
+                Json::Value val;
                 std::istringstream is(file.text);
                 is >> val;
                 results.emplace_back(result_code::expected_failure_parsing_succeeded);
@@ -166,7 +165,7 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Value val;
+                Json::Value val;
                 std::istringstream is(file.text);
                 is >> val;
                 results.emplace_back(result_code::result_undefined_parsing_succeeded);

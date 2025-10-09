@@ -19,6 +19,7 @@ namespace json_benchmark {
 std::string glaze_benchmark::get_version() const {glz::version_t ver; return std::to_string(ver.major) + "." + std::to_string(ver.minor) + "." + std::to_string(ver.patch); }
 std::string glaze_benchmark::get_name() const {return "glaze";}
 std::string glaze_benchmark::get_url() const {return "https://github.com/stephenberry/glaze";}
+std::string glaze_benchmark::get_type() const {return "glz::json_t";}
 
 measurements glaze_benchmark::measure_small(const std::string& input, std::string& output)
 {

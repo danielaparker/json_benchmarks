@@ -16,6 +16,7 @@ namespace json_benchmark {
 std::string yyjson_benchmark::get_version() const {return YYJSON_VERSION_STRING;}
 std::string yyjson_benchmark::get_name() const {return "yyjson"; }
 std::string yyjson_benchmark::get_url() const {return "https://github.com/ibireme/yyjson";}
+std::string yyjson_benchmark::get_type() const {return "yyjson_doc";}
 
 measurements yyjson_benchmark::measure_small(const std::string& input, std::string& output)
 {

@@ -18,14 +18,12 @@ using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
 
-using namespace json_benchmark;
-using namespace rapidjson;
-
 namespace json_benchmark {
 
 std::string rapidjson_benchmark::get_version() const {return "1.1.0";}
 std::string rapidjson_benchmark::get_name() const {return "rapidjson";}
 std::string rapidjson_benchmark::get_url() const {return "https://github.com/miloyip/rapidjson";}
+std::string rapidjson_benchmark::get_type() const {return "rapidjson::Document";}
 
 measurements rapidjson_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -36,7 +34,7 @@ measurements rapidjson_benchmark::measure_small(const std::string& input, std::s
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
     {
-        Document d;
+        rapidjson::Document d;
         try
         {
             auto start = high_resolution_clock::now();
@@ -85,7 +83,7 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
     {
-        Document d;
+        rapidjson::Document d;
         try
         {
             auto start = high_resolution_clock::now();
@@ -93,7 +91,7 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
             assert(fp);
             std::vector<char> readBuffer; 
             readBuffer.resize(65536);
-            FileReadStream is(fp, readBuffer.data(), readBuffer.size());
+            rapidjson::FileReadStream is(fp, readBuffer.data(), readBuffer.size());
             if (d.ParseStream(is).HasParseError()) 
             {
                 fprintf(stderr, "\nError(offset %u): %s\n", 
@@ -124,9 +122,9 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
 
                 std::vector<char> writeBuffer;
                 writeBuffer.resize(65536);
-                FileWriteStream os(fp, writeBuffer.data(), writeBuffer.size());
+                rapidjson::FileWriteStream os(fp, writeBuffer.data(), writeBuffer.size());
 
-                Writer<FileWriteStream> writer(os);
+                rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
                 auto start = high_resolution_clock::now();
                 d.Accept(writer);
                 auto end = high_resolution_clock::now();
@@ -148,11 +146,11 @@ measurements rapidjson_benchmark::measure_big(const char *input_filename, const 
     return results;
 }
 
-void print(FILE* fp, const Value& val)
+void print(FILE* fp, const rapidjson::Value& val)
 {
     char buffer[1000];
-    FileWriteStream fws(fp, buffer, sizeof(buffer));
-    Writer<FileWriteStream> writer(fws);
+    rapidjson::FileWriteStream fws(fp, buffer, sizeof(buffer));
+    rapidjson::Writer<rapidjson::FileWriteStream> writer(fws);
     val.Accept(writer);
     fws.Flush();
 }
@@ -162,7 +160,7 @@ std::vector<test_suite_result> rapidjson_benchmark::run_test_suite(std::vector<t
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)
     {
-        Document d;
+        rapidjson::Document d;
         std::string command = "x64\\Release\\rapidjson_parser.exe ";
         command = command + file.path.string();
         int result = std::system(command.c_str());

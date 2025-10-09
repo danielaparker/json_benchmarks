@@ -26,11 +26,11 @@ Library|Version
 
 Library|Time to read (s)|Time to write (s)|Physical memory footprint of json value (MB)|Notes
 ---|---|---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|11.828|4.861|423|Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.
-[nlohmann](https://github.com/nlohmann/json)|19.984|10.259|495|Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
-[rapidjson](https://github.com/miloyip/rapidjson)|4.171|3.682|458|Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
-[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|70.792|39.222|2466|Uses std::map for both arrays and objects, expect larger memory footprint.
-[yyjson](https://github.com/ibireme/yyjson)|1.782|1.359|1205|
-[glaze](https://github.com/stephenberry/glaze)|12.732|1.942|1453|
-[reflect-cpp](https://github.com/getml/reflect-cpp)|19.872|5.547|1477|
+[jsoncons](https://github.com/danielaparker/jsoncons)|8.843|3.965|423|Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.
+[nlohmann](https://github.com/nlohmann/json)|17.61|8.179|494|Uses `std::map` for objects. Uses slightly modified [Grisu2 implementation by Florian Loitsch](https://florian.loitsch.com/publications) for printing doubles, expect faster serializing.
+[rapidjson](https://github.com/miloyip/rapidjson)|3.719|3.291|457|Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.
+[jsoncpp](https://github.com/open-source-parsers/jsoncpp)|58.977|32.827|2466|Uses std::map for both arrays and objects, expect larger memory footprint.
+[yyjson](https://github.com/ibireme/yyjson)|1.727|1.374|1205|
+[glaze](https://github.com/stephenberry/glaze)|12.215|1.837|1261|
+[reflect-cpp](https://github.com/getml/reflect-cpp)|16.521|5.053|1034|
 

@@ -10,14 +10,13 @@
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
-using namespace json_benchmark;
-using namespace nlohmann;
 
 namespace json_benchmark {
 
 std::string nlohmann_benchmark::get_version() const {return JSONCONS_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR,NLOHMANN_JSON_VERSION_MINOR,NLOHMANN_JSON_VERSION_PATCH);}
 std::string nlohmann_benchmark::get_name() const {return "nlohmann";}
 std::string nlohmann_benchmark::get_url() const {return "https://github.com/nlohmann/json";}
+std::string nlohmann_benchmark::get_type() const {return "nlohmann::json";}
 
 measurements nlohmann_benchmark::measure_small(const std::string& input, std::string& output)
 {

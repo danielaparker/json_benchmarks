@@ -19,6 +19,7 @@ namespace json_benchmark {
 std::string jsoncons_benchmark::get_version() const {return JSONCONS_VERSION_STRING;}
 std::string jsoncons_benchmark::get_name() const {return "jsoncons";}
 std::string jsoncons_benchmark::get_url() const {return "https://github.com/danielaparker/jsoncons";}
+std::string jsoncons_benchmark::get_type() const {return "jsoncons::json";}
 
 measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
 {
