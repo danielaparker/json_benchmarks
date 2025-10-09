@@ -16,8 +16,7 @@ using namespace jsoncons;
 
 namespace json_benchmark {
 
-std::string glaze_benchmark::get_version() const {glz::version_t ver; return JSONCONS_VERSION_CONCAT(ver.major, ver.minor, ver.patch);
-}
+std::string glaze_benchmark::get_version() const {glz::version_t ver; return std::to_string(ver.major) + "." + std::to_string(ver.minor) + "." + std::to_string(ver.patch); }
 std::string glaze_benchmark::get_name() const {return "glaze";}
 std::string glaze_benchmark::get_url() const {return "https://github.com/stephenberry/glaze";}
 
@@ -34,7 +33,12 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
         auto start = high_resolution_clock::now();
         try
         {
-            auto err = glz::read_json(root, input);
+            auto ec = glz::read_json(root, input);
+            if (ec)
+            {
+                std::cerr << "glaze read failed" << "\n";
+                exit(1);
+            }
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
@@ -47,7 +51,12 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        auto result = glz::write_json(root, output);
+        auto ec = glz::write_json(root, output);
+        if (ec)
+        {
+            std::cerr << "glaze write failed" << "\n";
+            exit(1);
+        }
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     }   
@@ -81,7 +90,12 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
             {
                 /* worked! */
             }
-            auto err = glz::read_json(root, buffer);
+            auto ec = glz::read_json(root, buffer);
+            if (ec)
+            {
+                std::cerr << "glaze read failed" << "\n";
+                exit(1);
+            }
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
@@ -97,7 +111,12 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
         std::string output;
-        auto err = glz::write_json(root, output);
+        auto ec = glz::write_json(root, output);
+        if (ec)
+        {
+            std::cerr << "glaze write failed" << "\n";
+            exit(1);
+        }
         os.write(output.data(), output.size());
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -121,8 +140,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
             try
             {
                 glz::json_t val;
-                auto err = glz::read_json(val, file.text);
-                if (err)
+                auto ec = glz::read_json(val, file.text);
+                if (ec)
                 {
                     results.emplace_back(result_code::expected_success_parsing_failed);
                 }
@@ -141,8 +160,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
             try
             {
                 glz::json_t val;
-                auto err = glz::read_json(val, file.text);
-                if (err)
+                auto ec = glz::read_json(val, file.text);
+                if (ec)
                 {
                     results.emplace_back(result_code::expected_result);
                 }
@@ -161,8 +180,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
             try
             {
                 glz::json_t val;
-                auto err = glz::read_json(val, file.text);
-                if (err)
+                auto ec = glz::read_json(val, file.text);
+                if (ec)
                 {
                     results.emplace_back(result_code::result_undefined_parsing_failed);
                 }
