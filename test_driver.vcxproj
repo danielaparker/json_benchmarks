@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\data_generator.cpp" />
     <ClCompile Include="src\memory_measurer.cpp" />
+    <ClCompile Include="src\tests\glaze_benchmark.cpp" />
     <ClCompile Include="src\tests\jsoncons_benchmark.cpp" />
     <ClCompile Include="src\tests\jsoncpp_benchmark.cpp" />
     <ClCompile Include="src\tests\nlohmann_benchmark.cpp" />
@@ -115,7 +116,7 @@
       <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
@@ -154,7 +155,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\danie\source\repos\json_benchmarks\src;C:\Users\danie\source\repos\jsoncons\include;C:\Users\danie\source\repos\jsoncons2\include;C:\Users\danie\source\repos\jsoncons2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>

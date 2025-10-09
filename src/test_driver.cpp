@@ -48,9 +48,11 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         os << "Operating system"
            << "|" << "Windows 2011" << std::endl;
         os << "Compiler"
-           << "|" << "Visual Studio 2022" << std::endl;
+           << "|" << "Visual Studio 2022  Version 17.14.16" << std::endl;
+        os << "Optimization"
+            << "|" << "/O2,/Ot" << std::endl;
         os << "Language"
-           << "|" << "C++ 2017" << std::endl;
+           << "|" << "/std:c++23preview" << std::endl;
 
         os << std::endl;
 
@@ -360,6 +362,7 @@ int main()
     benchmarks.push_back(std::make_shared<rapidjson_benchmark>());
     benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
     benchmarks.push_back(std::make_shared<yyjson_benchmark>());
+    benchmarks.push_back(std::make_shared<glaze_benchmark>());
 
     //benchmarks_int(benchmarks);
     benchmarks_fp(benchmarks);
