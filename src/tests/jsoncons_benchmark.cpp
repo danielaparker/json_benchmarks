@@ -29,12 +29,12 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json json_val;
+    jsoncons::json jv;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            json_val = jsoncons::json::parse(input.data(),input.length());
+            jv = jsoncons::json::parse(input.data(),input.length());
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         }
@@ -47,7 +47,7 @@ measurements jsoncons_benchmark::measure_small(const std::string& input, std::st
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        json_val.dump(output);
+        jv.dump(output);
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     }   
@@ -68,13 +68,13 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json json_val;
+    jsoncons::json jv;
     {
         auto start = high_resolution_clock::now();
         try
         {
             std::ifstream is(input_filename);
-            json_val = jsoncons::json::parse(is);
+            jv = jsoncons::json::parse(is);
             auto end = high_resolution_clock::now();
             time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
@@ -89,7 +89,7 @@ measurements jsoncons_benchmark::measure_big(const char *input_filename, const c
         std::ofstream os;
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
-        json_val.dump(os);
+        jv.dump(os);
         auto end = high_resolution_clock::now();
         time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
@@ -107,7 +107,7 @@ std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<te
     std::vector<test_suite_result> results;
     for (auto& file : pathnames)
     {
-        strict_json_parsing err_handler;
+        auto options = json_options{}.allow_comments(false);
         if (file.type == expected_result::expect_success)
         {
             if (file.path.filename().string().find("utf16") != std::string::npos)
@@ -132,7 +132,7 @@ std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<te
                 try
                 {
                     std::istringstream is(file.text);
-                    json val = json::parse(is,err_handler);
+                    json jv = json::parse(is, options);
                     results.emplace_back(result_code::expected_result);
                 }
                 catch (const std::exception&)
@@ -146,7 +146,7 @@ std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<te
             try
             {
                 std::istringstream is(file.text);
-                json val = json::parse(is,err_handler);
+                json jv = json::parse(is,options);
                 results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             catch (const std::exception&)
@@ -159,7 +159,7 @@ std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<te
             try
             {
                 std::istringstream is(file.text);
-                json val = json::parse(is,err_handler);
+                json jv = json::parse(is,options);
                 results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             catch (const std::exception&)

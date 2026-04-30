@@ -19,7 +19,7 @@ namespace json_benchmark {
 std::string glaze_benchmark::get_version() const {glz::version_t ver; return std::to_string(ver.major) + "." + std::to_string(ver.minor) + "." + std::to_string(ver.patch); }
 std::string glaze_benchmark::get_name() const {return "glaze";}
 std::string glaze_benchmark::get_url() const {return "https://github.com/stephenberry/glaze";}
-std::string glaze_benchmark::get_type() const {return "glz::json_t";}
+std::string glaze_benchmark::get_type() const {return "glz::generic";}
 
 measurements glaze_benchmark::measure_small(const std::string& input, std::string& output)
 {
@@ -29,12 +29,12 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    glz::json_t json_val;
+    glz::generic jv;
     {
         auto start = high_resolution_clock::now();
         try
         {
-            auto ec = glz::read_json(json_val, input);
+            auto ec = glz::read_json(jv, input);
             if (ec)
             {
                 std::cerr << "glaze read failed" << "\n";
@@ -52,7 +52,7 @@ measurements glaze_benchmark::measure_small(const std::string& input, std::strin
     end_memory_used =  memory_measurer::get_physical_memory_use();
     {
         auto start = high_resolution_clock::now();
-        auto ec = glz::write_json(json_val, output);
+        auto ec = glz::write_json(jv, output);
         if (ec)
         {
             std::cerr << "glaze write failed" << "\n";
@@ -78,7 +78,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
     size_t time_to_write;
 
     start_memory_used =  memory_measurer::get_physical_memory_use();
-    glz::json_t json_val;
+    glz::generic jv;
     {
         auto start = high_resolution_clock::now();
         try
@@ -91,7 +91,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
             {
                 /* worked! */
             }
-            auto ec = glz::read_json(json_val, buffer);
+            auto ec = glz::read_json(jv, buffer);
             if (ec)
             {
                 std::cerr << "glaze read failed" << "\n";
@@ -112,7 +112,7 @@ measurements glaze_benchmark::measure_big(const char *input_filename, const char
         os.open(output_filename, std::ios_base::out | std::ios_base::binary);
         auto start = high_resolution_clock::now();
         std::string output;
-        auto ec = glz::write_json(json_val, output);
+        auto ec = glz::write_json(jv, output);
         if (ec)
         {
             std::cerr << "glaze write failed" << "\n";
@@ -140,8 +140,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
         {
             try
             {
-                glz::json_t val;
-                auto ec = glz::read_json(val, file.text);
+                glz::generic jv;
+                auto ec = glz::read_json(jv, file.text);
                 if (ec)
                 {
                     results.emplace_back(result_code::expected_success_parsing_failed);
@@ -160,8 +160,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
         {
             try
             {
-                glz::json_t val;
-                auto ec = glz::read_json(val, file.text);
+                glz::generic jv;
+                auto ec = glz::read_json(jv, file.text);
                 if (ec)
                 {
                     results.emplace_back(result_code::expected_result);
@@ -180,8 +180,8 @@ std::vector<test_suite_result> glaze_benchmark::run_test_suite(std::vector<test_
         {
             try
             {
-                glz::json_t val;
-                auto ec = glz::read_json(val, file.text);
+                glz::generic jv;
+                auto ec = glz::read_json(jv, file.text);
                 if (ec)
                 {
                     results.emplace_back(result_code::result_undefined_parsing_failed);

@@ -364,12 +364,13 @@ int main()
     benchmarks.push_back(std::make_shared<nlohmann_benchmark>());    
     benchmarks.push_back(std::make_shared<rapidjson_benchmark>());
     benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
-    benchmarks.push_back(std::make_shared<yyjson_benchmark>());
     benchmarks.push_back(std::make_shared<glaze_benchmark>());
+    benchmarks.push_back(std::make_shared<boost_json_benchmark>());
+    benchmarks.push_back(std::make_shared<yyjson_benchmark>());
     benchmarks.push_back(std::make_shared<reflectcpp_benchmark>());
 
-    benchmarks_int(benchmarks);
-    //benchmarks_fp(benchmarks);
+    //benchmarks_int(benchmarks);
+    benchmarks_fp(benchmarks);
     //benchmarks_small_file(benchmarks);
 
     std::vector<result_code_info> result_code_infos;

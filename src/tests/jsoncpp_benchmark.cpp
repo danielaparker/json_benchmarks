@@ -28,13 +28,13 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Json::Value json_val;
+        Json::Value jv;
         {
             try
             {
                 auto start = high_resolution_clock::now();
                 Json::Reader reader;
-                if (!reader.parse(input, json_val))
+                if (!reader.parse(input, jv))
                 {
                     std::cerr << "jsoncpp failed." << std::endl;
                 }
@@ -56,7 +56,7 @@ measurements jsoncpp_benchmark::measure_small(const std::string& input, std::str
             Json::StreamWriterBuilder builder;
             builder.settings_["indentation"] = "";
             std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-            writer->write(json_val, &os);
+            writer->write(jv, &os);
 
             output = os.str();
 
@@ -83,15 +83,15 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
     {
         start_memory_used =  memory_measurer::get_physical_memory_use();
 
-        Json::Value json_val;
+        Json::Value jv;
         {
             try
             {
                 auto start = high_resolution_clock::now();
                 std::ifstream is(input_filename);
-                is >> json_val;
+                is >> jv;
                 //Reader reader;
-                //if (!reader.parse(input_filename, json_val))
+                //if (!reader.parse(input_filename, jv))
                 //{
                 //    std::cerr << "jsoncpp failed." << std::endl;
                 //}
@@ -113,7 +113,7 @@ measurements jsoncpp_benchmark::measure_big(const char *input_filename, const ch
             Json::StreamWriterBuilder builder;
             builder.settings_["indentation"] = "";
             std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-            writer->write(json_val, &os);
+            writer->write(jv, &os);
 
             auto end = high_resolution_clock::now();
             time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -137,9 +137,9 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Json::Value val;
+                Json::Value jv;
                 std::istringstream is(file.text);
-                is >> val;
+                is >> jv;
                 results.emplace_back(result_code::expected_result);
             }
             catch (const std::exception&)
@@ -151,9 +151,9 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Json::Value val;
+                Json::Value jv;
                 std::istringstream is(file.text);
-                is >> val;
+                is >> jv;
                 results.emplace_back(result_code::expected_failure_parsing_succeeded);
             }
             catch (const std::exception&)
@@ -165,9 +165,9 @@ std::vector<test_suite_result> jsoncpp_benchmark::run_test_suite(std::vector<tes
         {
             try
             {
-                Json::Value val;
+                Json::Value jv;
                 std::istringstream is(file.text);
-                is >> val;
+                is >> jv;
                 results.emplace_back(result_code::result_undefined_parsing_succeeded);
             }
             catch (const std::exception&)

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\data_generator.cpp" />
     <ClCompile Include="src\memory_measurer.cpp" />
+    <ClCompile Include="src\tests\boost_json_benchmark.cpp" />
     <ClCompile Include="src\tests\glaze_benchmark.cpp" />
     <ClCompile Include="src\tests\jsoncons_benchmark.cpp" />
     <ClCompile Include="src\tests\jsoncpp_benchmark.cpp" />

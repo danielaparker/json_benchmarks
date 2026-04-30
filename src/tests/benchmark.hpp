@@ -92,6 +92,18 @@ namespace json_benchmark {
         std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
     };
 
+    class boost_json_benchmark : public benchmark
+    {
+    public:
+        std::string get_version() const override;
+        std::string get_name() const override;
+        std::string get_url() const override;
+        std::string get_type() const override;
+        measurements measure_small(const std::string& input, std::string& output) override;
+        measurements measure_big(const char *input_filename, const char* output_filename) override;
+        std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) override;
+    };
+
     class reflectcpp_benchmark : public benchmark
     {
     public:
