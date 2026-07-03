@@ -4,7 +4,7 @@
 
 Input filename|Size (bytes)|Content
 ---|---|---
-data/input/small_file/small_file_text_array.json|3930|Text,integers
+data/input/small_file/small.text.array.json|3930|Text,integers
 
 Environment|Windows, Intel
 ---|---
@@ -16,7 +16,7 @@ Language|/std:c++23preview
 
 Library|Version|Type to read into/write from
 ---|---|---
-[jsoncons](https://github.com/danielaparker/jsoncons)|1.7.0|jsoncons::json
+[jsoncons](https://github.com/danielaparker/jsoncons)|1.8.1|jsoncons::json
 [nlohmann](https://github.com/nlohmann/json)|3.12.0|nlohmann::json
 [rapidjson](https://github.com/miloyip/rapidjson)|1.1.0|rapidjson::Document
 [jsoncpp](https://github.com/open-source-parsers/jsoncpp)|1.9.6|Json::Value

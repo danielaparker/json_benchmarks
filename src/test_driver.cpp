@@ -16,7 +16,7 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
-        const char *filename = "data/input/small_file/small_file_text_array.json";
+        const char *filename = "data/input/small_file/small.text.array.json";
 
         size_t file_size;
         {
@@ -32,7 +32,7 @@ void benchmarks_small_file(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         }
         output.reserve(input.size()*2);
 
-        std::ofstream os("report/performance_small_file_text_array.md");
+        std::ofstream os("report/small.text.array.md");
         os << std::endl;
         os << "## Read and Write Time Comparison" << std::endl << std::endl;
         os << std::endl;
@@ -102,7 +102,7 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
-        const char *filename = "data/output/persons.json";
+        const char *filename = "data/output/big.text.integer.json";
         make_big_file(filename, 20000, 2000, 0, 0);
 
         size_t file_size;
@@ -111,7 +111,7 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
                 file_size = in.tellg(); 
         }
 
-        std::ofstream os("report/performance.md");
+        std::ofstream os("report/big.text.integer.md");
         os << std::endl;
         os << "## Read and Write Time Comparison" << std::endl << std::endl;
         os << std::endl;
@@ -149,8 +149,8 @@ void benchmarks_int(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         for (size_t j = 0; j < benchmarks.size(); ++j)
         {
             auto& impl = benchmarks[j];
-            std::string output_path = "data/output/persons_" + impl->get_name() + ".json";
-            auto results = impl->measure_big("data/output/persons.json",output_path.c_str());
+            std::string output_path = "data/output/big.text.integer_" + impl->get_name() + ".json";
+            auto results = impl->measure_big("data/output/big.text.integer.json",output_path.c_str());
             os << "[" << impl->get_name() << "](" << impl->get_url() << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
@@ -171,7 +171,7 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
 {
     try
     {
-        const char *filename = "data/output/persons_fp.json";
+        const char *filename = "data/output/big.text.floating_point.json";
         make_big_file(filename, 20000, 0, 2500, 0);
 
         size_t file_size;
@@ -180,7 +180,7 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
                 file_size = in.tellg(); 
         }
  
-        std::ofstream os("report/performance_fp.md");
+        std::ofstream os("report/big.text.floating_point.md");
         os << std::endl;
         os << "## Read and Write Time Comparison" << std::endl << std::endl;
         os << std::endl;
@@ -218,8 +218,8 @@ void benchmarks_fp(std::vector<std::shared_ptr<benchmark>>& benchmarks)
         for (size_t j = 0; j < benchmarks.size(); ++j)
         {
             auto& impl = benchmarks[j];
-            std::string output_path = "data/output/persons_fp_" + impl->get_name() + ".json";
-            auto results = impl->measure_big("data/output/persons_fp.json",output_path.c_str());
+            std::string output_path = "data/output/big.text.floating_point_" + impl->get_name() + ".json";
+            auto results = impl->measure_big("data/output/big.text.floating_point.json",output_path.c_str());
             os << "[" << impl->get_name() << "](" << impl->get_url() << ")"
                << "|" << (results.time_to_read/1000.0) 
                << "|" << (results.time_to_write/1000.0) 
@@ -356,8 +356,14 @@ void json_checker_parsing_tests(const std::vector<std::shared_ptr<benchmark>>& b
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc != 2)
+    {
+        std::cerr << "Invalid number of parameters\n";
+        return 1;
+    }
+
     std::vector<std::shared_ptr<benchmark>> benchmarks; 
 
     benchmarks.push_back(std::make_shared<jsoncons_benchmark>());
@@ -368,10 +374,28 @@ int main()
     benchmarks.push_back(std::make_shared<boost_json_benchmark>());
     benchmarks.push_back(std::make_shared<yyjson_benchmark>());
     benchmarks.push_back(std::make_shared<reflectcpp_benchmark>());
+    
+    auto arg = jsoncons::string_view(argv[1]);
 
-    //benchmarks_int(benchmarks);
-    benchmarks_fp(benchmarks);
-    //benchmarks_small_file(benchmarks);
+    std::cout << "Running benchmark: " << arg << "\n";
+
+    if (arg == "big.text.integer")
+    {
+        benchmarks_int(benchmarks);
+    }
+    else if (arg == "big.text.floating_point")
+    {
+        benchmarks_fp(benchmarks);
+    }
+    else if (arg == "small.text")
+    {
+        benchmarks_small_file(benchmarks);
+    }
+    else
+    {
+        std::cerr << "Parameter must be 'text.integer', 'text.floating_point', or 'small.text'\n";
+        return 1;
+    }
 
     std::vector<result_code_info> result_code_infos;
     result_code_infos.push_back(result_code_info{result_code::expected_result,"Expected result","#008000"});

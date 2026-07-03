@@ -4,9 +4,9 @@ The purpose of these benchmarks is to measure how [jsoncons](https://github.com/
 
 ## Read and Write Time Comparison
 
-[Performance benchmarks with text and integers](report/performance.md)
+[Performance benchmarks with text and integers](report/big.text.integer.md)
 
-[Performance benchmarks with text and doubles](report/performance_fp.md)
+[Performance benchmarks with text and floating points](report/big.text.floating_point.md)
 
 ## Parsing comparisons
 
