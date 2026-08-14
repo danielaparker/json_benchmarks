@@ -16,160 +16,169 @@ using namespace jsoncons;
 
 namespace json_benchmark {
 
-std::string jsoncons_benchmark::get_version() const {return JSONCONS_VERSION_STRING;}
-std::string jsoncons_benchmark::get_name() const {return "jsoncons";}
-std::string jsoncons_benchmark::get_url() const {return "https://github.com/danielaparker/jsoncons";}
-std::string jsoncons_benchmark::get_type() const {return "jsoncons::json";}
-
-measurements jsoncons_benchmark::measure_small(const std::string& input, std::string& output)
+class jsoncons_benchmark : public benchmark
 {
-    size_t start_memory_used;
-    size_t end_memory_used;
-    size_t time_to_read;
-    size_t time_to_write;
+public:
+    std::string get_version() const final {return JSONCONS_VERSION_STRING;}
+    std::string get_name() const final {return "jsoncons";}
+    std::string get_url() const final {return "https://github.com/danielaparker/jsoncons";}
+    std::string get_type() const final {return "jsoncons::json";}
 
-    start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json jv;
+    measurements measure_small(const std::string& input, std::string& output) final
     {
-        auto start = high_resolution_clock::now();
-        try
-        {
-            jv = jsoncons::json::parse(input.data(),input.length());
-            auto end = high_resolution_clock::now();
-            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-        }
-        catch (const std::exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            exit(1);
-        }
-    }
-    end_memory_used =  memory_measurer::get_physical_memory_use();
-    {
-        auto start = high_resolution_clock::now();
-        jv.dump(output);
-        auto end = high_resolution_clock::now();
-        time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    }   
-    
-    measurements results;
-    results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
-    results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
-    results.time_to_read = time_to_read;
-    results.time_to_write = time_to_write;
-    return results;
-}
+        size_t start_memory_used;
+        size_t end_memory_used;
+        size_t time_to_read;
+        size_t time_to_write;
 
-measurements jsoncons_benchmark::measure_big(const char *input_filename, const char* output_filename)
-{
-    size_t start_memory_used;
-    size_t end_memory_used;
-    size_t time_to_read;
-    size_t time_to_write;
-
-    start_memory_used =  memory_measurer::get_physical_memory_use();
-    jsoncons::json jv;
-    {
-        auto start = high_resolution_clock::now();
-        try
+        start_memory_used =  memory_measurer::get_physical_memory_use();
+        jsoncons::json jv;
         {
-            std::ifstream is(input_filename);
-            jv = jsoncons::json::parse(is);
-            auto end = high_resolution_clock::now();
-            time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        }
-        catch (const std::exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            exit(1);
-        }
-    }
-    end_memory_used =  memory_measurer::get_physical_memory_use();
-    {
-        std::ofstream os;
-        os.open(output_filename, std::ios_base::out | std::ios_base::binary);
-        auto start = high_resolution_clock::now();
-        jv.dump(os);
-        auto end = high_resolution_clock::now();
-        time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    }
-    
-    measurements results;
-    results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
-    results.memory_used = (end_memory_used - start_memory_used)/1000000;
-    results.time_to_read = time_to_read;
-    results.time_to_write = time_to_write;
-    return results;
-}
-
-std::vector<test_suite_result> jsoncons_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
-{
-    std::vector<test_suite_result> results;
-    for (auto& file : pathnames)
-    {
-        auto options = json_options{}.allow_comments(false);
-        if (file.type == expected_result::expect_success)
-        {
-            if (file.path.filename().string().find("utf16") != std::string::npos)
+            auto start = high_resolution_clock::now();
+            try
             {
-                try
+                jv = jsoncons::json::parse(input.data(),input.length());
+                auto end = high_resolution_clock::now();
+                time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                exit(1);
+            }
+        }
+        end_memory_used =  memory_measurer::get_physical_memory_use();
+        {
+            auto start = high_resolution_clock::now();
+            jv.dump(output);
+            auto end = high_resolution_clock::now();
+            time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }   
+        
+        measurements results;
+        results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
+        results.memory_used = end_memory_used > start_memory_used ? end_memory_used - start_memory_used : 0;
+        results.time_to_read = time_to_read;
+        results.time_to_write = time_to_write;
+        return results;
+    }
+
+    measurements measure_big(const char *input_filename, const char* output_filename) final
+    {
+        size_t start_memory_used;
+        size_t end_memory_used;
+        size_t time_to_read;
+        size_t time_to_write;
+
+        start_memory_used =  memory_measurer::get_physical_memory_use();
+        jsoncons::json jv;
+        {
+            auto start = high_resolution_clock::now();
+            try
+            {
+                std::ifstream is(input_filename);
+                jv = jsoncons::json::parse(is);
+                auto end = high_resolution_clock::now();
+                time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                exit(1);
+            }
+        }
+        end_memory_used =  memory_measurer::get_physical_memory_use();
+        {
+            std::ofstream os;
+            os.open(output_filename, std::ios_base::out | std::ios_base::binary);
+            auto start = high_resolution_clock::now();
+            jv.dump(os);
+            auto end = high_resolution_clock::now();
+            time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        }
+        
+        measurements results;
+        results.notes = R"abc(Uses sorted `std::vector` of key/value pairs for objects, expect smaller memory footprint.Uses slightly modified [grisu3_59_56 implementation by Florian Loitsch](https://florian.loitsch.com/publications) plus fallback for printing doubles, expect faster serializing.)abc";
+        results.memory_used = (end_memory_used - start_memory_used)/1000000;
+        results.time_to_read = time_to_read;
+        results.time_to_write = time_to_write;
+        return results;
+    }
+
+    std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) final
+    {
+        std::vector<test_suite_result> results;
+        for (auto& file : pathnames)
+        {
+            auto options = json_options{}.allow_comments(false);
+            if (file.type == expected_result::expect_success)
+            {
+                if (file.path.filename().string().find("utf16") != std::string::npos)
                 {
-                    std::wifstream fin(file.path.string().c_str(), std::ios::binary);
-                    // apply BOM-sensitive UTF-16 facet
-                    fin.imbue(std::locale(fin.getloc(),
-                                          new std::codecvt_utf16<wchar_t, 0x10ffff, std::consume_header>));
-                    wjson document;
-                    fin >> document;
-                    results.emplace_back(result_code::expected_result);
+                    try
+                    {
+                        std::wifstream fin(file.path.string().c_str(), std::ios::binary);
+                        // apply BOM-sensitive UTF-16 facet
+                        fin.imbue(std::locale(fin.getloc(),
+                                              new std::codecvt_utf16<wchar_t, 0x10ffff, std::consume_header>));
+                        wjson document;
+                        fin >> document;
+                        results.emplace_back(result_code::expected_result);
+                    }
+                    catch (const std::exception&)
+                    {
+                        results.emplace_back(result_code::expected_success_parsing_failed);
+                    }
                 }
-                catch (const std::exception&)
+                else
                 {
-                    results.emplace_back(result_code::expected_success_parsing_failed);
+                    try
+                    {
+                        std::istringstream is(file.text);
+                        json jv = json::parse(is, options);
+                        results.emplace_back(result_code::expected_result);
+                    }
+                    catch (const std::exception&)
+                    {
+                        results.emplace_back(result_code::expected_success_parsing_failed);
+                    }
                 }
             }
-            else
+            else if (file.type == expected_result::expect_failure)
             {
                 try
                 {
                     std::istringstream is(file.text);
-                    json jv = json::parse(is, options);
-                    results.emplace_back(result_code::expected_result);
+                    json jv = json::parse(is,options);
+                    results.emplace_back(result_code::expected_failure_parsing_succeeded);
                 }
                 catch (const std::exception&)
                 {
-                    results.emplace_back(result_code::expected_success_parsing_failed);
+                    results.emplace_back(result_code::expected_result);
+                }
+            }
+            else if (file.type == expected_result::result_undefined)
+            {
+                try
+                {
+                    std::istringstream is(file.text);
+                    json jv = json::parse(is,options);
+                    results.emplace_back(result_code::result_undefined_parsing_succeeded);
+                }
+                catch (const std::exception&)
+                {
+                    results.emplace_back(result_code::result_undefined_parsing_failed);
                 }
             }
         }
-        else if (file.type == expected_result::expect_failure)
-        {
-            try
-            {
-                std::istringstream is(file.text);
-                json jv = json::parse(is,options);
-                results.emplace_back(result_code::expected_failure_parsing_succeeded);
-            }
-            catch (const std::exception&)
-            {
-                results.emplace_back(result_code::expected_result);
-            }
-        }
-        else if (file.type == expected_result::result_undefined)
-        {
-            try
-            {
-                std::istringstream is(file.text);
-                json jv = json::parse(is,options);
-                results.emplace_back(result_code::result_undefined_parsing_succeeded);
-            }
-            catch (const std::exception&)
-            {
-                results.emplace_back(result_code::result_undefined_parsing_failed);
-            }
-        }
+
+        return results;
     }
+};
 
-    return results;
+std::shared_ptr<benchmark> make_jsoncons_benchmark()
+{
+    return std::make_shared<jsoncons_benchmark>();
 }
 
-}
+} // namespace json_benchmark

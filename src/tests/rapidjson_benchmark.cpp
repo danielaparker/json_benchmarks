@@ -20,215 +20,226 @@ using std::chrono::duration;
 
 namespace json_benchmark {
 
-std::string rapidjson_benchmark::get_version() const {return "1.1.0";}
-std::string rapidjson_benchmark::get_name() const {return "rapidjson";}
-std::string rapidjson_benchmark::get_url() const {return "https://github.com/miloyip/rapidjson";}
-std::string rapidjson_benchmark::get_type() const {return "rapidjson::Document";}
-
-measurements rapidjson_benchmark::measure_small(const std::string& input, std::string& output)
+class rapidjson_benchmark : public benchmark
 {
-    size_t start_memory_used = 0;
-    size_t end_memory_used = 0;
-    size_t time_to_read = 0;
-    size_t time_to_write = 0;
+public:
 
-    start_memory_used =  memory_measurer::get_physical_memory_use();
+    std::string get_version() const final {return "1.1.0";}
+    std::string get_name() const final {return "rapidjson";}
+    std::string get_url() const final {return "https://github.com/miloyip/rapidjson";}
+    std::string get_type() const final {return "rapidjson::Document";}
+
+    measurements measure_small(const std::string& input, std::string& output) final
     {
-        rapidjson::Document d;
-        try
+        size_t start_memory_used = 0;
+        size_t end_memory_used = 0;
+        size_t time_to_read = 0;
+        size_t time_to_write = 0;
+
+        start_memory_used =  memory_measurer::get_physical_memory_use();
         {
-            auto start = high_resolution_clock::now();
-            d.Parse(input.c_str());
-            auto end = high_resolution_clock::now();
-            time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-        }
-        catch (const std::exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            exit(1);
-        }
-        end_memory_used =  memory_measurer::get_physical_memory_use();
-        {
+            rapidjson::Document d;
             try
             {
                 auto start = high_resolution_clock::now();
-                rapidjson::StringBuffer buffer;
-                rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-                d.Accept(writer);
-                output = buffer.GetString();
+                d.Parse(input.c_str());
                 auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                time_to_read = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
             }
             catch (const std::exception& e)
             {
-                std::cerr << e.what() << std::endl;
-            }
-        }
-    }
-    
-    measurements results;
-    results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
-    results.memory_used = (end_memory_used - start_memory_used);
-    results.time_to_read = time_to_read;
-    results.time_to_write = time_to_write;
-    return results;
-}
-
-measurements rapidjson_benchmark::measure_big(const char *input_filename, const char* output_filename)
-{
-    size_t start_memory_used = 0;
-    size_t end_memory_used = 0;
-    size_t time_to_read = 0;
-    size_t time_to_write = 0;
-
-    start_memory_used =  memory_measurer::get_physical_memory_use();
-    {
-        rapidjson::Document d;
-        try
-        {
-            auto start = high_resolution_clock::now();
-            FILE* fp = fopen(input_filename, "rb"); // non-Windows use "r"
-            assert(fp);
-            std::vector<char> readBuffer; 
-            readBuffer.resize(65536);
-            rapidjson::FileReadStream is(fp, readBuffer.data(), readBuffer.size());
-            if (d.ParseStream(is).HasParseError()) 
-            {
-                fprintf(stderr, "\nError(offset %u): %s\n", 
-                    (unsigned)d.GetErrorOffset(),
-                    GetParseError_En(d.GetParseError()));
+                std::cout << e.what() << std::endl;
                 exit(1);
             }
-            auto end = high_resolution_clock::now();
-            time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-            fclose(fp);
+            end_memory_used =  memory_measurer::get_physical_memory_use();
+            {
+                try
+                {
+                    auto start = high_resolution_clock::now();
+                    rapidjson::StringBuffer buffer;
+                    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+                    d.Accept(writer);
+                    output = buffer.GetString();
+                    auto end = high_resolution_clock::now();
+                    time_to_write = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr << e.what() << std::endl;
+                }
+            }
         }
-        catch (const std::exception& e)
+
+        measurements results;
+        results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
+        results.memory_used = (end_memory_used - start_memory_used);
+        results.time_to_read = time_to_read;
+        results.time_to_write = time_to_write;
+        return results;
+    }
+
+    measurements measure_big(const char *input_filename, const char* output_filename) final
+    {
+        size_t start_memory_used = 0;
+        size_t end_memory_used = 0;
+        size_t time_to_read = 0;
+        size_t time_to_write = 0;
+
+        start_memory_used =  memory_measurer::get_physical_memory_use();
         {
-            std::cout << e.what() << std::endl;
-            exit(1);
-        }
-        end_memory_used =  memory_measurer::get_physical_memory_use();
-        {
+            rapidjson::Document d;
             try
             {
-                FILE* fp;
-                errno_t err  = fopen_s(&fp, output_filename, "wb");
-                if( err != 0 )
+                auto start = high_resolution_clock::now();
+                FILE* fp = fopen(input_filename, "rb"); // non-Windows use "r"
+                assert(fp);
+                std::vector<char> readBuffer; 
+                readBuffer.resize(65536);
+                rapidjson::FileReadStream is(fp, readBuffer.data(), readBuffer.size());
+                if (d.ParseStream(is).HasParseError()) 
                 {
-                    printf( "The file '%s' was not opened\n", output_filename);
+                    fprintf(stderr, "\nError(offset %u): %s\n", 
+                        (unsigned)d.GetErrorOffset(),
+                        GetParseError_En(d.GetParseError()));
                     exit(1);
                 }
-
-                std::vector<char> writeBuffer;
-                writeBuffer.resize(65536);
-                rapidjson::FileWriteStream os(fp, writeBuffer.data(), writeBuffer.size());
-
-                rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
-                auto start = high_resolution_clock::now();
-                d.Accept(writer);
                 auto end = high_resolution_clock::now();
-                time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-                fclose(fp);        
+                time_to_read = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                fclose(fp);
             }
             catch (const std::exception& e)
             {
-                std::cerr << e.what() << std::endl;
+                std::cout << e.what() << std::endl;
+                exit(1);
+            }
+            end_memory_used =  memory_measurer::get_physical_memory_use();
+            {
+                try
+                {
+                    FILE* fp;
+                    errno_t err  = fopen_s(&fp, output_filename, "wb");
+                    if( err != 0 )
+                    {
+                        printf( "The file '%s' was not opened\n", output_filename);
+                        exit(1);
+                    }
+
+                    std::vector<char> writeBuffer;
+                    writeBuffer.resize(65536);
+                    rapidjson::FileWriteStream os(fp, writeBuffer.data(), writeBuffer.size());
+
+                    rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
+                    auto start = high_resolution_clock::now();
+                    d.Accept(writer);
+                    auto end = high_resolution_clock::now();
+                    time_to_write = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                    fclose(fp);        
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr << e.what() << std::endl;
+                }
             }
         }
+
+        measurements results;
+        results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
+        results.memory_used = (end_memory_used - start_memory_used)/1000000;
+        results.time_to_read = time_to_read;
+        results.time_to_write = time_to_write;
+        return results;
     }
-    
-    measurements results;
-    results.notes = R"abc(Uses custom floating point parsing, expect faster parsing. Uses girsu3 for printing doubles, expect faster serializing. Uses custom allocation and flat map for objects, expect smaller memory footprint.)abc";
-    results.memory_used = (end_memory_used - start_memory_used)/1000000;
-    results.time_to_read = time_to_read;
-    results.time_to_write = time_to_write;
-    return results;
-}
 
-void print(FILE* fp, const rapidjson::Value& val)
-{
-    char buffer[1000];
-    rapidjson::FileWriteStream fws(fp, buffer, sizeof(buffer));
-    rapidjson::Writer<rapidjson::FileWriteStream> writer(fws);
-    val.Accept(writer);
-    fws.Flush();
-}
-
-std::vector<test_suite_result> rapidjson_benchmark::run_test_suite(std::vector<test_suite_file>& pathnames)
-{
-    std::vector<test_suite_result> results;
-    for (auto& file : pathnames)
+    void print(FILE* fp, const rapidjson::Value& val)
     {
-        rapidjson::Document d;
-        std::string command = "x64\\Release\\rapidjson_parser.exe ";
-        command = command + file.path.string();
-        int result = std::system(command.c_str());
-        if (file.type == expected_result::expect_success)
-        {
-            if (result == 0)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::expected_result}
-                );
-            }
-            else if (result == 1)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::expected_success_parsing_failed}
-                );
-            }
-            else
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::process_stopped}
-                );
-            }
-        }
-        else if (file.type == expected_result::expect_failure)
-        {
-            if (result == 0)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::expected_failure_parsing_succeeded}
-                );
-            }
-            else if (result == 1)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::expected_result}
-                );
-            }
-            else
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::process_stopped}
-                );
-            }
-        }
-        else if (file.type == expected_result::result_undefined)
-        {
-            if (result == 0)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::result_undefined_parsing_succeeded}
-                );
-            }
-            else if (result == 1)
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::result_undefined_parsing_failed}
-                );
-            }
-            else
-            {
-                results.emplace_back(
-                    test_suite_result{result_code::process_stopped}
-                );
-            }
-        }
+        char buffer[1000];
+        rapidjson::FileWriteStream fws(fp, buffer, sizeof(buffer));
+        rapidjson::Writer<rapidjson::FileWriteStream> writer(fws);
+        val.Accept(writer);
+        fws.Flush();
     }
 
-    return results;
+    std::vector<test_suite_result> run_test_suite(std::vector<test_suite_file>& pathnames) final
+    {
+        std::vector<test_suite_result> results;
+        for (auto& file : pathnames)
+        {
+            rapidjson::Document d;
+            std::string command = "x64\\Release\\rapidjson_parser.exe ";
+            command = command + file.path.string();
+            int result = std::system(command.c_str());
+            if (file.type == expected_result::expect_success)
+            {
+                if (result == 0)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::expected_result}
+                    );
+                }
+                else if (result == 1)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::expected_success_parsing_failed}
+                    );
+                }
+                else
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::process_stopped}
+                    );
+                }
+            }
+            else if (file.type == expected_result::expect_failure)
+            {
+                if (result == 0)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::expected_failure_parsing_succeeded}
+                    );
+                }
+                else if (result == 1)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::expected_result}
+                    );
+                }
+                else
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::process_stopped}
+                    );
+                }
+            }
+            else if (file.type == expected_result::result_undefined)
+            {
+                if (result == 0)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::result_undefined_parsing_succeeded}
+                    );
+                }
+                else if (result == 1)
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::result_undefined_parsing_failed}
+                    );
+                }
+                else
+                {
+                    results.emplace_back(
+                        test_suite_result{result_code::process_stopped}
+                    );
+                }
+            }
+        }
+
+        return results;
+    }
+};
+
+std::shared_ptr<benchmark> make_rapidjson_benchmark()
+{
+    return std::make_shared<rapidjson_benchmark>();
 }
-}
+
+} // namespace json_benchmark

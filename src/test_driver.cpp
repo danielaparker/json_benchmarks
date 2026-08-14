@@ -366,14 +366,14 @@ int main(int argc, char* argv[])
 
     std::vector<std::shared_ptr<benchmark>> benchmarks; 
 
-    benchmarks.push_back(std::make_shared<jsoncons_benchmark>());
-    benchmarks.push_back(std::make_shared<nlohmann_benchmark>());    
-    benchmarks.push_back(std::make_shared<rapidjson_benchmark>());
-    benchmarks.push_back(std::make_shared<jsoncpp_benchmark>());
-    benchmarks.push_back(std::make_shared<glaze_benchmark>());
-    benchmarks.push_back(std::make_shared<boost_json_benchmark>());
-    benchmarks.push_back(std::make_shared<yyjson_benchmark>());
-    benchmarks.push_back(std::make_shared<reflectcpp_benchmark>());
+    benchmarks.push_back(make_jsoncons_benchmark());
+    benchmarks.push_back(make_nlohmann_benchmark());    
+    benchmarks.push_back(make_rapidjson_benchmark());
+    benchmarks.push_back(make_jsoncpp_benchmark());
+    benchmarks.push_back(make_glaze_benchmark());
+    benchmarks.push_back(make_boost_json_benchmark());
+    benchmarks.push_back(make_yyjson_benchmark());
+    benchmarks.push_back(make_reflectcpp_benchmark());
     
     auto arg = jsoncons::string_view(argv[1]);
 
